@@ -5,6 +5,7 @@ because nobody waits longer than that on a commit and git has no hook timeout of
 Every error is the caller's cue to exit 0: Jev only makes this stricter, never looser.
 """
 
+import http.client
 import json
 import os
 import time
@@ -80,12 +81,15 @@ def ask(state, questions, env=None, model=None, deadline_s=DEADLINE_S):
         except urllib.error.HTTPError as err:
             text = err.read().decode("utf-8", "replace")[:300]
             last = "HTTP %d %s" % (err.code, text.strip())
-            if err.code in (400, 413, 422) and any(hint in text.lower() for hint in TOO_BIG_HINTS):
+            # 413 is the status for it; the hints cover backends that answer 400 or 422.
+            if err.code == 413 or (err.code in (400, 422)
+                                   and any(hint in text.lower() for hint in TOO_BIG_HINTS)):
                 raise TooBig(last) from err
             if err.code != 429 and err.code < 500:
                 raise JevError(last) from err
             wait = _retry_after(err.headers, delay)
-        except (urllib.error.URLError, TimeoutError, OSError) as err:
+        except (urllib.error.URLError, TimeoutError, OSError,
+                http.client.HTTPException) as err:
             last = str(err)
             wait = delay
         except ValueError as err:
@@ -96,18 +100,25 @@ def ask(state, questions, env=None, model=None, deadline_s=DEADLINE_S):
             raise JevError("deadline reached: " + last)
         time.sleep(wait)
         delay *= 2
+    # A 200 whose body is `null`, a list, or somebody's error envelope is a gateway
+    # hiccup, not a reason to stop a commit. Everything unexpected leaves as a JevError.
+    if not isinstance(body, dict):
+        raise JevError("response was not an object")
+    if not isinstance(body.get("answers"), dict):
+        raise JevError("response carried no answers object")
     answers = {}
-    for name, answer in (body.get("answers") or {}).items():
+    for name, answer in body["answers"].items():
         value = answer.get("noul", answer.get("probability")) if isinstance(answer, dict) else answer
-        if not isinstance(value, (int, float)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
             raise JevError("no probability for question %s" % name)
         answers[name] = float(value)
     missing = set(questions) - set(answers)
     if missing:
         raise JevError("missing answers: %s" % ", ".join(sorted(missing)))
+    usage, model = body.get("usage"), body.get("model")
     return {
         "answers": answers,
-        "model": body.get("model") or "unknown",
-        "usage": body.get("usage") or {},
+        "model": model if isinstance(model, str) and model else "unknown",
+        "usage": usage if isinstance(usage, dict) else {},
         "ms": int((time.monotonic() - started) * 1000),
     }

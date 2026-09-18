@@ -1,3 +1,4 @@
+import http.server
 import threading
 
 import pytest
@@ -72,3 +73,49 @@ def test_every_question_has_both_criteria_and_no_counting_words():
         assert set(question["criteria"]) == {"true", "false"}
         blob = repr(question).lower()
         assert not any(word in blob for word in banned), name
+
+
+class _Odd(http.server.BaseHTTPRequestHandler):
+    """Answers 200 with whatever BODY holds, however malformed."""
+
+    BODY = b"null"
+
+    def do_POST(self):
+        self.rfile.read(int(self.headers.get("Content-Length") or 0))
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(self.BODY)))
+        self.end_headers()
+        self.wfile.write(self.BODY)
+
+    def log_message(self, *args):
+        pass
+
+
+@pytest.fixture
+def odd():
+    def start(body):
+        handler = type("H", (_Odd,), {"BODY": body})
+        server = http.server.HTTPServer(("127.0.0.1", 0), handler)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        started.append(server)
+        return {"JEV_BASE_URL": "http://127.0.0.1:%d" % server.server_address[1]}
+
+    started = []
+    yield start
+    for server in started:
+        server.shutdown()
+
+
+@pytest.mark.parametrize("body", [b"null", b"[1, 2, 3]", b'{"answers": null}',
+                                  b'{"answers": [1]}', b'{"error": "nope"}'])
+def test_a_body_that_is_not_an_answer_map_is_a_jev_error(odd, body):
+    """A 200 shaped like anything else used to raise AttributeError and block the commit."""
+    with pytest.raises(jev.JevError):
+        jev.ask({"message": "m"}, questions.QUESTIONS, env=odd(body))
+
+
+def test_a_true_is_not_a_probability(odd):
+    body = b'{"answers": {"%s": true}}' % questions.MESSAGE_IS_SUBSTANTIVE.encode()
+    with pytest.raises(jev.JevError):
+        jev.ask({"message": "m"}, {questions.MESSAGE_IS_SUBSTANTIVE: {}}, env=odd(body))

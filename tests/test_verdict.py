@@ -163,3 +163,30 @@ def test_split_02_does_not_false_mismatch(fake):
     out = cli.judge(states, {"JEV_BASE_URL": url})
     code, findings, _ = cli.decide(out["answers"], [], LIMITS)
     assert findings == [] and code == cli.OK
+
+
+def test_main_never_exits_nonzero_when_something_blows_up(tmp_path, monkeypatch):
+    """pre-commit aborts on any nonzero, so a bug here stops a stranger's commit."""
+    message = tmp_path / "msg"
+    message.write_text("fix: thing\n")
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("the patch parser fell over")
+
+    monkeypatch.setattr(cli.git, "capture", boom)
+    assert cli.main([str(message)]) == cli.OK
+
+    def interrupt(*args, **kwargs):
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(cli.git, "capture", interrupt)
+    assert cli.main([str(message)]) == cli.OK
+
+
+def test_the_match_bar_agrees_with_the_verdict_under_a_swept_cutoff():
+    """The bar reads the mismatch cutoff; keying it to `finding` made them disagree."""
+    limits = dict(cli.DEFAULTS, mismatch=0.10)
+    for probability in (0.15, 0.20, 0.30):
+        _, findings, rows = cli.decide({MESSAGE_MATCHES_DIFF: probability}, [], limits)
+        status = [row[2] for row in rows][0]
+        assert (status == "flag") == (MESSAGE_MATCHES_DIFF in findings), probability

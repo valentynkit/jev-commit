@@ -56,6 +56,7 @@ def threshold_sweep(probabilities, labels, cutoffs=(0.05, 0.10, 0.15, 0.20, 0.30
 def replay(case):
     """Combined answers for one case, or None when a chunk was never recorded."""
     combined, ms, tokens = {}, 0, 0
+    model = ""
     for index, state in enumerate(states_for(case)):
         questions = dict(QUESTIONS)
         if index > 0:
@@ -67,22 +68,25 @@ def replay(case):
         cli.combine_answers(combined, recorded["answers"])
         ms += recorded.get("ms") or 0
         tokens += (recorded.get("usage") or {}).get("input_tokens") or 0
-    return {"answers": combined, "ms": ms, "tokens": tokens,
+        model = recorded.get("model") or model
+    return {"answers": combined, "ms": ms, "tokens": tokens, "model": model,
             "chunks": len(states_for(case))}
 
 
 def evaluate(limits):
+    """Only the cases that were actually recorded. A rate-limited recorder leaves gaps, and
+    one gap erasing all 152 numbers is worse than publishing the n that was measured."""
     cases = load_corpus()
     results = {}
     for case in cases:
         played = replay(case)
         if played is None:
-            return None, cases
+            continue
         hits = belt.scan(case["hunks"])
         code, findings, _ = cli.decide(played["answers"], hits, limits)
         results[case["id"]] = {"case": case, "played": played, "findings": findings,
                                "code": code, "belt": belt.blocking(hits)}
-    return results, cases
+    return (results or None), cases
 
 
 def numbers(results, limits):
@@ -170,6 +174,9 @@ def main(argv=None):
         results, _ = evaluate(limits)
     stats = numbers(results, limits)
     model = next(iter(results.values()))["played"].get("model") or model
+    if len(results) != len(cases):
+        print("measured %d of %d cases, the rest were never recorded"
+              % (len(results), len(cases)), file=sys.stderr)
     out = lines(stats, model)
     for line in out:
         print(line)
@@ -177,7 +184,13 @@ def main(argv=None):
 
     locked = {}
     if THRESHOLDS.exists():
-        locked = json.loads(THRESHOLDS.read_text())
+        try:
+            locked = json.loads(THRESHOLDS.read_text())
+        except ValueError as err:
+            # cli.thresholds() silently falls back to defaults on the same file, so the
+            # gate is the only place a half-written lock can still be caught.
+            print("corrupt threshold lock: %s" % err, file=sys.stderr)
+            return 1
     report = {
         "recorded": True, "lines": out, "numbers": stats, "thresholds": limits,
         "sweep": sweep, "brier": brier(probabilities, labels),

@@ -1,18 +1,58 @@
+import json
 import os
+import pathlib
 import subprocess
+import sys
 
 from jev_commit import git as g
 from conftest import commit, git, write
 
+ROOT = pathlib.Path(g.__file__).resolve().parent.parent
+
 
 def test_child_env_drops_git_vars_and_the_key():
-    env = g.child_env({"GIT_DIR": "/evil", "GIT_INDEX_FILE": "x", "TYPESAFE_API_KEY": "sk-live",
+    env = g.child_env({"GIT_ALTERNATE_OBJECT_DIRECTORIES": "/evil", "GIT_EDITOR": "evil",
+                       "GIT_CONFIG_GLOBAL": "/evil", "TYPESAFE_API_KEY": "sk-live",
                        "JEV_BASE_URL": "http://x", "PATH": "/usr/bin", "HOME": "/home/t"})
-    assert "GIT_DIR" not in env and "GIT_INDEX_FILE" not in env
+    assert "GIT_ALTERNATE_OBJECT_DIRECTORIES" not in env and "GIT_EDITOR" not in env
+    assert "GIT_CONFIG_GLOBAL" not in env
     assert "TYPESAFE_API_KEY" not in env and "JEV_BASE_URL" not in env
     assert env["PATH"] == "/usr/bin" and env["HOME"] == "/home/t"
     assert env["GIT_NO_LAZY_FETCH"] == "1" and env["GIT_TERMINAL_PROMPT"] == "0"
     assert env["GIT_ASKPASS"] == "" and env["GIT_CONFIG_NOSYSTEM"] == "1"
+
+
+def test_child_env_keeps_the_index_the_parent_git_is_committing():
+    env = g.child_env({"GIT_INDEX_FILE": "/repo/.git/index.lock", "GIT_DIR": "/repo/.git"})
+    assert env["GIT_INDEX_FILE"] == "/repo/.git/index.lock"
+    assert env["GIT_DIR"] == "/repo/.git"
+
+
+def test_commit_all_is_judged_against_what_it_stages(repo, tmp_path):
+    """Only git sets GIT_INDEX_FILE, so this runs through a real commit-msg hook.
+
+    Stripping it read .git/index, so `git commit -am` was judged against the previous
+    commit's diff and landed in amend mode, where the belt cannot block.
+    """
+    commit(repo, "f.py", "base\n", "one")
+    commit(repo, "g.py", "other\n", "two")
+    seen = tmp_path / "seen.json"
+    probe = tmp_path / "probe.py"
+    probe.write_text("import json, sys\n"
+                     "from jev_commit import git as g\n"
+                     "out = g.capture()\n"
+                     "json.dump({'mode': out['mode'], 'patch': out['patch']}, open(sys.argv[1], 'w'))\n")
+    hook = repo / ".git" / "hooks" / "commit-msg"
+    hook.parent.mkdir(parents=True, exist_ok=True)
+    hook.write_text("#!/bin/sh\nPYTHONPATH=%s exec %s %s %s\n" % (ROOT, sys.executable, probe, seen))
+    hook.chmod(0o755)
+
+    write(repo, "f.py", 'AWS_KEY = "AKIAABCDEFGHIJKLMNOP"\n')
+    git(repo, "commit", "-am", "rotate config")
+
+    captured = json.loads(seen.read_text())
+    assert captured["mode"] == "index", "commit -a was read as an amend"
+    assert "AKIAABCDEFGHIJKLMNOP" in captured["patch"]
 
 
 def test_argv_carries_the_lockdown():
@@ -105,3 +145,23 @@ def test_parse_name_status_keeps_the_new_path_of_a_rename():
 def test_strip_message_cuts_comments_and_scissors():
     raw = "fix: null check\n\nwhy it matters\n# please enter\n# ------------------------ >8 ------------------------\ndiff --git a/x b/x\n"
     assert g.strip_message(raw) == "fix: null check\n\nwhy it matters"
+
+
+def test_strip_message_honors_a_custom_comment_char():
+    """Under core.commentChar=; a `#42` line is message, and `;` marks the comment."""
+    raw = ("fix crash on startup\n\n"
+           "#42 was the flaky test behind this, now pinned\n"
+           "; Please enter the commit message for your changes.\n"
+           "; ------------------------ >8 ------------------------\n"
+           "diff --git a/f.py b/f.py\n")
+    assert g.strip_message(raw, ";") == (
+        "fix crash on startup\n\n#42 was the flaky test behind this, now pinned")
+
+
+def test_comment_prefix_reads_the_repo_config(repo):
+    commit(repo, "a.py", "x = 1\n", "add a")
+    assert g.comment_prefix(repo) == "#"
+    git(repo, "config", "core.commentChar", ";")
+    assert g.comment_prefix(repo) == ";"
+    git(repo, "config", "core.commentChar", "auto")
+    assert g.comment_prefix(repo) == "#"

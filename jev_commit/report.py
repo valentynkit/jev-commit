@@ -14,7 +14,7 @@ import sys
 import threading
 import time
 
-BAR_CELLS = 20
+BAR_CELLS = 12  # 20 cells pushed a flag row to 57 columns, which wrapped at 60
 LABEL_WIDTH = 22
 FULL, EMPTY = "█", "░"
 FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
@@ -44,7 +44,8 @@ class Report:
     def __init__(self, stream=None, env=None):
         env = os.environ if env is None else env
         self.out = stream or sys.stderr
-        self.color = not env.get("NO_COLOR") and hasattr(self.out, "isatty") and self.out.isatty()
+        # NO_COLOR is presence, not value: NO_COLOR= with an empty value still counts.
+        self.color = "NO_COLOR" not in env and hasattr(self.out, "isatty") and self.out.isatty()
         self.animate = self.color
         self._spinner = None
         self._stop = None
@@ -86,12 +87,16 @@ class Report:
         self._spinner = threading.Thread(target=spin, daemon=True)
         self._spinner.start()
 
-    def resolved(self, model, ms, dollars):
+    def stop_spinner(self):
+        """Safe to call twice, and safe when asking() never ran."""
         if self._spinner:
             self._stop.set()
             self._spinner.join()
             self._spinner = None
             self._write("\r\033[2K")
+
+    def resolved(self, model, ms, dollars):
+        self.stop_spinner()
         parts = [self._paint(model, BOLD), "%d ms" % ms, "$%.5f" % dollars]
         self.line(DOT.join(parts) if self.color else " · ".join(_strip(p) for p in parts))
         self.line()

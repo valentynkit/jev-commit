@@ -85,3 +85,41 @@ def test_the_recall_pattern_reaches_some_of_them_and_decides_none():
     secrets = {c["id"] for c in cases if c["label"]["secret"]}
     assert flagged & secrets, "the recall pattern should reach the delimited ones"
     assert flagged - secrets, "and it flags non-secrets too, which is why the noul decides"
+
+
+BOUNDARY_NEGATIVES = [
+    ("sk- inside a word", 'label = "risk-Kq7RtYu8Wz1Bc3Df5Gh7Jk9"'),
+    ("sk- as a css class", ".desk-Kq7RtYu8Wz1Bc3Df5Gh7Jk9 { display: none; }"),
+    ("AIza inside base64", 'blob = "xzAIzaSyD4kQ2r7TvXw9Yz1Bc3Df5Gh7Jk9Lm0Np1XYZ=="'),
+]
+
+CONTEXT_NEGATIVES = [
+    ("a DSN spelled out in docs", "# format: scheme://user:password@host:port/path"),
+    ("the jwt.io token in a comment",
+     "# example token from the docs: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.Kq7RtYu8"),
+]
+
+
+def scan_one(line, path="src/app.py"):
+    return belt.scan([{"path": path, "text": "@@ -1 +1 @@\n+" + line}])
+
+
+@pytest.mark.parametrize("why,line", BOUNDARY_NEGATIVES)
+def test_a_prefix_mid_token_never_blocks(why, line):
+    assert belt.blocking(scan_one(line)) == [], why
+
+
+@pytest.mark.parametrize("why,line", CONTEXT_NEGATIVES)
+def test_a_line_that_calls_itself_an_example_never_blocks(why, line):
+    assert belt.blocking(scan_one(line)) == [], why
+
+
+def test_an_added_line_starting_with_plus_is_still_scanned():
+    """`+++counter;` is C, not a diff header: a hunk starts at its own @@ line."""
+    hits = scan_one("+++counter; // AKIA2X7QF4LMZ3VBNTYE")
+    assert [h["kind"] for h in belt.blocking(hits)] == ["aws_access_key"]
+
+
+def test_the_real_shapes_still_block_behind_the_left_anchor():
+    for kind, line in VENDOR_POSITIVES:
+        assert [h["kind"] for h in belt.blocking(scan_one(line))] == [kind], line

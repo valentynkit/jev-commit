@@ -26,8 +26,9 @@ months later that sentence is the only thing anyone reads.
 jev-commit reads the message and the staged diff together and asks five questions about the
 pair in one call to Jev, TypeSafe's decision model: is this message substantive, does it
 match the diff, are there debug leftovers, is there work the message never mentions, and is
-a credential written out on an added line. Answers come back as probabilities in about a
-tenth of a second for a hundredth of a cent, which is cheap enough to spend on every commit.
+a credential written out on an added line. Answers come back as probabilities, priced at
+$0.042 per million input tokens with output free. What that works out to per commit, and how
+long it takes, is what `make measure` prints; the slots above stay `__` until it has run.
 
 It warns, it does not stand in your way. The only thing that stops a commit by default is a
 regex belt hit on a credential shaped like a real one, because that is the mistake you
@@ -119,6 +120,12 @@ A line ending in `# jev-commit: allow` is skipped by the belt.
   carries no license. The comparison against their 15/20 is indicative, not like for like.
 - Under the pre-commit framework the report is captured and replayed after the hook finishes,
   so there is no live spinner and no color. A plain git hook shows both.
+- The belt is regex and entropy, so it blocks on credential *shapes*. A repo that commits
+  real-format test keys or JWT fixtures wants `--exclude` on that path, or the trailing
+  `# jev-commit: allow`.
+- `git commit -a` and `git commit <path>` are judged correctly, but only because the hook
+  reads the temporary index git hands it. Running `jev-commit` by hand outside a commit
+  reads `.git/index` instead, which is the plain staged diff.
 
 ## Development
 

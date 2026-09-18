@@ -4,6 +4,25 @@ Format from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), versions f
 
 ## [Unreleased]
 
+### Fixed
+
+- `git commit -a`, `--only`, `-p` and `git commit <path>` were judged against the wrong diff.
+  The lockdown stripped `GIT_INDEX_FILE`, so the hook read `.git/index` rather than the
+  temporary index git was committing, and took the amend path where the belt cannot block.
+- The secret belt scanned only the hunks that survived the token budget, so a credential in a
+  lockfile, a generated directory or a capped file's middle hunk was never checked.
+- High-precision patterns matched mid-token (`risk-...` read as an OpenAI key) and ignored the
+  rest of the line, so a documented example token blocked a commit.
+- `strip_message` hardcoded `#`, mangling messages under `core.commentChar`.
+- Non-ASCII paths were decoded as mojibake and kept their `a/`/`b/` prefix.
+- Renames, mode changes and new empty files were dropped from the file table entirely.
+- The per-file cap skipped files under three hunks and measured its fallback in characters
+  against a token budget; the commit message was never capped.
+- A `null` or truncated response body, and Ctrl-C during the call, exited nonzero and blocked
+  the commit.
+- Chunked commits had no request ceiling and one deadline each rather than one between them.
+- `make measure` reported nothing at all when any single chunk was unrecorded.
+
 ## [0.1.0] - 2026-09-18
 
 ### Added

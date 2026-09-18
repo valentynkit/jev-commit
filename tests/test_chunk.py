@@ -90,6 +90,73 @@ def test_a_two_megabyte_diff_splits_into_chunks_under_budget():
     assert "more files" in states[0]["more"]
 
 
+def test_quoted_paths_decode_to_the_name_git_reports():
+    """core.quotePath is pinned on, so every non-ASCII path arrives C-quoted."""
+    patch = ('diff --git "a/h\\303\\251llo.txt" "b/h\\303\\251llo.txt"\n'
+             '--- "a/h\\303\\251llo.txt"\n+++ "b/h\\303\\251llo.txt"\n@@ -1 +1 @@\n+x\n')
+    assert c.parse_patch(patch)[0]["path"] == "h\u00e9llo.txt"
+    # The name-status side never quotes, so the two must agree for the join to work.
+    prep = c.prepare(patch, {"h\u00e9llo.txt": "A"})
+    assert prep["files"][0] == {"path": "h\u00e9llo.txt", "status": "A", "added": 1, "removed": 0}
+
+
+def test_a_path_with_a_space_keeps_no_trailing_tab():
+    patch = ("diff --git a/has space.txt b/has space.txt\n--- a/has space.txt\t\n"
+             "+++ b/has space.txt\t\n@@ -1 +1 @@\n+x\n")
+    assert c.parse_patch(patch)[0]["path"] == "has space.txt"
+
+
+def test_blocks_with_no_hunks_still_show_up():
+    """A rename, a mode change and a new empty file carry no ---/+++ pair."""
+    rename = ("diff --git a/a.txt b/b.txt\nsimilarity index 100%\n"
+              "rename from a.txt\nrename to b.txt\n")
+    mode = "diff --git a/s.sh b/s.sh\nold mode 100644\nnew mode 100755\n"
+    empty = "diff --git a/new.py b/new.py\nnew file mode 100644\nindex 0000000..e69de29\n"
+    assert [f["path"] for f in c.parse_patch(rename)] == ["b.txt"]
+    assert [f["path"] for f in c.parse_patch(mode)] == ["s.sh"]
+    assert [f["path"] for f in c.parse_patch(empty)] == ["new.py"]
+    assert [t["path"] for t in c.prepare(rename + mode + empty)["files"]] == [
+        "b.txt", "new.py", "s.sh"]
+
+
+def test_generated_dirs_match_a_segment_not_a_substring():
+    def f(path):
+        return {"path": path, "added": 0, "removed": 0, "binary": False, "hunks": ["@@\n+x"]}
+
+    assert c.is_degraded(f("dist/bundle.js")) and c.is_degraded(f("web/vendor/x.go"))
+    assert not c.is_degraded(f("mybuild/x.py"))
+    assert not c.is_degraded(f("myvendor/config.py"))
+    assert not c.is_degraded(f("childtarget/Main.java"))
+
+
+def test_two_huge_hunks_are_capped_like_any_other_file():
+    """Capping only at three or more hunks left this file over the cap and unsplittable."""
+    huge = "@@ -1 +1 @@\n" + "+x = {'a': 1, 'b': [2, 3]};  # }{)(*&^%$#@!\n" * 4000
+    kept = c.cap_file({"path": "big.py", "added": 0, "removed": 0, "binary": False,
+                       "hunks": [huge, huge]})
+    assert c.estimate_tokens("\n".join(kept)) <= c.PER_FILE_TOKENS
+    single = c.cap_file({"path": "big.py", "added": 0, "removed": 0, "binary": False,
+                         "hunks": [huge]})
+    assert c.estimate_tokens("\n".join(single)) <= c.PER_FILE_TOKENS
+
+
+def test_a_giant_message_cannot_blow_the_budget():
+    """Bisecting hunks cannot shrink a state the message alone overflows."""
+    message = "\n".join("* fix thing %d in module %d" % (i, i) for i in range(6000))
+    assert c.estimate_tokens(message) > c.BUDGET_TOKENS
+    for state in c.chunk_states(message, c.prepare(PATCH)):
+        assert c.estimate_tokens(repr(state)) <= c.BUDGET_TOKENS
+
+
+def test_the_belt_sees_hunks_the_budget_dropped():
+    """all_hunks is undegraded and uncapped: a regex costs no tokens."""
+    patch = ("diff --git a/vendor/key.pem b/vendor/key.pem\n--- /dev/null\n"
+             "+++ b/vendor/key.pem\n@@ -0,0 +1 @@\n+-----BEGIN OPENSSH PRIVATE KEY-----\n")
+    prep = c.prepare(patch)
+    assert prep["hunks"] == [], "vendor/ still degrades for Jev"
+    assert "PRIVATE KEY" in prep["all_hunks"][0]["text"]
+
+
 def test_bisect_splits_a_state_and_keeps_the_table():
     prep = c.prepare(PATCH)
     state = c.build_state("m", prep, [{"path": "a", "text": "@@\n+1"}, {"path": "b", "text": "@@\n+2"}])

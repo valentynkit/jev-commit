@@ -43,6 +43,13 @@ GIT_ENV = {
 # The key never enters the child env: the child reads attacker-shaped bytes.
 SECRET_ENV = ("TYPESAFE_API_KEY", "JEV_API_KEY", "TYPESAFE_BASE_URL", "JEV_BASE_URL")
 
+# The two GIT_* the parent git sets to say which index it is committing. `git commit -a`,
+# `--only`, `-p` and `git commit <path>` stage into a temporary index and name it here;
+# stripping these read .git/index instead, which is a different commit. They come from the
+# calling git process, not from repo content, so they sit outside the threat model the rest
+# of the stripping exists for.
+KEEP_ENV = ("GIT_INDEX_FILE", "GIT_DIR")
+
 TIMEOUT_S = 10
 MAX_BYTES = 10 * 1024 * 1024
 
@@ -56,7 +63,7 @@ class GitError(Exception):
 def child_env(env=None):
     out = dict(os.environ if env is None else env)
     for name in list(out):
-        if name.startswith("GIT_") or name in SECRET_ENV:
+        if (name.startswith("GIT_") and name not in KEEP_ENV) or name in SECRET_ENV:
             del out[name]
     out.update(GIT_ENV)
     return out
@@ -148,15 +155,45 @@ def parse_name_status(text):
 
 
 SCISSORS = re.compile(r"^-{4,}\s*>8\s*-{4,}")
+COMMENT_KEYS = re.compile(r"^core\.comment(char|string)\s+(.*)$", re.I)
 
 
-def strip_message(text):
+def comment_prefix(cwd=None):
+    """What marks a comment line: core.commentString, then core.commentChar, else #.
+
+    Hardcoding `#` deleted a real `#42 was the flaky test` line under core.commentChar=;
+    and left git's own `;` boilerplate and its scissors line inside the message.
+
+    ponytail: `auto` resolves to whichever character starts no line in the message, which
+    is `#` unless the message forced git elsewhere. Replaying that scan is the ceiling.
+    """
+    try:
+        out, code, _ = run_git(["config", "--get-regexp", r"^core\.comment(char|string)$"],
+                               cwd=cwd, check=False)
+    except GitError:
+        return "#"
+    if code != 0:
+        return "#"
+    found = {}
+    for line in out.splitlines():
+        match = COMMENT_KEYS.match(line.strip())
+        if match:
+            found[match.group(1).lower()] = match.group(2).strip()
+    for key in ("string", "char"):
+        value = found.get(key)
+        if value and value != "auto":
+            return value
+    return "#"
+
+
+def strip_message(text, comment="#"):
     """Drop comment lines and everything past the scissors line git writes under --verbose."""
     lines = []
     for line in text.splitlines():
-        if SCISSORS.match(line.lstrip("#").strip()):
+        bare = line[len(comment):] if line.startswith(comment) else line
+        if SCISSORS.match(bare.strip()):
             break
-        if line.startswith("#"):
+        if line.startswith(comment):
             continue
         lines.append(line.rstrip())
     while lines and not lines[0].strip():

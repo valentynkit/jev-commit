@@ -11,6 +11,7 @@ import json
 import os
 import pathlib
 import sys
+import time
 
 from jev_commit import belt, chunk, git, jev
 from jev_commit.questions import (FINDINGS, LABELS, MESSAGE_IS_SUBSTANTIVE,
@@ -59,29 +60,52 @@ def combine_answers(acc, answers):
     return acc
 
 
-def judge(states, env, gate_wanted=True):
+# Splitting a state in two on every too-big response walks a binary tree, so a commit of
+# thousands of hunks can cost 2n-1 requests. No commit is worth that much of the budget.
+MAX_REQUESTS = 24
+
+
+def judge(states, env, gate_wanted=True, deadline_s=jev.DEADLINE_S):
     """One request per chunk, split and retried on a too-big response.
 
     Routing: the gate question rides the first request only, the match question combines by
     min and the three findings by max. The worse answer wins in every direction.
+
+    One deadline covers the whole call, not one per chunk: ten chunks against a slow but
+    living API took ten times the budget while git held the terminal. Whatever came back
+    before the deadline is returned, because a chunk already answered may already hold the
+    finding, and it was already paid for.
     """
     combined, usage, requests, ms = {}, 0, 0, 0
     model = MODEL
+    error = None
     gate_asked = not gate_wanted
+    stop = time.monotonic() + deadline_s
     queue = [(i == 0, state) for i, state in enumerate(states)]
     while queue:
         first, state = queue.pop(0)
         asking = dict(QUESTIONS)
         if gate_asked or not first:
             asking.pop(MESSAGE_IS_SUBSTANTIVE)
+        left = stop - time.monotonic()
+        if requests >= MAX_REQUESTS:
+            error = jev.JevError("stopped after %d requests" % requests)
+            break
+        if left <= 0:
+            error = jev.JevError("deadline reached with %d chunks unasked" % (len(queue) + 1))
+            break
         try:
-            out = jev.ask(state, asking, env=env)
-        except jev.TooBig:
+            out = jev.ask(state, asking, env=env, deadline_s=left)
+        except jev.TooBig as err:
             halves = chunk.bisect(state)
             if not halves:
-                raise
+                error = err
+                break
             queue = [(first, half) for half in halves] + queue
             continue
+        except jev.JevError as err:
+            error = err
+            break
         requests += 1
         ms += out["ms"]
         usage += out["usage"].get("input_tokens") or 0
@@ -90,7 +114,7 @@ def judge(states, env, gate_wanted=True):
             gate_asked = True
         combine_answers(combined, out["answers"])
     return {"answers": combined, "model": model, "ms": ms, "requests": requests,
-            "usage": {"input_tokens": usage}}
+            "usage": {"input_tokens": usage}, "error": error}
 
 
 def decide(answers, hits, limits, strict=False, blocking_allowed=True):
@@ -102,7 +126,12 @@ def decide(answers, hits, limits, strict=False, blocking_allowed=True):
         if name not in answers:
             continue
         probability = answers[name]
-        status = status_of(probability, limits["finding"], healthy_high=name not in FINDINGS)
+        # The match bar reads off the mismatch cutoff, not the finding one. They are two
+        # separate keys in thresholds.json, so a swept mismatch cutoff would otherwise
+        # paint a red bar beside a verdict that says clean.
+        healthy_high = name not in FINDINGS
+        at = 1 - limits["mismatch"] if name == MESSAGE_MATCHES_DIFF else limits["finding"]
+        status = status_of(probability, at, healthy_high=healthy_high)
         if name == MESSAGE_MATCHES_DIFF:
             if not substantive:
                 status = "ok"
@@ -128,6 +157,21 @@ def decide(answers, hits, limits, strict=False, blocking_allowed=True):
 
 
 def main(argv=None):
+    """Never nonzero but on a usage error: pre-commit aborts the commit on any of them.
+
+    Anything unexpected below, a malformed patch, a gateway answering `null`, a Ctrl-C
+    during the call, is this tool's problem and not the committer's.
+    """
+    try:
+        return _run(argv)
+    except SystemExit:
+        raise
+    except BaseException as err:  # a hook that raises is a hook that blocks
+        sys.stderr.write("jev-commit: skipped (%s: %s)\n" % (type(err).__name__, err))
+        return OK
+
+
+def _run(argv=None):
     args = parse_args(sys.argv[1:] if argv is None else argv)
     report = Report()
     if not args.message_file:
@@ -139,10 +183,10 @@ def main(argv=None):
         report.line("jev-commit: cannot read %s (%s)" % (args.message_file, err))
         return USAGE
 
-    message = git.strip_message(raw)
     limits = thresholds()
     env = dict(os.environ)
     try:
+        message = git.strip_message(raw, git.comment_prefix())
         captured = git.capture(amend_base=args.amend_base)
     except git.GitError as err:
         report.skipped(str(err))
@@ -153,7 +197,8 @@ def main(argv=None):
 
     prep = chunk.prepare(captured["patch"], git.parse_name_status(captured["name_status"]))
     states = chunk.chunk_states(message, prep)
-    hits = belt.scan(prep["hunks"], exclude=args.exclude)
+    # The belt reads the whole diff, never only the part that survived the token budget.
+    hits = belt.scan(prep["all_hunks"], exclude=args.exclude)
     amend = captured["mode"] == "amend"
 
     added = sum(row["added"] for row in prep["files"])
@@ -163,34 +208,54 @@ def main(argv=None):
     report.asking(MODEL)
     try:
         out = judge(states, env)
-    except jev.JevError as err:
-        report.resolved(MODEL, 0, 0.0)
-        report.skipped(str(err))
-        return _belt_only(report, hits, amend)
+    finally:
+        report.stop_spinner()
 
+    if not out["requests"]:
+        report.skipped(str(out["error"]) if out["error"] else "no answers")
+        return _belt_only(report, hits, amend)
     report.resolved(out["model"], out["ms"], cost_of(out["usage"]))
+
     code, findings, rows = decide(out["answers"], hits, limits, strict=args.strict,
                                   blocking_allowed=not amend)
     for label, probability, status in rows:
         report.check(label, probability, status)
-    for hit in belt.blocking(hits):
-        report.blocked_line(hit["kind"], hit["path"], hit["redacted"])
-    if out["requests"] != len(states):
+    for hit in hits:
+        if hit["precision"] == "high":
+            report.blocked_line(hit["kind"], hit["path"], hit["redacted"])
+        else:
+            report.note("possible %s in %s (%s)"
+                        % (hit["kind"].replace("_", " "), hit["path"], hit["redacted"]))
+    if out["error"]:
+        report.note("answered %d of %d chunks, then stopped: %s"
+                    % (out["requests"], len(states), out["error"]))
+    elif out["requests"] != len(states):
         report.note("split into %d requests after a too-big response" % out["requests"])
     if amend:
         report.note("nothing staged, judged against HEAD^, never blocking")
+    if captured["truncated"]:
+        report.note("diff truncated at %d MB, the rest was not judged"
+                    % (git.MAX_BYTES // (1024 * 1024)))
     if prep["omitted"]:
         report.note(prep["omitted"])
 
     if code == BLOCK:
         report.verdict("blocked, a credential-shaped line is staged" if belt.blocking(hits)
                        else "blocked by --strict", "flag")
-    elif findings or hits:
-        report.verdict("%d finding%s, commit allowed" % (len(findings) + len(hits),
-                                                         "" if len(findings) + len(hits) == 1 else "s"), "warn")
     else:
-        report.verdict("clean, nothing to flag", "ok")
+        report.verdict(_tally(findings, hits) or "clean, nothing to flag",
+                       "warn" if findings or hits else "ok")
     return code
+
+
+def _tally(findings, hits):
+    """One clause per thing the report printed, so the count matches what is on screen."""
+    parts = []
+    if findings:
+        parts.append("%d finding%s" % (len(findings), "" if len(findings) == 1 else "s"))
+    if hits:
+        parts.append("%d credential-shaped line%s" % (len(hits), "" if len(hits) == 1 else "s"))
+    return " and ".join(parts) + ", commit allowed" if parts else ""
 
 
 def _belt_only(report, hits, amend):
@@ -201,6 +266,8 @@ def _belt_only(report, hits, amend):
     if blockers and not amend:
         report.verdict("blocked, a credential-shaped line is staged", "flag")
         return BLOCK
+    if blockers:
+        report.note("nothing staged, judged against HEAD^, never blocking")
     return OK
 
 
