@@ -19,8 +19,20 @@ LABEL_WIDTH = 22
 FULL, EMPTY = "█", "░"
 FRAMES = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 DOT = " · "
+MARKS = {"ok": "", "warn": "?", "flag": "✗"}
 
-GREEN, YELLOW, RED, DIM, BOLD, RESET = "\033[32m", "\033[33m", "\033[31m", "\033[2m", "\033[1m", "\033[0m"
+# Seconds per bar cell. Five rows of 12 cells is 0.36 s of fill, which reads as the answers
+# landing rather than as a wait. JEV_COMMIT_DEMO_PACE slows it down for the screen capture.
+PACE = 0.006
+
+GREEN, YELLOW, RED, DIM, BOLD, RESET = (
+    "\033[32m",
+    "\033[33m",
+    "\033[31m",
+    "\033[2m",
+    "\033[1m",
+    "\033[0m",
+)
 
 DEAD_BAND = (0.30, 0.70)
 PRICE_PER_MTOK = 0.042
@@ -50,8 +62,11 @@ class Report:
         env = os.environ if env is None else env
         self.out = stream or sys.stderr
         # NO_COLOR is presence, not value: NO_COLOR= with an empty value still counts.
-        self.color = "NO_COLOR" not in env and hasattr(self.out, "isatty") and self.out.isatty()
+        self.color = (
+            "NO_COLOR" not in env and hasattr(self.out, "isatty") and self.out.isatty()
+        )
         self.animate = self.color
+        self.pace = _pace(env.get("JEV_COMMIT_DEMO_PACE"))
         self._spinner = None
         self._stop = None
 
@@ -69,7 +84,8 @@ class Report:
         parts = [
             self._paint("jev-commit", BOLD),
             "%d file%s" % (files, "" if files == 1 else "s"),
-            "%s %s" % (self._paint("+%d" % added, GREEN), self._paint("−%d" % removed, RED)),
+            "%s %s"
+            % (self._paint("+%d" % added, GREEN), self._paint("−%d" % removed, RED)),
             "~%s tokens" % _short(tokens),
             "%d request%s" % (requests, "" if requests == 1 else "s"),
         ]
@@ -107,16 +123,39 @@ class Report:
         self.line(DOT.join(parts) if self.color else " · ".join(parts))
         self.line()
 
-    def check(self, label, probability, status):
-        filled = max(0, min(BAR_CELLS, round(probability * BAR_CELLS)))
-        bar = FULL * filled + EMPTY * (BAR_CELLS - filled)
+    def check(self, label, risk, status):
+        """`risk` is direction-adjusted, so a long bar means a problem on every row."""
+        filled = max(0, min(BAR_CELLS, round(risk * BAR_CELLS)))
         code = {"ok": GREEN, "warn": YELLOW, "flag": RED}[status]
-        self.line("  %-*s %s %5.2f  %s" % (
-            LABEL_WIDTH, label, self._paint(bar, code), probability, self._paint(status, code)))
+        if not (self.animate and self.pace):
+            self.line(self._row(label, filled, risk, status, code))
+            return
+        for cells in range(filled + 1):
+            self._write("\r\033[2K" + self._row(label, cells, risk, status, code))
+            time.sleep(self.pace)
+        self.line()
+
+    def _row(self, label, cells, risk, status, code):
+        bar = FULL * cells + EMPTY * (BAR_CELLS - cells)
+        mark = MARKS[status]  # an ok row ends at the number, with no trailing pad
+        return (
+            "  %-*s %s %5.2f  %s"
+            % (
+                LABEL_WIDTH,
+                label,
+                self._paint(bar, code),
+                risk,
+                self._paint(mark, code) if mark else "",
+            )
+        ).rstrip()
 
     def blocked_line(self, kind, path, redacted):
-        self.line("  " + self._paint(
-            "blocked  %s in %s (%s)" % (kind.replace("_", " "), path, redacted), RED))
+        self.line(
+            "  "
+            + self._paint(
+                "blocked  %s in %s (%s)" % (kind.replace("_", " "), path, redacted), RED
+            )
+        )
 
     def verdict(self, text, level):
         code = {"ok": GREEN, "warn": YELLOW, "flag": RED}[level]
@@ -128,6 +167,14 @@ class Report:
 
     def skipped(self, reason):
         self.line(self._paint("jev-commit: skipped (%s)" % reason, DIM))
+
+
+def _pace(raw):
+    """Seconds per cell from the env, clamped. A junk value falls back to the default."""
+    try:
+        return min(0.2, max(0.0, float(raw)))
+    except (TypeError, ValueError):
+        return PACE
 
 
 def _short(count):

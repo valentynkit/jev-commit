@@ -14,8 +14,14 @@ import sys
 import time
 
 from jev_commit import belt, chunk, git, jev
-from jev_commit.questions import (FINDINGS, LABELS, MESSAGE_IS_SUBSTANTIVE,
-                                  MESSAGE_MATCHES_DIFF, MODEL, QUESTIONS)
+from jev_commit.questions import (
+    FINDINGS,
+    LABELS,
+    MESSAGE_IS_SUBSTANTIVE,
+    MESSAGE_MATCHES_DIFF,
+    MODEL,
+    QUESTIONS,
+)
 from jev_commit.report import Report, cost_of, status_of
 
 OK, BLOCK, USAGE = 0, 20, 2
@@ -25,9 +31,16 @@ OK, BLOCK, USAGE = 0, 20, 2
 # `strict` is the finding cutoff under --strict; `strict_mismatch` is its counterpart for
 # the match question, which reads low-is-bad. One key for both meant 0.85 and 0.15 moved
 # together, and an editor of thresholds.json could not tell that it had moved two lines.
-DEFAULTS = {"substantive": 0.50, "mismatch": 0.30, "finding": 0.70,
-            "strict": 0.85, "strict_mismatch": 0.15}
-THRESHOLDS_FILE = pathlib.Path(__file__).resolve().parent.parent / "fixtures" / "thresholds.json"
+DEFAULTS = {
+    "substantive": 0.50,
+    "mismatch": 0.30,
+    "finding": 0.70,
+    "strict": 0.85,
+    "strict_mismatch": 0.15,
+}
+THRESHOLDS_FILE = (
+    pathlib.Path(__file__).resolve().parent.parent / "fixtures" / "thresholds.json"
+)
 
 
 def thresholds():
@@ -47,15 +60,31 @@ def thresholds():
 
 
 def parse_args(argv):
-    parser = argparse.ArgumentParser(prog="jev-commit", add_help=True,
-                                     description="Judge a commit message against its staged diff.")
-    parser.add_argument("message_file", nargs="?", help="the file git wrote the message to")
-    parser.add_argument("--strict", action="store_true",
-                        help="block on a finding past the measured threshold, not only on a belt hit")
-    parser.add_argument("--exclude", action="append", default=[], metavar="GLOB",
-                        help="skip the belt on paths matching this glob, repeatable")
-    parser.add_argument("--amend-base", action="store_true",
-                        help="compare against HEAD^ instead of the index, for `git add` then --amend")
+    parser = argparse.ArgumentParser(
+        prog="jev-commit",
+        add_help=True,
+        description="Judge a commit message against its staged diff.",
+    )
+    parser.add_argument(
+        "message_file", nargs="?", help="the file git wrote the message to"
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="block on a finding past the measured threshold, not only on a belt hit",
+    )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        metavar="GLOB",
+        help="skip the belt on paths matching this glob, repeatable",
+    )
+    parser.add_argument(
+        "--amend-base",
+        action="store_true",
+        help="compare against HEAD^ instead of the index, for `git add` then --amend",
+    )
     return parser.parse_args(argv)
 
 
@@ -103,7 +132,9 @@ def judge(states, env, gate_wanted=True, deadline_s=jev.DEADLINE_S):
             error = jev.JevError("stopped after %d requests" % requests)
             break
         if left <= 0:
-            error = jev.JevError("deadline reached with %d chunks unasked" % (len(queue) + 1))
+            error = jev.JevError(
+                "deadline reached with %d chunks unasked" % (len(queue) + 1)
+            )
             break
         try:
             out = jev.ask(state, asking, env=env, deadline_s=left)
@@ -124,8 +155,14 @@ def judge(states, env, gate_wanted=True, deadline_s=jev.DEADLINE_S):
         if MESSAGE_IS_SUBSTANTIVE in out["answers"]:
             gate_asked = True
         combine_answers(combined, out["answers"])
-    return {"answers": combined, "model": model, "ms": ms, "requests": requests,
-            "usage": {"input_tokens": usage}, "error": error}
+    return {
+        "answers": combined,
+        "model": model,
+        "ms": ms,
+        "requests": requests,
+        "usage": {"input_tokens": usage},
+        "error": error,
+    }
 
 
 def decide(answers, hits, limits, strict=False, blocking_allowed=True):
@@ -141,7 +178,11 @@ def decide(answers, hits, limits, strict=False, blocking_allowed=True):
         # separate keys in thresholds.json, so a swept mismatch cutoff would otherwise
         # paint a red bar beside a verdict that says clean.
         healthy_high = name not in FINDINGS
-        at = 1 - limits["mismatch"] if name == MESSAGE_MATCHES_DIFF else limits["finding"]
+        at = (
+            1 - limits["mismatch"]
+            if name == MESSAGE_MATCHES_DIFF
+            else limits["finding"]
+        )
         status = status_of(probability, at, healthy_high=healthy_high)
         if name == MESSAGE_MATCHES_DIFF:
             if not substantive:
@@ -154,14 +195,18 @@ def decide(answers, hits, limits, strict=False, blocking_allowed=True):
                 findings.append(name)
         elif name == MESSAGE_IS_SUBSTANTIVE:
             status = "ok" if substantive else "warn"
-        rows.append((LABELS[name], probability, status))
+        # The row carries risk, not the noul: a long bar means a problem on every line.
+        rows.append(
+            (LABELS[name], 1 - probability if healthy_high else probability, status)
+        )
     blockers = belt.blocking(hits)
     code = OK
     if blockers and blocking_allowed:
         code = BLOCK
     elif strict and blocking_allowed:
         strict_hit = (
-            substantive and answers.get(MESSAGE_MATCHES_DIFF, 1.0) <= limits["strict_mismatch"]
+            substantive
+            and answers.get(MESSAGE_MATCHES_DIFF, 1.0) <= limits["strict_mismatch"]
         ) or any(answers.get(name, 0.0) >= limits["strict"] for name in FINDINGS)
         if strict_hit:
             code = BLOCK
@@ -190,7 +235,9 @@ def _run(argv=None):
         report.line("usage: jev-commit <message-file>")
         return USAGE
     try:
-        raw = pathlib.Path(args.message_file).read_text(encoding="utf-8", errors="replace")
+        raw = pathlib.Path(args.message_file).read_text(
+            encoding="utf-8", errors="replace"
+        )
     except OSError as err:
         report.line("jev-commit: cannot read %s (%s)" % (args.message_file, err))
         return USAGE
@@ -207,7 +254,9 @@ def _run(argv=None):
         report.skipped("nothing staged")
         return OK
 
-    prep = chunk.prepare(captured["patch"], git.parse_name_status(captured["name_status"]))
+    prep = chunk.prepare(
+        captured["patch"], git.parse_name_status(captured["name_status"])
+    )
     states = chunk.chunk_states(message, prep)
     # The belt reads the whole diff, never only the part that survived the token budget.
     hits = belt.scan(prep["all_hunks"], exclude=args.exclude)
@@ -228,35 +277,48 @@ def _run(argv=None):
         return _belt_only(report, hits, amend)
     report.resolved(out["model"], out["ms"], cost_of(out["usage"]))
 
-    code, findings, rows = decide(out["answers"], hits, limits, strict=args.strict,
-                                  blocking_allowed=not amend)
-    for label, probability, status in rows:
-        report.check(label, probability, status)
+    code, findings, rows = decide(
+        out["answers"], hits, limits, strict=args.strict, blocking_allowed=not amend
+    )
+    for label, risk, status in rows:
+        report.check(label, risk, status)
     for hit in hits:
         if hit["precision"] == "high":
             report.blocked_line(hit["kind"], hit["path"], hit["redacted"])
         else:
-            report.note("possible %s in %s (%s)"
-                        % (hit["kind"].replace("_", " "), hit["path"], hit["redacted"]))
+            report.note(
+                "possible %s in %s (%s)"
+                % (hit["kind"].replace("_", " "), hit["path"], hit["redacted"])
+            )
     if out["error"]:
-        report.note("answered %d of %d chunks, then stopped: %s"
-                    % (out["requests"], len(states), out["error"]))
+        report.note(
+            "answered %d of %d chunks, then stopped: %s"
+            % (out["requests"], len(states), out["error"])
+        )
     elif out["requests"] != len(states):
         report.note("split into %d requests after a too-big response" % out["requests"])
     if amend:
         report.note("nothing staged, judged against HEAD^, never blocking")
     if captured["truncated"]:
-        report.note("diff truncated at %d MB, the rest was not judged"
-                    % (git.MAX_BYTES // (1024 * 1024)))
+        report.note(
+            "diff truncated at %d MB, the rest was not judged"
+            % (git.MAX_BYTES // (1024 * 1024))
+        )
     if prep["omitted"]:
         report.note(prep["omitted"])
 
     if code == BLOCK:
-        report.verdict("blocked, a credential-shaped line is staged" if belt.blocking(hits)
-                       else "blocked by --strict", "flag")
+        report.verdict(
+            "blocked, a credential-shaped line is staged"
+            if belt.blocking(hits)
+            else "blocked by --strict",
+            "flag",
+        )
     else:
-        report.verdict(_tally(findings, hits) or "clean, nothing to flag",
-                       "warn" if findings or hits else "ok")
+        report.verdict(
+            _tally(findings, hits) or "clean, nothing to flag",
+            "warn" if findings or hits else "ok",
+        )
     return code
 
 
@@ -264,9 +326,13 @@ def _tally(findings, hits):
     """One clause per thing the report printed, so the count matches what is on screen."""
     parts = []
     if findings:
-        parts.append("%d finding%s" % (len(findings), "" if len(findings) == 1 else "s"))
+        parts.append(
+            "%d finding%s" % (len(findings), "" if len(findings) == 1 else "s")
+        )
     if hits:
-        parts.append("%d credential-shaped line%s" % (len(hits), "" if len(hits) == 1 else "s"))
+        parts.append(
+            "%d credential-shaped line%s" % (len(hits), "" if len(hits) == 1 else "s")
+        )
     return " and ".join(parts) + ", commit allowed" if parts else ""
 
 
