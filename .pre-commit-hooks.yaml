@@ -1,0 +1,8 @@
+- id: jev-commit
+  name: jev-commit
+  description: Judge the commit message against the staged diff
+  entry: jev-commit
+  language: python
+  stages: [commit-msg]
+  always_run: true
+  verbose: true

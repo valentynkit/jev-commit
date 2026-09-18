@@ -1,0 +1,2 @@
+Recorded answers land here, one file per request, keyed by sha256(state+questions).
+Empty until a key exists; make measure prints __ slots and no gate while it is.

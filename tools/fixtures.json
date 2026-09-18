@@ -1,0 +1,7 @@
+{
+  "message_is_substantive": {"type": "noul", "noul": 0.93},
+  "message_matches_diff": {"type": "noul", "noul": 0.21},
+  "debug_leftovers": {"type": "noul", "noul": 0.88},
+  "scope_creep": {"type": "noul", "noul": 0.76},
+  "secret_shaped": {"type": "noul", "noul": 0.04}
+}
