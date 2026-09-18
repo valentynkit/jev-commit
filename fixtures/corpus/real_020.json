@@ -1,0 +1,81 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": ".github/workflows/deploy.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/doc-check-links.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/prepare-release-pr.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/test.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/update-plugin-list.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": ".pre-commit-config.yaml",
+   "removed": 2,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/deploy.yml",
+   "text": "@@ -49,5 +49,5 @@ jobs:\n \n     - name: Set up tox\n-      uses: ./.github/actions/setup-tox\n+      uses: $/.github/actions/setup-tox\n       with:\n         python-version: \"3.13\""
+  },
+  {
+   "path": ".github/workflows/doc-check-links.yml",
+   "text": "@@ -24,5 +24,5 @@ jobs:\n \n       - name: Set up tox\n-        uses: ./.github/actions/setup-tox\n+        uses: $/.github/actions/setup-tox\n         with:\n           python-version: \"3.13\""
+  },
+  {
+   "path": ".github/workflows/prepare-release-pr.yml",
+   "text": "@@ -35,5 +35,5 @@ jobs:\n \n     - name: Set up tox\n-      uses: ./.github/actions/setup-tox\n+      uses: $/.github/actions/setup-tox\n       with:\n         python-version: \"3.13\""
+  },
+  {
+   "path": ".github/workflows/test.yml",
+   "text": "@@ -290,5 +290,5 @@ jobs:\n \n     - name: Set up tox\n-      uses: ./.github/actions/setup-tox\n+      uses: $/.github/actions/setup-tox\n       with:\n         python-version: ${{ matrix.python }}"
+  },
+  {
+   "path": ".github/workflows/update-plugin-list.yml",
+   "text": "@@ -45,5 +45,5 @@ jobs:\n \n       - name: Set up tox\n-        uses: ./.github/actions/setup-tox\n+        uses: $/.github/actions/setup-tox\n         with:\n           python-version: \"3.13\""
+  },
+  {
+   "path": ".pre-commit-config.yaml",
+   "text": "@@ -2,5 +2,5 @@\n repos:\n - repo: https://github.com/astral-sh/ruff-pre-commit\n-  rev: \"v0.16.4\"\n+  rev: \"v0.16.5\"\n   hooks:\n     - id: ruff-check"
+  },
+  {
+   "path": ".pre-commit-config.yaml",
+   "text": "@@ -14,5 +14,5 @@ repos:\n     -   id: check-yaml\n - repo: https://github.com/woodruffw/zizmor-pre-commit\n-  rev: v1.29.0\n+  rev: v1.30.0\n   hooks:\n     - id: zizmor"
+  }
+ ],
+ "id": "real_020",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[pre-commit.ci] pre-commit autoupdate (#14957)\n\n* [pre-commit.ci] pre-commit autoupdate\n\nupdates:\n- [github.com/astral-sh/ruff-pre-commit: v0.16.4 \u2192 v0.16.5](https://github.com/astral-sh/ruff-pre-commit/compare/v0.16.4...v0.16.5)\n- [github.com/woodruffw/zizmor-pre-commit: v1.29.0 \u2192 v1.30.0](https://github.com/woodruffw/zizmor-pre-commit/compare/v1.29.0...v1.30.0)\n\n* [pre-commit.ci] auto fixes from pre-commit.com hooks\n\nfor more information, see https://pre-commit.ci\n\n---------\n\nCo-authored-by: pre-commit-ci[bot] <66853113+pre-commit-ci[bot]@users.noreply.github.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "e984a9b94740697411f5a05fcdfc3299dd20f13a"
+}

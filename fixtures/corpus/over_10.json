@@ -1,0 +1,1147 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/adl_serializer/from_json.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/basic_json/accept.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/basic_json/at.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/boolean_t.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/contains.md",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/basic_json/count.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/crbegin.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/crend.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "docs/mkdocs/docs/api/basic_json/diff.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/dump.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/basic_json/emplace.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/erase.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/find.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "docs/mkdocs/docs/api/basic_json/from_bjdata.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "docs/mkdocs/docs/api/basic_json/from_bson.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/from_cbor.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/basic_json/from_msgpack.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "docs/mkdocs/docs/api/basic_json/from_ubjson.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 12,
+   "path": "docs/mkdocs/docs/api/basic_json/get.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/basic_json/get_binary.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "docs/mkdocs/docs/api/basic_json/get_to.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/basic_json/insert.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/invalid_iterator.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/is_discarded.md",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/is_number.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/basic_json/items.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/meta.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 0,
+   "path": "docs/mkdocs/docs/api/basic_json/number_integer_t.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/number_unsigned_t.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/operator+=.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "docs/mkdocs/docs/api/basic_json/operator=.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/operator[].md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/basic_json/operator_ValueType.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/basic_json/operator_eq.md",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/operator_ge.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/other_error.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/out_of_range.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/parse_error.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/basic_json/parse_event_t.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/basic_json/parser_callback_t.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/patch.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/push_back.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/rbegin.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/rend.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/basic_json/sax_parse.md",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/std_swap.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/string_t.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 20,
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/to_bjdata.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": "docs/mkdocs/docs/api/basic_json/to_bson.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/to_cbor.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/to_msgpack.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/basic_json/to_ubjson.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/type_error.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/basic_json/unflatten.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 13,
+   "path": "docs/mkdocs/docs/api/basic_json/update.md",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/basic_json/value.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/byte_container_with_subtype/index.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/json_pointer/front.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "docs/mkdocs/docs/api/json_pointer/parent_pointer.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/json_pointer/pop_front.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/json_pointer/push_front.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/json_sax/start_array.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/json_sax/start_object.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/macros/json_brace_init_copy_semantics.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/macros/json_disable_enum_serialization.md",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "docs/mkdocs/docs/api/macros/json_has_cpp_11.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/macros/json_has_filesystem.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "docs/mkdocs/docs/api/macros/json_skip_library_version_check.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/macros/json_use_legacy_discarded_value_comparison.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_derived_type.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_intrusive.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_non_intrusive.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_with_names.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_json_namespace_begin.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_json_serialize_enum_strict.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/operator_gtgt.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/operator_literal_json.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/api/operator_literal_json_pointer.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/features/comments.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 41,
+   "path": "docs/mkdocs/docs/features/macros.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/features/object_order.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/features/parsing/parse_exceptions.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/features/trailing_commas.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/home/exceptions.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 291,
+   "path": "docs/mkdocs/docs/home/releases.md",
+   "removed": 1077,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/integration/cmake.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 0,
+   "path": "docs/mkdocs/docs/integration/migration_guide.md",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 14,
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "removed": 14,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "include/nlohmann/detail/input/parser.hpp",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "single_include/nlohmann/json.hpp",
+   "removed": 3,
+   "status": "M"
+  }
+ ],
+ "group": "over_budget",
+ "hunks": [
+  {
+   "path": "docs/mkdocs/docs/api/adl_serializer/from_json.md",
+   "text": "@@ -31,5 +31,6 @@ class (either explicitly or via the conversion operators).\n ## Return value\n \n-Copy of the JSON value, converted to `ValueType`\n+1. (none) -- the converted value is written to the output parameter `val`.\n+2. the JSON value `j` converted to `TargetType`\n \n ## Examples"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/accept.md",
+   "text": "@@ -102,12 +102,13 @@ A UTF-8 byte order mark is silently ignored.\n \n - [parse](parse.md) - deserialize from a compatible input\n+- [sax_parse](sax_parse.md) - parse input using the SAX interface\n - [operator>>](../operator_gtgt.md) - deserialize from stream\n \n ## Version history\n \n - Added in version 3.0.0.\n - Ignoring comments via `ignore_comments` added in version 3.9.0.\n - Changed [runtime assertion](../../features/assertions.md) in case of `FILE*` null pointers to exception in version 3.12.0.\n-- Added `ignore_trailing_commas` in version 3.12.1.\n+- Added `ignore_trailing_commas` in version 3.12.x.\n \n !!! warning \"Deprecation\""
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/at.md",
+   "text": "@@ -83,4 +83,6 @@ Strong exception safety: if an exception occurs, the original value stays intact\n     - Throws [`out_of_range.404`](../../home/exceptions.md#jsonexceptionout_of_range404) if the JSON pointer `ptr` can\n       not be resolved. See the example below.\n+    - Throws [`out_of_range.410`](../../home/exceptions.md#jsonexceptionout_of_range410) if an array index in the passed\n+      JSON pointer `ptr` exceeds the range of `size_type` (e.g., on 32-bit platforms).\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/boolean_t.md",
+   "text": "@@ -10,5 +10,5 @@ The type used to store JSON booleans.\n literals `#!json true` and `#!json false`.\n \n-To store objects in C++, a type is defined by the template parameter  `BooleanType` which chooses the type to use.\n+To store boolean values in C++, a type is defined by the template parameter  `BooleanType` which chooses the type to use.\n \n ## Notes"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/contains.md",
+   "text": "@@ -49,9 +49,5 @@ Strong exception safety: if an exception occurs, the original value stays intact\n 1. The function does not throw exceptions.\n 2. The function does not throw exceptions.\n-3. The function can throw the following exceptions:\n-    - Throws [`parse_error.106`](../../home/exceptions.md#jsonexceptionparse_error106) if an array index begins with\n-      `0`.\n-    - Throws [`parse_error.109`](../../home/exceptions.md#jsonexceptionparse_error109) if an array index was not a\n-      number.\n+3. The function does not throw exceptions.\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/contains.md",
+   "text": "@@ -112,4 +108,9 @@ Logarithmic in the size of the JSON object.\n     ```\n \n+## See also\n+\n+- [find](find.md) find a value in an object\n+- [count](count.md) returns the number of occurrences of a key\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/count.md",
+   "text": "@@ -73,4 +73,9 @@ This method always returns `0` when executed on a JSON type that is not an objec\n     ```\n \n+## See also\n+\n+- [find](find.md) find a value in an object\n+- [contains](contains.md) checks whether a key exists\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/crbegin.md",
+   "text": "@@ -11,5 +11,5 @@ Returns an iterator to the reverse-beginning; that is, the last element.\n ## Return value\n \n-reverse iterator to the first element\n+reverse iterator to the last element\n \n ## Exception safety"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/crend.md",
+   "text": "@@ -26,5 +26,5 @@ Constant.\n ??? example\n \n-    The following code shows an example for `eend()`.\n+    The following code shows an example for `crend()`.\n     \n     ```cpp"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/diff.md",
+   "text": "@@ -57,4 +57,7 @@ Currently, only `remove`, `add`, and `replace` operations are generated.\n \n - [RFC 6902 (JSON Patch)](https://tools.ietf.org/html/rfc6902)\n+- [patch](patch.md) applies a JSON Patch\n+- [patch_inplace](patch_inplace.md) applies a JSON Patch in place\n+- [merge_patch](merge_patch.md) applies a JSON Merge Patch\n \n ## Version history"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/dump.md",
+   "text": "@@ -27,5 +27,5 @@ and `ensure_ascii` parameters.\n `error_handler` (in)\n :   how to react on decoding errors; there are three possible values (see [`error_handler_t`](error_handler_t.md):\n-    `strict` (throws and exception in case a decoding error occurs; default), `replace` (replace invalid UTF-8 sequences\n+    `strict` (throws an exception in case a decoding error occurs; default), `replace` (replace invalid UTF-8 sequences\n     with U+FFFD), and `ignore` (ignore invalid UTF-8 sequences during serialization; all bytes are copied to the output\n     unchanged))."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/dump.md",
+   "text": "@@ -72,4 +72,9 @@ Binary values are serialized as an object containing two keys:\n     ```\n \n+## See also\n+\n+- [to_string](to_string.md) returns a string representation of a JSON value\n+- [operator<<](../operator_ltlt.md) serialize to stream\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/emplace.md",
+   "text": "@@ -30,4 +30,8 @@ iterators (including the `end()` iterator) and all references to the elements ar\n a `#!cpp bool` denoting whether the insertion took place.\n \n+## Exception safety\n+\n+Strong guarantee: if an exception is thrown, there are no changes to any JSON value.\n+\n ## Exceptions\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/emplace.md",
+   "text": "@@ -57,4 +61,9 @@ Logarithmic in the size of the container, O(log(`size()`)).\n     ```\n \n+## See also\n+\n+- [emplace_back](emplace_back.md) add a value to an array\n+- [insert](insert.md) add values to an array/object\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/erase.md",
+   "text": "@@ -102,5 +102,5 @@ Strong exception safety: if an exception occurs, the original value stays intact\n 5. The function can throw the following exceptions:\n     - Throws [`type_error.307`](../../home/exceptions.md#jsonexceptiontype_error307) when called on a type other than\n-      JSON object; example: `\"cannot use erase() with null\"`\n+      JSON array; example: `\"cannot use erase() with null\"`\n     - Throws [`out_of_range.401`](../../home/exceptions.md#jsonexceptionout_of_range401) when `idx >= size()`; example:\n       `\"array index 17 is out of range\"`"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/erase.md",
+   "text": "@@ -203,4 +203,9 @@ Strong exception safety: if an exception occurs, the original value stays intact\n     ```\n \n+## See also\n+\n+- [clear](clear.md) clears the contents\n+- [insert](insert.md) add values to an array/object\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/find.md",
+   "text": "@@ -79,4 +79,5 @@ This method always returns `end()` when executed on a JSON type that is not an o\n ## See also\n \n+- [count](count.md) returns the number of occurrences of a key\n - [contains](contains.md) checks whether a key exists\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_bjdata.md",
+   "text": "@@ -68,4 +68,6 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n - Throws [parse_error.113](../../home/exceptions.md#jsonexceptionparse_error113) if a string could not be parsed\n   successfully\n+- Throws [out_of_range.408](../../home/exceptions.md#jsonexceptionout_of_range408) if the size of an optimized container\n+  or n-dimensional array cannot be represented by `std::size_t`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_bjdata.md",
+   "text": "@@ -89,4 +91,12 @@ Linear in the size of the input.\n     ```\n \n+## See also\n+\n+- [to_bjdata](to_bjdata.md) create a BJData serialization of a JSON value\n+- [from_cbor](from_cbor.md) create a JSON value from an input in CBOR format\n+- [from_msgpack](from_msgpack.md) create a JSON value from an input in MessagePack format\n+- [from_bson](from_bson.md) create a JSON value from an input in BSON format\n+- [from_ubjson](from_ubjson.md) create a JSON value from an input in UBJSON format\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_bson.md",
+   "text": "@@ -63,6 +63,10 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n ## Exceptions\n \n-Throws [`parse_error.114`](../../home/exceptions.md#jsonexceptionparse_error114) if an unsupported BSON record type is\n-encountered.\n+- Throws [`parse_error.110`](../../home/exceptions.md#jsonexceptionparse_error110) if the given input ends prematurely or\n+  the end of the input was not reached when `strict` was set to true\n+- Throws [`parse_error.112`](../../home/exceptions.md#jsonexceptionparse_error112) if a parse error occurs (e.g., an\n+  invalid string or byte array length)\n+- Throws [`parse_error.114`](../../home/exceptions.md#jsonexceptionparse_error114) if an unsupported BSON record type is\n+  encountered\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_bson.md",
+   "text": "@@ -93,4 +97,5 @@ Linear in the size of the input.\n - [from_msgpack](from_msgpack.md) for the related MessagePack format\n - [from_ubjson](from_ubjson.md) for the related UBJSON format\n+- [from_bjdata](from_bjdata.md) for the related BJData format\n \n ## Version history"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_cbor.md",
+   "text": "@@ -97,4 +97,12 @@ Linear in the size of the input.\n     ```\n \n+## See also\n+\n+- [to_cbor](to_cbor.md) create a CBOR serialization of a JSON value\n+- [from_msgpack](from_msgpack.md) create a JSON value from an input in MessagePack format\n+- [from_bson](from_bson.md) create a JSON value from an input in BSON format\n+- [from_ubjson](from_ubjson.md) create a JSON value from an input in UBJSON format\n+- [from_bjdata](from_bjdata.md) create a JSON value from an input in BJData format\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_msgpack.md",
+   "text": "@@ -90,4 +90,12 @@ Linear in the size of the input.\n     ```\n \n+## See also\n+\n+- [to_msgpack](to_msgpack.md) create a MessagePack serialization of a JSON value\n+- [from_cbor](from_cbor.md) create a JSON value from an input in CBOR format\n+- [from_bson](from_bson.md) create a JSON value from an input in BSON format\n+- [from_ubjson](from_ubjson.md) create a JSON value from an input in UBJSON format\n+- [from_bjdata](from_bjdata.md) create a JSON value from an input in BJData format\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_msgpack.md",
+   "text": "@@ -102,5 +110,5 @@ Linear in the size of the input.\n       deprecated in version 3.8.0. This overload will be removed in version 4.0.0. Please replace all calls like\n       `#!cpp from_msgpack(ptr, len, ...);` with `#!cpp from_msgpack(ptr, ptr+len, ...);`.\n-    - Overload (2) replaces calls to `from_cbor` with a pair of iterators as their first parameter, which has been\n+    - Overload (2) replaces calls to `from_msgpack` with a pair of iterators as their first parameter, which has been\n       deprecated in version 3.8.0. This overload will be removed in version 4.0.0. Please replace all calls like\n       `#!cpp from_msgpack({ptr, ptr+len}, ...);` with `#!cpp from_msgpack(ptr, ptr+len, ...);`."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_ubjson.md",
+   "text": "@@ -66,6 +66,8 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n   the end of the file was not reached when `strict` was set to true\n - Throws [parse_error.112](../../home/exceptions.md#jsonexceptionparse_error112) if a parse error occurs\n-- Throws [parse_error.113](../../home/exceptions.md#jsonexceptionparse_error113) if a string could not be parsed \n+- Throws [parse_error.113](../../home/exceptions.md#jsonexceptionparse_error113) if a string could not be parsed\n   successfully\n+- Throws [out_of_range.408](../../home/exceptions.md#jsonexceptionout_of_range408) if the size of an optimized container\n+  or n-dimensional array cannot be represented by `std::size_t`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/from_ubjson.md",
+   "text": "@@ -89,4 +91,12 @@ Linear in the size of the input.\n     ```\n \n+## See also\n+\n+- [to_ubjson](to_ubjson.md) create a UBJSON serialization of a JSON value\n+- [from_cbor](from_cbor.md) create a JSON value from an input in CBOR format\n+- [from_msgpack](from_msgpack.md) create a JSON value from an input in MessagePack format\n+- [from_bson](from_bson.md) create a JSON value from an input in BSON format\n+- [from_bjdata](from_bjdata.md) create a JSON value from an input in BJData format\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/get.md",
+   "text": "@@ -89,4 +89,9 @@ constexpr const PointerType get_ptr() const noexcept;\n Depends on what `json_serializer<ValueType>` `from_json()` method throws\n \n+## Complexity\n+\n+Depends on the `json_serializer<ValueType>::from_json()` implementation for overloads (1) and (2); constant for\n+overload (3).\n+\n ## Notes\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/get.md",
+   "text": "@@ -145,4 +150,11 @@ Depends on what `json_serializer<ValueType>` `from_json()` method throws\n     ```\n \n+## See also\n+\n+- [get_to](get_to.md) convert and write into a passed value\n+- [get_ptr](get_ptr.md) get a pointer to the stored value\n+- [get_ref](get_ref.md) get a reference to the stored value\n+- [operator ValueType](operator_ValueType.md) get a value via implicit conversion\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/get_binary.md",
+   "text": "@@ -41,4 +41,9 @@ Constant.\n     ```\n \n+## See also\n+\n+- [get](get.md) get a value (explicit conversion)\n+- [get_ref](get_ref.md) get a reference to the stored value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/get_to.md",
+   "text": "@@ -35,4 +35,8 @@ the input parameter, allowing chaining calls\n Depends on what `json_serializer<ValueType>` `from_json()` method throws\n \n+## Complexity\n+\n+Depends on the `json_serializer<ValueType>::from_json()` implementation.\n+\n ## Examples\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/get_to.md",
+   "text": "@@ -54,4 +58,10 @@ Depends on what `json_serializer<ValueType>` `from_json()` method throws\n     ```\n \n+## See also\n+\n+- [get](get.md) get a value (explicit conversion)\n+- [get_ref](get_ref.md) get a reference to the stored value\n+- [get_ptr](get_ptr.md) get a pointer to the stored value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/insert.md",
+   "text": "@@ -97,6 +97,6 @@ Strong exception safety: if an exception occurs, the original value stays intact\n     - Throws [`type_error.309`](../../home/exceptions.md#jsonexceptiontype_error309) if called on JSON values other than\n       objects; example: `\"cannot use insert() with string\"`\n-    - Throws [`invalid_iterator.202`](../../home/exceptions.md#jsonexceptioninvalid_iterator202) if called on an\n-      iterator which does not belong to the current JSON value; example: `\"iterator does not fit current value\"`\n+    - Throws [`invalid_iterator.202`](../../home/exceptions.md#jsonexceptioninvalid_iterator202) if `first` or `last`\n+      do not point to an object; example: `\"iterators first and last must point to objects\"`\n     - Throws [`invalid_iterator.210`](../../home/exceptions.md#jsonexceptioninvalid_iterator210) if `first` and `last`\n       do not belong to the same JSON value; example: `\"iterators do not fit\"`"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/insert.md",
+   "text": "@@ -182,4 +182,11 @@ Strong exception safety: if an exception occurs, the original value stays intact\n     ```\n \n+## See also\n+\n+- [emplace](emplace.md) add a value to an object\n+- [emplace_back](emplace_back.md) add a value to an array\n+- [push_back](push_back.md) add a value to an array/object\n+- [update](update.md) merges objects\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/invalid_iterator.md",
+   "text": "@@ -67,4 +67,5 @@ classDiagram\n ## See also\n \n+- [`exception`](exception.md) for the base class of all exceptions thrown by the library\n - [List of iterator errors](../../home/exceptions.md#iterator-errors)\n - [`parse_error`](parse_error.md) for exceptions indicating a parse error"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/is_discarded.md",
+   "text": "@@ -46,9 +46,11 @@ Constant.\n     When a value is discarded by a callback function (see [`parser_callback_t`](parser_callback_t.md)) during parsing,\n     then it is removed when it is part of a structured value. For instance, if the second value of an array is discarded,\n-    instead of `#!json [null, discarded, false]`, the array `#!json [null, false]` is returned. Only if the top-level\n-    value is discarded, the return value of the `parse` call is discarded.\n+    instead of `#!json [null, discarded, false]`, the array `#!json [null, false]` is returned. If the top-level value\n+    itself is discarded by the callback, the `parse` call returns a `#!json null` value.\n \n-This function will always be `#!cpp false` for JSON values after parsing. That is, discarded values can only occur\n-during parsing, but will be removed when inside a structured value or replaced by null in other cases.\n+After a successful parse, this function always returns `#!cpp false`: discarded values can only occur during parsing and\n+are either removed when inside a structured value or replaced by `#!json null` at the top level. The exception is parsing\n+with `allow_exceptions` set to `#!cpp false`: a parse error then yields a discarded value for which this function returns\n+`#!cpp true` (see [`parse`](parse.md)).\n \n ## Examples"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/is_number.md",
+   "text": "@@ -10,5 +10,5 @@ unsigned) and floating-point values.\n ## Return value\n \n-`#!cpp true` if type is number (regardless whether integer, unsigned integer, or floating-type), `#!cpp false` otherwise.\n+`#!cpp true` if type is number (regardless whether integer, unsigned integer, or floating-point), `#!cpp false` otherwise.\n \n ## Exception safety"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/items.md",
+   "text": "@@ -85,4 +85,9 @@ When iterating over an array, `key()` will return the index of the element as st\n     ```\n \n+## See also\n+\n+- [begin](begin.md) returns an iterator to the first element\n+- [end](end.md) returns an iterator to one past the last element\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/meta.md",
+   "text": "@@ -14,5 +14,5 @@ JSON object holding version information\n | key         | description                                                                                                                                                                                                                                                                    |\n |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n-| `compiler`  | Information on the used compiler. It is an object with the following keys: `c++` (the used C++ standard), `family` (the compiler family; possible values are `clang`, `icc`, `gcc`, `ilecpp`, `msvc`, `pgcpp`, `sunpro`, and `unknown`), and `version` (the compiler version). |\n+| `compiler`  | Information on the used compiler. It is an object with the following keys: `c++` (the used C++ standard), `family` (the compiler family; possible values are `clang`, `icc`, `gcc`, `ilecpp`, `msvc`, `pgcpp`, `sunpro`, and `unknown`), and `version` (the compiler version). On HP aCC compilers, `compiler` is instead the plain string `hp`. |\n | `copyright` | The copyright line for the library as string.                                                                                                                                                                                                                                  |\n | `name`      | The name of the library as string.                                                                                                                                                                                                                                             |"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/number_integer_t.md",
+   "text": "@@ -33,5 +33,4 @@ With the default values for `NumberIntegerType` (`std::int64_t`), the default va\n   interpretation as an octal number. Internally, the value will be stored as a decimal number. For instance, the C++\n   integer literal `010` will be serialized to `8`. During deserialization, leading zeros yield an error.\n-- Not-a-number (NaN) values will be serialized to `null`.\n \n #### Limits"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/number_unsigned_t.md",
+   "text": "@@ -33,5 +33,4 @@ With the default values for `NumberUnsignedType` (`std::uint64_t`), the default\n   interpretation as an octal number. Internally, the value will be stored as a decimal number. For instance, the C++\n   integer  literal `010` will be serialized to `8`. During deserialization, leading zeros yield an error.\n-- Not-a-number (NaN) values will be serialized to `null`.\n \n #### Limits"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/number_unsigned_t.md",
+   "text": "@@ -46,5 +45,5 @@ when used in a constructor. During deserialization, too large or small integer n\n \n [RFC 8259](https://tools.ietf.org/html/rfc8259) further states:\n-> Note that when such software is used, numbers that are integers and are in the range \\f$[-2^{53}+1, 2^{53}-1]\\f$ are\n+> Note that when such software is used, numbers that are integers and are in the range $[-2^{53}+1, 2^{53}-1]$ are\n > interoperable in the sense that implementations will agree exactly on their numeric values.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator+=.md",
+   "text": "@@ -51,7 +51,10 @@ invalidates all iterators and all references.\n ## Exceptions\n \n-All functions can throw the following exception:\n-  - Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n-    JSON array or null; example: `\"cannot use operator+=() with number\"`\n+1. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON array or null; example: `\"cannot use push_back() with number\"`\n+2. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON object or null; example: `\"cannot use push_back() with number\"`\n+3. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON array or null; example: `\"cannot use push_back() with number\"`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator=.md",
+   "text": "@@ -6,5 +6,6 @@ basic_json& operator=(basic_json other) noexcept (\n     std::is_nothrow_move_assignable<value_t>::value &&\n     std::is_nothrow_move_constructible<json_value>::value &&\n-    std::is_nothrow_move_assignable<json_value>::value\n+    std::is_nothrow_move_assignable<json_value>::value &&\n+    std::is_nothrow_move_assignable<json_base_class_t>::value\n );\n ```"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator=.md",
+   "text": "@@ -18,4 +19,8 @@ constructor, destructor, and the `swap()` member function.\n :   value to copy from\n \n+## Exception safety\n+\n+Strong guarantee: if an exception is thrown while copying `other`, there are no changes to `#!cpp *this`.\n+\n ## Complexity\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator=.md",
+   "text": "@@ -39,4 +44,9 @@ Linear.\n     ```\n \n+## See also\n+\n+- [basic_json](basic_json.md) create a JSON value\n+- [swap](swap.md) exchanges the contents of two JSON values\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator[].md",
+   "text": "@@ -84,4 +84,6 @@ Strong exception safety: if an exception occurs, the original value stays intact\n     - Throws [`out_of_range.404`](../../home/exceptions.md#jsonexceptionout_of_range404) if the JSON pointer `ptr` can\n       not be resolved.\n+    - Throws [`out_of_range.410`](../../home/exceptions.md#jsonexceptionout_of_range410) if an array index in the passed\n+      JSON pointer `ptr` exceeds the range of `size_type` (e.g., on 32-bit platforms).\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator[].md",
+   "text": "@@ -96,5 +98,8 @@ Strong exception safety: if an exception occurs, the original value stays intact\n !!! danger \"Undefined behavior and runtime assertions\"\n \n-    1. If the element with key `idx` does not exist, the behavior is undefined.\n+    The following cases apply to the **const** overloads; the non-const overloads instead insert the missing element\n+    (see the notes below).\n+\n+    1. If the element at index `idx` does not exist, the behavior is undefined.\n     2. If the element with key `key` does not exist, the behavior is undefined and is **guarded by a\n        [runtime assertion](../../features/assertions.md)**!"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator_ValueType.md",
+   "text": "@@ -76,4 +76,8 @@ Linear in the size of the JSON value.\n     ```\n \n+## See also\n+\n+- [get](get.md) get a value (explicit conversion)\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator_eq.md",
+   "text": "@@ -21,5 +21,5 @@ class basic_json {\n \n 1. Compares two JSON values for equality according to the following rules:\n-    - Two JSON values are equal if (1) neither value is discarded, or (2) they are of the same type and their stored\n+    - Two JSON values are equal if (1) neither value is discarded, and (2) they are of the same type and their stored\n       values are the same according to their respective `operator==`.\n     - Integer and floating-point numbers are automatically converted before comparison."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator_eq.md",
+   "text": "@@ -80,11 +80,11 @@ Linear.\n     ```\n     \n-    Or you can self-defined operator equal function like this:\n+    Or you can define your own equality function like this:\n     \n     ```cpp\n     bool my_equal(const_reference lhs, const_reference rhs)\n     {\n-        const auto lhs_type lhs.type();\n-        const auto rhs_type rhs.type();\n+        const auto lhs_type = lhs.type();\n+        const auto rhs_type = rhs.type();\n         if (lhs_type == rhs_type)\n         {"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator_eq.md",
+   "text": "@@ -163,4 +163,9 @@ Linear.\n     ```\n \n+## See also\n+\n+- [operator!=](operator_ne.md) compare for inequality\n+- [operator<=>](operator_spaceship.md) comparison: 3-way (C++20)\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/operator_ge.md",
+   "text": "@@ -36,5 +36,5 @@ bool operator>=(ScalarType lhs, const const_reference rhs) noexcept;  // (2)\n ## Return value\n \n-whether `lhs` is less than or equal to `rhs`\n+whether `lhs` is greater than or equal to `rhs`\n \n ## Exception safety"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/other_error.md",
+   "text": "@@ -67,4 +67,5 @@ classDiagram\n ## See also\n \n+- [`exception`](exception.md) for the base class of all exceptions thrown by the library\n - [List of other errors](../../home/exceptions.md#further-exceptions)\n - [`parse_error`](parse_error.md) for exceptions indicating a parse error"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/out_of_range.md",
+   "text": "@@ -68,4 +68,5 @@ classDiagram\n ## See also\n \n+- [`exception`](exception.md) for the base class of all exceptions thrown by the library\n - [List of out-of-range errors](../../home/exceptions.md#out-of-range)\n - [`parse_error`](parse_error.md) for exceptions indicating a parse error"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "text": "@@ -82,7 +82,4 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n - Throws [`parse_error.101`](../../home/exceptions.md#jsonexceptionparse_error101) in case of an unexpected token, or\n   empty input like a null `FILE*` or `char*` pointer.\n-- Throws [`parse_error.102`](../../home/exceptions.md#jsonexceptionparse_error102) if `to_unicode` fails or surrogate\n-  error.\n-- Throws [`parse_error.103`](../../home/exceptions.md#jsonexceptionparse_error103) if `to_unicode` fails.\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "text": "@@ -96,4 +93,7 @@ super-linear complexity.\n A UTF-8 byte order mark is silently ignored.\n \n+Invalid Unicode escapes and unpaired surrogates in the input are reported as\n+[`parse_error.101`](../../home/exceptions.md#jsonexceptionparse_error101) with a detailed message.\n+\n ## Examples\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "text": "@@ -184,5 +184,5 @@ A UTF-8 byte order mark is silently ignored.\n ??? example \"Effect of `allow_exceptions` parameter\"\n \n-    The example below demonstrates the effect of the `allow_exceptions` parameter in the \u00b4parse()` function.\n+    The example below demonstrates the effect of the `allow_exceptions` parameter in the `parse()` function.\n \n     ```cpp"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "text": "@@ -227,4 +227,5 @@ A UTF-8 byte order mark is silently ignored.\n \n - [accept](accept.md) - check if the input is valid JSON\n+- [sax_parse](sax_parse.md) - parse input using the SAX interface\n - [operator>>](../operator_gtgt.md) - deserialize from stream\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse.md",
+   "text": "@@ -235,5 +236,5 @@ A UTF-8 byte order mark is silently ignored.\n - Ignoring comments via `ignore_comments` added in version 3.9.0.\n - Changed [runtime assertion](../../features/assertions.md) in case of `FILE*` null pointers to exception in version 3.12.0.\n-- Added `ignore_trailing_commas` in version 3.12.1.\n+- Added `ignore_trailing_commas` in version 3.12.x.\n \n !!! warning \"Deprecation\""
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse_error.md",
+   "text": "@@ -76,4 +76,5 @@ or the end of file. This also holds true when reading a byte vector for binary f\n ## See also\n \n+- [`exception`](exception.md) for the base class of all exceptions thrown by the library\n - [List of parse errors](../../home/exceptions.md#parse-errors)\n - [`invalid_iterator`](invalid_iterator.md) for exceptions indicating errors with iterators"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parse_event_t.md",
+   "text": "@@ -25,4 +25,9 @@ The parser callback distinguishes the following events:\n ![Example when certain parse events are triggered](../../images/callback_events.png)\n \n+## See also\n+\n+- [parser_callback_t](parser_callback_t.md) callback function type for the parser\n+- [parse](parse.md) deserialize from a compatible input\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/parser_callback_t.md",
+   "text": "@@ -69,4 +69,9 @@ the latter case, it is either skipped completely or replaced by an empty discard\n     ```\n \n+## See also\n+\n+- [parse](parse.md) deserialize from a compatible input\n+- [parse_event_t](parse_event_t.md) enumeration of parser events\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch.md",
+   "text": "@@ -33,5 +33,5 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n - Throws [`out_of_range.405`](../../home/exceptions.md#jsonexceptionout_of_range405) if JSON pointer has no parent\n   (\"add\", \"remove\", \"move\")\n-- Throws [`out_of_range.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n+- Throws [`other_error.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n   unsuccessful.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "text": "@@ -2,5 +2,5 @@\n \n ```cpp\n-void patch_inplace(const basic_json& json_patch) const;\n+void patch_inplace(const basic_json& json_patch);\n ```\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "text": "@@ -29,5 +29,5 @@ No guarantees, value may be corrupted by an unsuccessful patch operation.\n - Throws [`out_of_range.405`](../../home/exceptions.md#jsonexceptionout_of_range405) if JSON pointer has no parent\n   (\"add\", \"remove\", \"move\")\n-- Throws [`out_of_range.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n+- Throws [`other_error.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n   unsuccessful.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "text": "@@ -63,5 +63,5 @@ function throws an exception.\n - [RFC 6902 (JSON Patch)](https://tools.ietf.org/html/rfc6902)\n - [RFC 6901 (JSON Pointer)](https://tools.ietf.org/html/rfc6901)\n-- [patch](patch.md) applies a JSON Merge Patch\n+- [patch](patch.md) applies a JSON Patch\n - [merge_patch](merge_patch.md) applies a JSON Merge Patch\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/push_back.md",
+   "text": "@@ -47,7 +47,10 @@ invalidates all iterators and all references.\n ## Exceptions\n \n-All functions can throw the following exception:\n-  - Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n-    JSON array or null; example: `\"cannot use push_back() with number\"`\n+1. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON array or null; example: `\"cannot use push_back() with number\"`\n+2. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON object or null; example: `\"cannot use push_back() with number\"`\n+3. Throws [`type_error.308`](../../home/exceptions.md#jsonexceptiontype_error308) when called on a type other than\n+   JSON array or null; example: `\"cannot use push_back() with number\"`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/rbegin.md",
+   "text": "@@ -12,5 +12,5 @@ Returns an iterator to the reverse-beginning; that is, the last element.\n ## Return value\n \n-reverse iterator to the first element\n+reverse iterator to the last element\n \n ## Exception safety"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/rend.md",
+   "text": "@@ -27,5 +27,5 @@ Constant.\n ??? example\n \n-    The following code shows an example for `eend()`.\n+    The following code shows an example for `rend()`.\n     \n     ```cpp"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/sax_parse.md",
+   "text": "@@ -44,8 +44,9 @@ The SAX event lister must follow the interface of [`json_sax`](../json_sax/index\n \n `IteratorType`\n-:   Description\n+:   a compatible iterator type for overload (2); a pair of character iterators whose `value_type` is an integral type\n+    with a size of 1, 2, or 4 bytes (interpreted respectively as UTF-8, UTF-16, and UTF-32)\n \n `SAX`\n-:   Description\n+:   a class fulfilling the SAX event listener interface; see [`json_sax`](../json_sax/index.md)\n \n ## Parameters"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/sax_parse.md",
+   "text": "@@ -90,7 +91,4 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n - Throws [`parse_error.101`](../../home/exceptions.md#jsonexceptionparse_error101) in case of an unexpected token, or\n   empty input like a null `FILE*` or `char*` pointer.\n-- Throws [`parse_error.102`](../../home/exceptions.md#jsonexceptionparse_error102) if `to_unicode` fails or surrogate\n-  error.\n-- Throws [`parse_error.103`](../../home/exceptions.md#jsonexceptionparse_error103) if `to_unicode` fails.\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/sax_parse.md",
+   "text": "@@ -120,9 +118,14 @@ A UTF-8 byte order mark is silently ignored.\n     ```\n \n+## See also\n+\n+- [parse](parse.md) - deserialize from a compatible input\n+- [accept](accept.md) - check if the input is valid JSON\n+\n ## Version history\n \n - Added in version 3.2.0.\n - Ignoring comments via `ignore_comments` added in version 3.9.0.\n-- Added `ignore_trailing_commas` in version 3.12.1.\n+- Added `ignore_trailing_commas` in version 3.12.x.\n \n !!! warning \"Deprecation\""
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/std_swap.md",
+   "text": "@@ -17,4 +17,12 @@ Exchanges the values of two JSON objects.\n :   value to be replaced by `j1`\n \n+## Exception safety\n+\n+No-throw guarantee: this function never throws exceptions.\n+\n+## Complexity\n+\n+Constant.\n+\n ## Possible implementation\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/string_t.md",
+   "text": "@@ -10,5 +10,5 @@ The type used to store JSON strings.\n > A string is a sequence of zero or more Unicode characters.\n \n-To store objects in C++, a type is defined by the template parameter described below. Unicode values are split by the\n+To store strings in C++, a type is defined by the template parameter described below. Unicode values are split by the\n JSON class into byte-sized characters during deserialization.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "text": "@@ -3,8 +3,18 @@\n ```cpp\n // (1)\n-void swap(reference other) noexcept;\n+void swap(reference other) noexcept (\n+    std::is_nothrow_move_constructible<value_t>::value &&\n+    std::is_nothrow_move_assignable<value_t>::value &&\n+    std::is_nothrow_move_constructible<json_value>::value &&\n+    std::is_nothrow_move_assignable<json_value>::value\n+);\n \n // (2)\n-void swap(reference left, reference right) noexcept;\n+friend void swap(reference left, reference right) noexcept (\n+    std::is_nothrow_move_constructible<value_t>::value &&\n+    std::is_nothrow_move_assignable<value_t>::value &&\n+    std::is_nothrow_move_constructible<json_value>::value &&\n+    std::is_nothrow_move_assignable<json_value>::value\n+);\n \n // (3)"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "text": "@@ -57,13 +67,13 @@ void swap(typename binary_t::container_type& other);\n 2. No-throw guarantee: this function never throws exceptions.\n 3. Throws [`type_error.310`](../../home/exceptions.md#jsonexceptiontype_error310) if called on JSON values other than\n-   arrays; example: `\"cannot use swap() with boolean\"`\n+   arrays; example: `\"cannot use swap(array_t&) with boolean\"`\n 4. Throws [`type_error.310`](../../home/exceptions.md#jsonexceptiontype_error310) if called on JSON values other than\n-   objects; example: `\"cannot use swap() with boolean\"`\n+   objects; example: `\"cannot use swap(object_t&) with boolean\"`\n 5. Throws [`type_error.310`](../../home/exceptions.md#jsonexceptiontype_error310) if called on JSON values other than\n-   strings; example: `\"cannot use swap() with boolean\"`\n+   strings; example: `\"cannot use swap(string_t&) with boolean\"`\n 6. Throws [`type_error.310`](../../home/exceptions.md#jsonexceptiontype_error310) if called on JSON values other than\n-   binaries; example: `\"cannot use swap() with boolean\"`\n+   binaries; example: `\"cannot use swap(binary_t&) with boolean\"`\n 7. Throws [`type_error.310`](../../home/exceptions.md#jsonexceptiontype_error310) if called on JSON values other than\n-   binaries; example: `\"cannot use swap() with boolean\"`\n+   binaries; example: `\"cannot use swap(binary_t::container_type&) with boolean\"`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "text": "@@ -129,5 +139,5 @@ Constant.\n     ```\n \n-??? example \"Example: Swap string (6)\"\n+??? example \"Example: Swap binary (6)\"\n \n     The example below shows how binary values can be swapped with `swap()`."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "text": "@@ -146,4 +156,6 @@ Constant.\n \n - [std::swap<basic_json\\>](std_swap.md)\n+- [operator=](operator=.md) copy assignment\n+- [basic_json](basic_json.md) create a JSON value\n \n ## Version history"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_bjdata.md",
+   "text": "@@ -73,4 +73,12 @@ Linear in the size of the JSON value `j`.\n     ```\n \n+## See also\n+\n+- [from_bjdata](from_bjdata.md) create a JSON value from an input in BJData format\n+- [to_cbor](to_cbor.md) create a CBOR serialization of a JSON value\n+- [to_msgpack](to_msgpack.md) create a MessagePack serialization of a JSON value\n+- [to_bson](to_bson.md) create a BSON serialization of a JSON value\n+- [to_ubjson](to_ubjson.md) create a UBJSON serialization of a JSON value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_bson.md",
+   "text": "@@ -35,4 +35,11 @@ The exact mapping and its limitations are described on a [dedicated page](../../\n Strong guarantee: if an exception is thrown, there are no changes in the JSON value.\n \n+## Exceptions\n+\n+- Throws [`type_error.317`](../../home/exceptions.md#jsonexceptiontype_error317) if the top-level type of the JSON value\n+  is not an object; example: `\"to serialize to BSON, top-level type must be object, but is string\"`\n+- Throws [`out_of_range.409`](../../home/exceptions.md#jsonexceptionout_of_range409) if a key in the JSON object contains\n+  a null byte (code point U+0000); example: `\"BSON key cannot contain code point U+0000 (at byte 2)\"`\n+\n ## Complexity\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_bson.md",
+   "text": "@@ -55,4 +62,12 @@ Linear in the size of the JSON value `j`.\n     ```\n \n+## See also\n+\n+- [from_bson](from_bson.md) create a JSON value from an input in BSON format\n+- [to_cbor](to_cbor.md) create a CBOR serialization of a JSON value\n+- [to_msgpack](to_msgpack.md) create a MessagePack serialization of a JSON value\n+- [to_ubjson](to_ubjson.md) create a UBJSON serialization of a JSON value\n+- [to_bjdata](to_bjdata.md) create a BJData serialization of a JSON value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_cbor.md",
+   "text": "@@ -56,4 +56,12 @@ Linear in the size of the JSON value `j`.\n     ```\n \n+## See also\n+\n+- [from_cbor](from_cbor.md) create a JSON value from an input in CBOR format\n+- [to_msgpack](to_msgpack.md) create a MessagePack serialization of a JSON value\n+- [to_bson](to_bson.md) create a BSON serialization of a JSON value\n+- [to_ubjson](to_ubjson.md) create a UBJSON serialization of a JSON value\n+- [to_bjdata](to_bjdata.md) create a BJData serialization of a JSON value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_msgpack.md",
+   "text": "@@ -55,4 +55,12 @@ Linear in the size of the JSON value `j`.\n     ```\n \n+## See also\n+\n+- [from_msgpack](from_msgpack.md) create a JSON value from an input in MessagePack format\n+- [to_cbor](to_cbor.md) create a CBOR serialization of a JSON value\n+- [to_bson](to_bson.md) create a BSON serialization of a JSON value\n+- [to_ubjson](to_ubjson.md) create a UBJSON serialization of a JSON value\n+- [to_bjdata](to_bjdata.md) create a BJData serialization of a JSON value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/to_ubjson.md",
+   "text": "@@ -66,4 +66,12 @@ Linear in the size of the JSON value `j`.\n     ```\n \n+## See also\n+\n+- [from_ubjson](from_ubjson.md) create a JSON value from an input in UBJSON format\n+- [to_cbor](to_cbor.md) create a CBOR serialization of a JSON value\n+- [to_msgpack](to_msgpack.md) create a MessagePack serialization of a JSON value\n+- [to_bson](to_bson.md) create a BSON serialization of a JSON value\n+- [to_bjdata](to_bjdata.md) create a BJData serialization of a JSON value\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/type_error.md",
+   "text": "@@ -68,4 +68,5 @@ classDiagram\n ## See also\n \n+- [`exception`](exception.md) for the base class of all exceptions thrown by the library\n - [List of type errors](../../home/exceptions.md#type-errors)\n - [`parse_error`](parse_error.md) for exceptions indicating a parse error"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/unflatten.md",
+   "text": "@@ -26,4 +26,8 @@ The function can throw the following exceptions:\n - Throws [`type_error.314`](../../home/exceptions.md#jsonexceptiontype_error314) if value is not an object\n - Throws [`type_error.315`](../../home/exceptions.md#jsonexceptiontype_error315) if object values are not primitive\n+- Throws [`type_error.313`](../../home/exceptions.md#jsonexceptiontype_error313) if a key (JSON pointer) leads to a\n+  conflicting nesting; example: `\"invalid value to unflatten\"`\n+- Throws [`parse_error.109`](../../home/exceptions.md#jsonexceptionparse_error109) if an array index in a key is not a\n+  number; example: `\"array index 'one' is not a number\"`\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/update.md",
+   "text": "@@ -15,4 +15,6 @@ void update(const_iterator first, const_iterator last, bool merge_objects = fals\n recursively merges objects with common keys.\n \n+If the JSON value is `#!json null`, it is implicitly converted to an empty object before the values are inserted.\n+\n The function is motivated by Python's [dict.update](https://docs.python.org/3.6/library/stdtypes.html#dict.update)\n function."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/update.md",
+   "text": "@@ -29,13 +31,17 @@ iterators (including the `end()` iterator) and all references to the elements ar\n \n `merge_objects` (in)\n-:   when `#!c true`, existing keys are not overwritten, but contents of objects are merged recursively (default:\n-    `#!c false`)\n+:   when `#!c true`, keys that exist in both objects and whose value in the source is itself an object are merged\n+    recursively; all other values are overwritten as usual (default: `#!c false`)\n \n `first` (in)\n :   the beginning of the range of elements to insert\n \n `last` (in)\n :   the end of the range of elements to insert\n \n+## Exception safety\n+\n+Basic guarantee: if an exception is thrown during the operation, the JSON value may be partially modified.\n+\n ## Exceptions\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/update.md",
+   "text": "@@ -46,6 +52,4 @@ iterators (including the `end()` iterator) and all references to the elements ar\n     - Throws [`type_error.312`](../../home/exceptions.md#jsonexceptiontype_error312) if called on JSON values other than\n       objects; example: `\"cannot use update() with string\"`\n-    - Throws [`invalid_iterator.202`](../../home/exceptions.md#jsonexceptioninvalid_iterator202) if called on an\n-      iterator which does not belong to the current JSON value; example: `\"iterator does not fit current value\"`\n     - Throws [`invalid_iterator.210`](../../home/exceptions.md#jsonexceptioninvalid_iterator210) if `first` and `last`\n       do not belong to the same JSON value; example: `\"iterators do not fit\"`"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/update.md",
+   "text": "@@ -142,4 +146,9 @@ iterators (including the `end()` iterator) and all references to the elements ar\n     ```\n \n+## See also\n+\n+- [insert](insert.md) add values to an array/object\n+- [merge_patch](merge_patch.md) applies a JSON Merge Patch\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/value.md",
+   "text": "@@ -96,5 +96,5 @@ changes to any JSON value.\n       the type of the value at `ptr`\n     - Throws [`type_error.306`](../../home/exceptions.md#jsonexceptiontype_error306) if the JSON value is not an object;\n-      in that case, using `value()` with a key makes no sense.\n+      in that case, using `value()` with a JSON pointer makes no sense.\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/byte_container_with_subtype/index.md",
+   "text": "@@ -25,5 +25,5 @@ specific naming scheme in order to override the binary type.\n - **operator==** - comparison: equal\n - **operator!=** - comparison: not equal\n-- [**set_subtype**](subtype.md) - sets the binary subtype\n+- [**set_subtype**](set_subtype.md) - sets the binary subtype\n - [**subtype**](subtype.md) - return the binary subtype\n - [**has_subtype**](has_subtype.md) - return whether the value has a subtype"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_pointer/front.md",
+   "text": "@@ -36,2 +36,4 @@ Constant.\n \n ## Version history\n+\n+- Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_pointer/parent_pointer.md",
+   "text": "@@ -11,4 +11,8 @@ Returns the parent of this JSON pointer.\n Parent of this JSON pointer; in case this JSON pointer is the root, the root itself is returned.\n \n+## Exception safety\n+\n+No-throw guarantee: this function never throws exceptions.\n+\n ## Complexity\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_pointer/parent_pointer.md",
+   "text": "@@ -31,4 +35,9 @@ Linear in the length of the JSON pointer.\n     ```\n \n+## See also\n+\n+- [pop_back](pop_back.md) remove the last reference token\n+- [back](back.md) return the last reference token\n+\n ## Version history\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_pointer/pop_front.md",
+   "text": "@@ -32,2 +32,4 @@ Linear in the number of reference tokens in the `json_pointer`.\n \n ## Version history\n+\n+- Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_pointer/push_front.md",
+   "text": "@@ -35,2 +35,4 @@ Linear in the number of reference tokens in the `json_pointer`.\n \n ## Version history\n+\n+- Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_sax/start_array.md",
+   "text": "@@ -10,5 +10,5 @@ The beginning of an array was read.\n \n `elements` (in)\n-:   number of object elements or `#!cpp -1` if unknown\n+:   number of array elements, or `#!cpp std::numeric_limits<std::size_t>::max()` if unknown\n \n ## Return value"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/json_sax/start_object.md",
+   "text": "@@ -10,5 +10,5 @@ The beginning of an object was read.\n \n `elements` (in)\n-:   number of object elements or `#!cpp -1` if unknown\n+:   number of object elements, or `#!cpp std::numeric_limits<std::size_t>::max()` if unknown\n \n ## Return value"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_brace_init_copy_semantics.md",
+   "text": "@@ -93,3 +93,3 @@ The default value is `0` (disabled \u2014 existing behavior is preserved).\n ## Version history\n \n-- Added in version 3.12.0.\n+- Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_disable_enum_serialization.md",
+   "text": "@@ -123,12 +123,11 @@ The default value is `0`.\n     void to_json(json& j, const Choice& ch)\n     {\n-        auto value = j.get<std::string>();\n-        if (value == \"first\")\n+        if (ch == Choice::first)\n         {\n-            ch = Choice::first;\n+            j = \"first\";\n         }\n-        else if (value == \"second\")\n+        else if (ch == Choice::second)\n         {\n-            ch = Choice::second;\n+            j = \"second\";\n         }\n     }"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_has_cpp_11.md",
+   "text": "@@ -1,9 +1,11 @@\n-# JSON_HAS_CPP_11, JSON_HAS_CPP_14, JSON_HAS_CPP_17, JSON_HAS_CPP_20\n+# JSON_HAS_CPP_11, JSON_HAS_CPP_14, JSON_HAS_CPP_17, JSON_HAS_CPP_20, JSON_HAS_CPP_23, JSON_HAS_CPP_26\n \n ```cpp\n #define JSON_HAS_CPP_11\n #define JSON_HAS_CPP_14\n #define JSON_HAS_CPP_17\n #define JSON_HAS_CPP_20\n+#define JSON_HAS_CPP_23\n+#define JSON_HAS_CPP_26\n ```\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_has_cpp_11.md",
+   "text": "@@ -21,5 +23,7 @@ The default value is detected based on preprocessor macros such as `#!cpp __cplu\n ## Notes\n \n-- `#!cpp JSON_HAS_CPP_11` is always defined.\n+- When the C++ standard is detected automatically, `#!cpp JSON_HAS_CPP_11` is always defined. When you override the\n+  detection by defining one of these macros manually, the automatic detection is skipped entirely, so you should define\n+  all applicable macros (including `#!cpp JSON_HAS_CPP_11`) yourself.\n - All macros are undefined outside the library.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_has_cpp_11.md",
+   "text": "@@ -40,2 +44,4 @@ The default value is detected based on preprocessor macros such as `#!cpp __cplu\n \n - Added in version 3.10.5.\n+- Added `JSON_HAS_CPP_23` in version 3.12.0.\n+- Added `JSON_HAS_CPP_26` in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_has_filesystem.md",
+   "text": "@@ -22,5 +22,5 @@ The default value is detected based on the preprocessor macros `#!cpp __cpp_lib_\n ## Notes\n \n-- Note that older compilers or older versions of libstd++ also require the library `stdc++fs` to be linked to for\n+- Note that older compilers or older versions of libstdc++ also require the library `stdc++fs` to be linked to for\n   filesystem support.\n - Both macros are undefined outside the library."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_skip_library_version_check.md",
+   "text": "@@ -25,4 +25,15 @@ By default, the macro is not defined.\n ## Examples\n \n+??? example\n+\n+    The code below switches off the warning about including a different version of the library.\n+\n+    ```cpp\n+    #define JSON_SKIP_LIBRARY_VERSION_CHECK 1\n+    #include <nlohmann/json.hpp>\n+\n+    ...\n+    ```\n+\n !!! example\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_use_legacy_discarded_value_comparison.md",
+   "text": "@@ -57,5 +57,5 @@ When the macro is not defined, the library will define it to its default value.\n \n     Legacy comparison can also be controlled with the CMake option\n-    [`JSON_LegacyDiscardedValueComparison`](../../integration/cmake.md#json_implicitconversions)\n+    [`JSON_LegacyDiscardedValueComparison`](../../integration/cmake.md#json_legacydiscardedvaluecomparison)\n     (`OFF` by default) which defines `JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON` accordingly.\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/json_use_legacy_discarded_value_comparison.md",
+   "text": "@@ -73,5 +73,5 @@ When the macro is not defined, the library will define it to its default value.\n     ```\n \n-### See also\n+## See also\n \n - [:simple-cmake: JSON_LegacyDiscardedValueComparison](../../integration/cmake.md#json_legacydiscardedvaluecomparison) - CMake option to control the macro"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_derived_type.md",
+   "text": "@@ -40,5 +40,5 @@ The base type **must** be already serializable/deserializable.\n Summary:\n \n-| Need access to private members                                   | Need only de-serialization                                       | Allow missing values when de-serializing                         | macro                                                         |\n+| Need access to private members                                   | Need only serialization                                          | Allow missing values when de-serializing                         | macro                                                         |\n |------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|---------------------------------------------------------------|\n | <div style=\"color: green;\">:octicons-check-circle-fill-24:</div> | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | **NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE**                    |"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_derived_type.md",
+   "text": "@@ -161,8 +161,8 @@ void to_json(BasicJsonType& j, const B& b) {\n \n - [NLOHMANN_DEFINE_TYPE_INTRUSIVE / NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT / \n-  NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_ONLY_SERIALIZE](nlohmann_define_type_intrusive.md)\n+  NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE](nlohmann_define_type_intrusive.md)\n   for similar macros that can be defined _inside_ a non-derived type.\n - [NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE / NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT / \n-  NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE](nlohmann_define_type_non_intrusive.md)\n+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE](nlohmann_define_type_non_intrusive.md)\n   for similar macros that can be defined _outside_ a non-derived type.\n - [Arbitrary Type Conversions](../../features/arbitrary_types.md) for an overview."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_intrusive.md",
+   "text": "@@ -22,5 +22,5 @@ parameter is the name of the class/struct, and all remaining parameters name the\n Summary:\n \n-| Need access to private members                                   | Need only de-serialization                                       | Allow missing values when de-serializing                         | macro                                                 |\n+| Need access to private members                                   | Need only serialization                                          | Allow missing values when de-serializing                         | macro                                                 |\n |------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|-------------------------------------------------------|\n | <div style=\"color: green;\">:octicons-check-circle-fill-24:</div> | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | **NLOHMANN_DEFINE_TYPE_INTRUSIVE**                    |"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_non_intrusive.md",
+   "text": "@@ -22,5 +22,5 @@ parameter is the name of the class/struct, and all remaining parameters name the\n Summary:\n \n-| Need access to private members                                   | Need only de-serialization                                       | Allow missing values when de-serializing                         | macro                                                 |\n+| Need access to private members                                   | Need only serialization                                          | Allow missing values when de-serializing                         | macro                                                 |\n |------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|-------------------------------------------------------|\n | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | <div style=\"color: red;\">:octicons-x-circle-fill-24:</div>       | **NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE**                |"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_define_type_with_names.md",
+   "text": "@@ -76,3 +76,3 @@ For further information please refer to the corresponding macros without `WITH_N\n ## Version history\n \n-1. Added in version 3.11.x.\n+1. Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_json_namespace_begin.md",
+   "text": "@@ -22,11 +22,11 @@ The default definitions open and close the `nlohmann` namespace. The precise def\n     namespace nlohmann\n     {\n-    inline namespace json_abi_v3_11_2\n+    inline namespace json_abi_v3_12_0\n     {\n     ```\n \n 2. Default definition of `NLOHMANN_JSON_NAMESPACE_END`:\n     ```cpp\n-    }  // namespace json_abi_v3_11_2\n+    }  // namespace json_abi_v3_12_0\n     }  // namespace nlohmann\n     ```"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_json_serialize_enum_strict.md",
+   "text": "@@ -39,5 +39,8 @@ inline void from_json(const BasicJsonType& j, type& e);\n !!! important \"Important notes\"\n \n-    - When using [`get<ENUM_TYPE>()`](../basic_json/get.md), undefined JSON values will throw an exception.\n+    - Undefined input throws [`out_of_range.410`](../../home/exceptions.md#jsonexceptionout_of_range410) in both\n+      directions: when serializing an enum value not listed in the conversions, and when deserializing (e.g., via\n+      [`get<ENUM_TYPE>()`](../basic_json/get.md)) a JSON value that matches no conversion; example:\n+      `\"enum value out of range for <type>\"`.\n     - If an enum or JSON value is specified in multiple conversions, the first matching conversion from the top of the\n       list will be returned when converting to or from JSON. See example 2 below."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/macros/nlohmann_json_serialize_enum_strict.md",
+   "text": "@@ -100,3 +103,3 @@ inline void from_json(const BasicJsonType& j, type& e);\n ## Version history\n \n-Added in version 3.12.0.\n+Added in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/operator_gtgt.md",
+   "text": "@@ -22,6 +22,4 @@ the stream `i`\n \n - Throws [`parse_error.101`](../home/exceptions.md#jsonexceptionparse_error101) in case of an unexpected token.\n-- Throws [`parse_error.102`](../home/exceptions.md#jsonexceptionparse_error102) if `to_unicode` fails or surrogate error.\n-- Throws [`parse_error.103`](../home/exceptions.md#jsonexceptionparse_error103) if `to_unicode` fails.\n \n ## Complexity"
+  },
+  {
+   "path": "docs/mkdocs/docs/api/operator_gtgt.md",
+   "text": "@@ -33,4 +31,7 @@ Linear in the length of the input. The parser is a predictive LL(1) parser.\n A UTF-8 byte order mark is silently ignored.\n \n+Invalid Unicode escapes and unpaired surrogates in the input are reported as\n+[`parse_error.101`](../home/exceptions.md#jsonexceptionparse_error101) with a detailed message.\n+\n !!! warning \"Deprecation\"\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/api/operator_gtgt.md",
+   "text": "@@ -62,3 +63,3 @@ A UTF-8 byte order mark is silently ignored.\n ## Version history\n \n-- Added in version 1.0.0. Deprecated in version 3.0.0.\n+- Added in version 1.0.0."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/operator_literal_json.md",
+   "text": "@@ -61,3 +61,3 @@ Linear.\n - Added in version 1.0.0.\n - Moved to namespace `nlohmann::literals::json_literals` in 3.11.0.\n-- Added `char8_t*` overload in 3.12.1.\n+- Added `char8_t*` overload in 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/operator_literal_json_pointer.md",
+   "text": "@@ -64,3 +64,3 @@ Linear.\n - Added in version 2.0.0.\n - Moved to namespace `nlohmann::literals::json_literals` in 3.11.0.\n-- Added `char8_t*` overload in 3.12.1.\n+- Added `char8_t*` overload in 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/features/comments.md",
+   "text": "@@ -28,5 +28,5 @@ For more information, see [JSON With Commas and Comments (JWCC)](https://nigelta\n     ```\n     \n-    When calling `parse` without additional argument, a parse error exception is thrown. If `ignore_comments` is set to `#! true`, the comments are ignored during parsing:\n+    When calling `parse` without additional argument, a parse error exception is thrown. If `ignore_comments` is set to `#!cpp true`, the comments are ignored during parsing:\n \n     ```cpp"
+  },
+  {
+   "path": "docs/mkdocs/docs/features/macros.md",
+   "text": "@@ -10,4 +10,12 @@ This macro controls which code is executed for [runtime assertions](assertions.m\n See [full documentation of `JSON_ASSERT(x)`](../api/macros/json_assert.md).\n \n+## `JSON_BRACE_INIT_COPY_SEMANTICS`\n+\n+When defined to `1`, single-element brace initialization of a `basic_json` value (e.g., `#!cpp json j{value};`) is\n+treated as a copy/move of the element rather than wrapping it in a single-element array. The default value is `0`, which\n+preserves the existing behavior.\n+\n+See [full documentation of `JSON_BRACE_INIT_COPY_SEMANTICS`](../api/macros/json_brace_init_copy_semantics.md).\n+\n ## `JSON_CATCH_USER(exception)`\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/features/macros.md",
+   "text": "@@ -45,13 +53,13 @@ The diagnostics positions can also be controlled with the CMake option\n See [full documentation of `JSON_DIAGNOSTIC_POSITIONS`](../api/macros/json_diagnostic_positions.md)\n \n-## `JSON_HAS_CPP_11`, `JSON_HAS_CPP_14`, `JSON_HAS_CPP_17`, `JSON_HAS_CPP_20`\n+## `JSON_HAS_CPP_11`, `JSON_HAS_CPP_14`, `JSON_HAS_CPP_17`, `JSON_HAS_CPP_20`, `JSON_HAS_CPP_23`, `JSON_HAS_CPP_26`\n \n The library targets C++11, but also supports some features introduced in later C++ versions (e.g., `std::string_view`\n support for C++17). For these new features, the library implements some preprocessor checks to determine the C++\n standard. By defining any of these symbols, the internal check is overridden and the provided C++ version is\n unconditionally assumed. This can be helpful for compilers that only implement parts of the standard and would be\n detected incorrectly.\n \n-See [full documentation of `JSON_HAS_CPP_11`, `JSON_HAS_CPP_14`, `JSON_HAS_CPP_17`, and `JSON_HAS_CPP_20`](../api/macros/json_has_cpp_11.md).\n+See [full documentation of `JSON_HAS_CPP_11`, `JSON_HAS_CPP_14`, `JSON_HAS_CPP_17`, `JSON_HAS_CPP_20`, `JSON_HAS_CPP_23`, and `JSON_HAS_CPP_26`](../api/macros/json_has_cpp_11.md).\n \n ## `JSON_HAS_FILESYSTEM`, `JSON_HAS_EXPERIMENTAL_FILESYSTEM`"
+  },
+  {
+   "path": "docs/mkdocs/docs/features/macros.md",
+   "text": "@@ -116,16 +124,47 @@ When defined to `0`, implicit conversions are switched off. By default, implicit\n See [full documentation of `JSON_USE_IMPLICIT_CONVERSIONS`](../api/macros/json_use_implicit_conversions.md).\n \n+## `JSON_USE_GLOBAL_UDLS`\n+\n+When defined to `1` (default), the user-defined string literals `operator\"\"_json` and `operator\"\"_json_pointer` are\n+placed into the global namespace instead of `nlohmann::literals::json_literals`.\n+\n+See [full documentation of `JSON_USE_GLOBAL_UDLS`](../api/macros/json_use_global_udls.md).\n+\n+## `JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON`\n+\n+When defined to `1`, the library restores the legacy behavior in which a discarded value compared equal to itself. This\n+behavior is deprecated and switched off (`0`) by default.\n+\n+See [full documentation of `JSON_USE_LEGACY_DISCARDED_VALUE_COMPARISON`](../api/macros/json_use_legacy_discarded_value_comparison.md).\n+\n ## `NLOHMANN_DEFINE_TYPE_*(...)`, `NLOHMANN_DEFINE_DERIVED_TYPE_*(...)`\n \n The library defines 12 macros to simplify the serialization/deserialization of types. See the page on\n [arbitrary type conversion](arbitrary_types.md#simplify-your-life-with-macros) for a detailed discussion.\n \n+## `NLOHMANN_JSON_NAMESPACE`, `NLOHMANN_JSON_NAMESPACE_BEGIN`, `NLOHMANN_JSON_NAMESPACE_END`, `NLOHMANN_JSON_NAMESPACE_NO_VERSION`\n+\n+These macros relate to the versioned, inline `nlohmann` namespace:\n+\n+- `NLOHMANN_JSON_NAMESPACE` evaluates to the full name of the `nlohmann` namespace (including the inline ABI namespace).\n+- `NLOHMANN_JSON_NAMESPACE_BEGIN` / `NLOHMANN_JSON_NAMESPACE_END` open and close the namespace (for example, to add\n+  specializations).\n+- `NLOHMANN_JSON_NAMESPACE_NO_VERSION`, when defined to `1`, omits the version component from the inline namespace.\n+\n+See the [`nlohmann` Namespace](namespace.md) page, and the full documentation of\n+[`NLOHMANN_JSON_NAMESPACE`](../api/macros/nlohmann_json_namespace.md),\n+[`NLOHMANN_JSON_NAMESPACE_BEGIN` / `NLOHMANN_JSON_NAMESPACE_END`](../api/macros/nlohmann_json_namespace_begin.md), and\n+[`NLOHMANN_JSON_NAMESPACE_NO_VERSION`](../api/macros/nlohmann_json_namespace_no_version.md).\n+\n ## `NLOHMANN_JSON_SERIALIZE_ENUM(type, ...)`\n \n This macro simplifies the serialization/deserialization of enum types. See\n [Specializing enum conversion](enum_conversion.md) for more information.\n \n See [full documentation of `NLOHMANN_JSON_SERIALIZE_ENUM`](../api/macros/nlohmann_json_serialize_enum.md).\n \n+A strict variant [`NLOHMANN_JSON_SERIALIZE_ENUM_STRICT`](../api/macros/nlohmann_json_serialize_enum_strict.md) throws an\n+exception on undefined input instead of falling back to the first mapping.\n+\n ## `NLOHMANN_JSON_VERSION_MAJOR`, `NLOHMANN_JSON_VERSION_MINOR`, `NLOHMANN_JSON_VERSION_PATCH`\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/features/object_order.md",
+   "text": "@@ -11,5 +11,5 @@ The default type `nlohmann::json` uses a `std::map` to store JSON objects, and t\n     ```cpp\n     #include <iostream>\n-    #include \"json.hpp\"\n+    #include <nlohmann/json.hpp>\n     \n     using json = nlohmann::json;"
+  },
+  {
+   "path": "docs/mkdocs/docs/features/parsing/parse_exceptions.md",
+   "text": "@@ -71,5 +71,5 @@ The return value indicates whether the parsing should continue, so the function\n     ```cpp\n     #include <iostream>\n-    #include \"json.hpp\"\n+    #include <nlohmann/json.hpp>\n     \n     using json = nlohmann::json;"
+  },
+  {
+   "path": "docs/mkdocs/docs/features/trailing_commas.md",
+   "text": "@@ -27,5 +27,5 @@ For more information, see [JSON With Commas and Comments (JWCC)](https://nigelta\n     ```\n     \n-    When calling `parse` without additional argument, a parse error exception is thrown. If `ignore_trailing_commas` is set to `#! true`, the trailing commas are ignored during parsing:\n+    When calling `parse` without additional argument, a parse error exception is thrown. If `ignore_trailing_commas` is set to `#!cpp true`, the trailing commas are ignored during parsing:\n \n     ```cpp"
+  },
+  {
+   "path": "docs/mkdocs/docs/home/exceptions.md",
+   "text": "@@ -871,10 +871,13 @@ Key identifiers to be serialized to BSON cannot contain code point U+0000, since\n ### json.exception.out_of_range.410\n \n-Undefined json fields cannot be used with [`NLOHMANN_JSON_SERIALIZE_ENUM_STRICT`](../api/macros/nlohmann_json_serialize_enum_strict.md)\n+This exception is thrown when an undefined value is used with\n+[`NLOHMANN_JSON_SERIALIZE_ENUM_STRICT`](../api/macros/nlohmann_json_serialize_enum_strict.md), or when an array index in\n+a JSON pointer exceeds the range of `size_type` (e.g., on 32-bit platforms).\n \n !!! failure \"Example message\"\n \n     ```\n     enum value out of range\n+    array index 18446744073709551616 exceeds size_type\n     ```\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/cmake.md",
+   "text": "@@ -168,5 +168,5 @@ Enable the (incorrect) legacy comparison behavior of discarded JSON values by de\n ### `JSON_MultipleHeaders`\n \n-Use the non-amalgamated version of the library. This option is `OFF` by default.\n+Use the non-amalgamated version of the library. This option is `ON` by default.\n \n ### `JSON_SystemInclude`"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/cmake.md",
+   "text": "@@ -177,2 +177,7 @@ Treat the library headers like system headers (i.e., adding `SYSTEM` to the [`ta\n \n Execute the test suite with [Valgrind](https://valgrind.org). This option is `OFF` by default. Depends on `JSON_BuildTests`.\n+\n+### `NLOHMANN_JSON_BUILD_MODULES`\n+\n+Build the experimental [C++ module](../features/modules.md) `nlohmann.json` (requires CMake 3.28 or later and C++20).\n+This option is `OFF` by default."
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/migration_guide.md",
+   "text": "@@ -199,8 +199,4 @@ conversions with calls to [`get`](../api/basic_json/get.md), [`get_to`](../api/b\n       ```\n \n-You can prepare existing code by already defining\n-[`JSON_USE_IMPLICIT_CONVERSIONS`](../api/macros/json_use_implicit_conversions.md) to `0` and replace any implicit\n-conversions with calls to [`get`](../api/basic_json/get.md).\n-\n ## Import namespace `literals` for UDLs\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -14,5 +14,5 @@\n ![Conda](../images/package_managers/conda.svg){: style=\"height:1em\"}&nbsp;[**Conda**](#conda) `nlohmann_json` &emsp;\n ![MacPorts](../images/package_managers/macports.svg){: style=\"height:1em\"}&nbsp;[**MacPorts**](#macports) `nlohmann-json`<br>\n-![cpm.cmake](../images/package_managers/CPM.png){: style=\"height:1em\"}&nbsp;[**CPM.cmake**](#cpmcmake) `gh:nlohmann/json`\n+![cpm.cmake](../images/package_managers/CPM.png){: style=\"height:1em\"}&nbsp;[**CPM.cmake**](#cpmcmake) `gh:nlohmann/json` &emsp;\n ![xmake](../images/package_managers/xmake.svg){: style=\"height:1em\"}&nbsp;[**xmake**](#xmake) `nlohmann_json`\n </p>"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -106,5 +106,5 @@ The header can be used directly in your code or via CMake.\n     - :octicons-tag-24: Available versions: current version and select older versions (see\n       [WrapDB](https://mesonbuild.com/Wrapdb-projects.html))\n-    - :octicons-rocket-24: The package is update automatically from file\n+    - :octicons-rocket-24: The package is updated automatically from file\n       [`meson.build`](https://github.com/nlohmann/json/blob/develop/meson.build).\n     - :octicons-file-24: File issues at the [library issue tracker](https://github.com/nlohmann/json/issues)"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -198,5 +198,5 @@ repository can be referenced within a `MODULE.bazel` by rules such as `archive_o\n     - :octicons-tag-24: Available versions: current version and older versions (see\n       [Conan Center](https://conan.io/center/recipes/nlohmann_json))\n-    - :octicons-rocket-24: The package is update automatically via\n+    - :octicons-rocket-24: The package is updated automatically via\n       [this recipe](https://github.com/conan-io/conan-center-index/tree/master/recipes/nlohmann_json).\n     - :octicons-file-24: File issues at the [Conan Center issue tracker](https://github.com/conan-io/conan-center-index/issues)"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -604,5 +604,5 @@ conda install -c conda-forge nlohmann_json\n         ```\n \n-    2. Create and activate an anvironment \"json`:\n+    2. Create and activate an environment `json`:\n \n         ```shell"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -668,5 +668,5 @@ to install the [nlohmann-json](https://ports.macports.org/port/nlohmann-json/) p\n         ```\n \n-    3. Compile the code and pass the Homebrew prefix to the include path such that the library can be found:\n+    3. Compile the code and pass the MacPorts prefix to the include path such that the library can be found:\n \n         ```sh"
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -710,15 +710,15 @@ to install the [nlohmann-json](https://ports.macports.org/port/nlohmann-json/) p\n \n     - :octicons-tag-24: Available versions: current version and older versions since `3.7.3` (see [cppget.org](https://cppget.org/nlohmann-json))\n-    - :octicons-rocket-24: The package is maintained and published by the `build2` community in [this repository][(https://github.com/build2-packaging/nlohmann-json/](https://github.com/build2-packaging/nlohmann-json/)).\n+    - :octicons-rocket-24: The package is maintained and published by the `build2` community in [this repository](https://github.com/build2-packaging/nlohmann-json/).\n     - :octicons-file-24: File issues at the [package source repository](https://github.com/build2-packaging/nlohmann-json/issues/)\n-    - :octicons-question-24: [`build2` website](https://build2)\n+    - :octicons-question-24: [`build2` website](https://build2.org)\n \n Note: [`build2`](https://build2.org) should not be considered as a standalone package-manager. It is a build-system + package manager + project manager, a set of tools that work hand-in-hand. `build2`-based projects do not rely on existing `CMake` scripts and the build scripts defining the project's targets are specific to `build2`.\n \n-To use this package in an exising [`build2`](https://build2.org) project, the general steps are:\n+To use this package in an existing [`build2`](https://build2.org) project, the general steps are:\n \n   1. <details><summary>Make the package available to download from a package repository that provides it.</summary>\n \n-      Your project's `repositories.manifest` specifies where the package manager will try to acquire packages by default. Make sure one of the repositories specified in this file provides `nlhomann-json` package.\n+      Your project's `repositories.manifest` specifies where the package manager will try to acquire packages by default. Make sure one of the repositories specified in this file provides `nlohmann-json` package.\n       The recommended open-source repository is [`cppget.org`](https://cppget.org/).\n "
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -741,11 +741,11 @@ To use this package in an exising [`build2`](https://build2.org) project, the ge\n \n \n-  2. <details><summary>Add this library as dependency of your target that uses it.</summary>\n+  3. <details><summary>Add this library as dependency of your target that uses it.</summary>\n \n       In the `buildfile` defining the target that will use this library:\n       \n-        - import the target `lib{json}` from the `nlhomann-json` package, for example:\n+        - import the target `lib{json}` from the `nlohmann-json` package, for example:\n             ```\n-            import nljson = nlhomann-json%lib{json}\n+            import nljson = nlohmann-json%lib{json}\n             ```\n            "
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -757,5 +757,5 @@ To use this package in an exising [`build2`](https://build2.org) project, the ge\n       </details>\n \n-  3. <details><summary>Use the library in your project's code and build it.</summary>\n+  4. <details><summary>Use the library in your project's code and build it.</summary>\n \n       At this point, assuming your project is initialized in a build-configuration, any `b` or `bdep update` command that will update/build the project will also acquire the missing dependency automatically, then build it and link it with your target."
+  },
+  {
+   "path": "docs/mkdocs/docs/integration/package_managers.md",
+   "text": "@@ -819,5 +819,5 @@ To use this package in an exising [`build2`](https://build2.org) project, the ge\n         b\n \n-        # or build and test the executable's output, will only work if the `tescript` is correct\n+        # or build and test the executable's output, will only work if the `testscript` is correct\n         b test\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/parser.hpp",
+   "text": "@@ -89,7 +89,7 @@ class parser\n     @param[in,out] result  parsed JSON value\n \n-    @throw parse_error.101 in case of an unexpected token\n-    @throw parse_error.102 if to_unicode fails or surrogate error\n-    @throw parse_error.103 if to_unicode fails\n+    @throw parse_error.101 in case of an unexpected token (including invalid\n+           unicode escapes and surrogate errors, which are reported with a\n+           detailed message)\n     */\n     void parse(const bool strict, BasicJsonType& result)"
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -13338,7 +13338,7 @@ class parser\n     @param[in,out] result  parsed JSON value\n \n-    @throw parse_error.101 in case of an unexpected token\n-    @throw parse_error.102 if to_unicode fails or surrogate error\n-    @throw parse_error.103 if to_unicode fails\n+    @throw parse_error.101 in case of an unexpected token (including invalid\n+           unicode escapes and surrogate errors, which are reported with a\n+           detailed message)\n     */\n     void parse(const bool strict, BasicJsonType& result)"
+  }
+ ],
+ "id": "over_10",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": ":memo: fix docs (#5217)",
+ "more": "",
+ "omitted": "counts only: docs/mkdocs/docs/home/releases.md",
+ "repo": "nlohmann/json",
+ "sha": "c5b2b26fdc14cddfda5644af317a68a690018c10"
+}

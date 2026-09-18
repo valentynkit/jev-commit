@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 13,
+   "path": "packages/reactivity/__tests__/reactive.spec.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "packages/reactivity/src/collectionHandlers.ts",
+   "removed": 6,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/reactivity/__tests__/reactive.spec.ts",
+   "text": "@@ -113,4 +113,17 @@ describe('reactivity/reactive', () => {\n   })\n \n+  // #8647\n+  test('observing Set with reactive initial value', () => {\n+    const observed = reactive({})\n+    const observedSet = reactive(new Set([observed]))\n+\n+    expect(observedSet.has(observed)).toBe(true)\n+    expect(observedSet.size).toBe(1)\n+\n+    // expect nothing happens\n+    observedSet.add(observed)\n+    expect(observedSet.size).toBe(1)\n+  })\n+\n   test('observed value should proxy mutations to original (Object)', () => {\n     const original: any = { foo: 1 }"
+  },
+  {
+   "path": "packages/reactivity/src/collectionHandlers.ts",
+   "text": "@@ -168,13 +168,16 @@ function createInstrumentations(\n       : {\n           add(this: SetTypes, value: unknown) {\n-            if (!shallow && !isShallow(value) && !isReadonly(value)) {\n-              value = toRaw(value)\n-            }\n             const target = toRaw(this)\n             const proto = getProto(target)\n-            const hadKey = proto.has.call(target, value)\n+            const valueToAdd =\n+              !shallow && !isShallow(value) && !isReadonly(value)\n+                ? toRaw(value)\n+                : value\n+            const hadKey =\n+              proto.has.call(target, valueToAdd) ||\n+              (value !== valueToAdd && proto.has.call(target, value))\n             if (!hadKey) {\n-              target.add(value)\n-              trigger(target, TriggerOpTypes.ADD, value, value)\n+              target.add(valueToAdd)\n+              trigger(target, TriggerOpTypes.ADD, valueToAdd, valueToAdd)\n             }\n             return this"
+  }
+ ],
+ "id": "real_075",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(reactivity): handle `Set` with initial reactive values edge case (#12393)\n\nfix #8647",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "5dc27ca68fdbab95b37af15870d91515fc2412b2"
+}

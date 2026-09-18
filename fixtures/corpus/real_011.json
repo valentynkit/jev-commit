@@ -1,0 +1,22 @@
+{
+ "files": [
+  {
+   "added": 150,
+   "path": "doc/en/reference/plugin_list.rst",
+   "removed": 86,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [],
+ "id": "real_011",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[automated] Update plugin list (#14842)\n\nCo-authored-by: pytest bot <pytestbot@users.noreply.github.com>",
+ "more": "",
+ "omitted": "counts only: doc/en/reference/plugin_list.rst",
+ "repo": "pytest-dev/pytest",
+ "sha": "006884bac1cff49d2e2908c20fbbb0f0bc8e671b"
+}

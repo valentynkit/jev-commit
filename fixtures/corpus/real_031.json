@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 12,
+   "path": "axum/src/routing/path_router.rs",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 12,
+   "path": "axum/src/routing/tests/nest.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum/src/routing/path_router.rs",
+   "text": "@@ -175,5 +175,5 @@ where\n         router: Self,\n     ) -> Result<(), Cow<'static, str>> {\n-        let prefix = validate_nest_path(self.v7_checks, path_to_nest_at);\n+        let prefix = validate_nest_path(self.v7_checks, path_to_nest_at)?;\n \n         let Self {"
+  },
+  {
+   "path": "axum/src/routing/path_router.rs",
+   "text": "@@ -220,5 +220,5 @@ where\n         T::Future: Send + 'static,\n     {\n-        let path = validate_nest_path(self.v7_checks, path_to_nest_at);\n+        let path = validate_nest_path(self.v7_checks, path_to_nest_at)?;\n         let prefix = path;\n "
+  },
+  {
+   "path": "axum/src/routing/path_router.rs",
+   "text": "@@ -443,20 +443,23 @@ impl fmt::Debug for Node {\n }\n \n-#[track_caller]\n-fn validate_nest_path(v7_checks: bool, path: &str) -> &str {\n-    assert!(path.starts_with('/'));\n-    assert!(path.len() > 1);\n+fn validate_nest_path(v7_checks: bool, path: &str) -> Result<&str, &'static str> {\n+    if !path.starts_with('/') {\n+        return Err(\"Nesting paths must start with a `/`.\");\n+    }\n+    if path.len() < 2 {\n+        return Err(\"Nesting at `/` is not supported.\");\n+    }\n \n     if path.split('/').any(|segment| {\n         segment.starts_with(\"{*\") && segment.ends_with('}') && !segment.ends_with(\"}}\")\n     }) {\n-        panic!(\"Invalid route: nested routes cannot contain wildcards (*)\");\n+        return Err(\"Invalid route: nested routes cannot contain wildcards (*)\");\n     }\n \n     if v7_checks {\n-        validate_v07_paths(path).unwrap();\n+        validate_v07_paths(path)?;\n     }\n \n-    path\n+    Ok(path)\n }\n "
+  },
+  {
+   "path": "axum/src/routing/tests/nest.rs",
+   "text": "@@ -106,4 +106,16 @@ fn nest_service_at_empty_path() {\n }\n \n+#[test]\n+#[should_panic(expected = \"Nesting paths must start with a `/`.\")]\n+fn nest_no_slash() {\n+    let _: Router = Router::new().nest(\"x\", Router::new());\n+}\n+\n+#[test]\n+#[should_panic(expected = \"Nesting paths must start with a `/`.\")]\n+fn nest_service_no_slash() {\n+    let _: Router = Router::new().nest_service(\"x\", get(|| async {}));\n+}\n+\n #[crate::test]\n async fn nested_url_extractor() {"
+  }
+ ],
+ "id": "real_031",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Use Result for validate_nest_path (#3606)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "0101c2a2405b966c31218aa6bf4189ec982ed9c8"
+}

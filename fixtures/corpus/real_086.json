@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 14,
+   "path": "include/nlohmann/detail/json_pointer.hpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 14,
+   "path": "single_include/nlohmann/json.hpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 42,
+   "path": "tests/src/unit-json_pointer.cpp",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "include/nlohmann/detail/json_pointer.hpp",
+   "text": "@@ -749,4 +749,18 @@ class json_pointer\n                     }\n \n+                    // the reference token consists only of digits at this point (cf. checks\n+                    // above); however, its numeric value might not be representable, in which\n+                    // case array_index() would throw out_of_range.404/410 -- contains() must\n+                    // not throw (see #5395), so such a reference token is treated as \"not found\"\n+                    errno = 0; // strtoull() does not reset errno on success\n+                    char* p_end = nullptr; // NOLINT(misc-const-correctness)\n+                    const unsigned long long magnitude = std::strtoull(reference_token.c_str(), &p_end, 10); // NOLINT(runtime/int)\n+                    if (JSON_HEDLEY_UNLIKELY(errno == ERANGE // the value exceeds ULLONG_MAX\n+                                             || magnitude >= static_cast<unsigned long long>((std::numeric_limits<typename BasicJsonType::size_type>::max)()))) // NOLINT(runtime/int)\n+                    {\n+                        // the array index cannot be represented as size_type\n+                        return false;\n+                    }\n+\n                     const auto idx = array_index<BasicJsonType>(reference_token);\n                     if (idx >= ptr->size())"
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -16521,4 +16521,18 @@ class json_pointer\n                     }\n \n+                    // the reference token consists only of digits at this point (cf. checks\n+                    // above); however, its numeric value might not be representable, in which\n+                    // case array_index() would throw out_of_range.404/410 -- contains() must\n+                    // not throw (see #5395), so such a reference token is treated as \"not found\"\n+                    errno = 0; // strtoull() does not reset errno on success\n+                    char* p_end = nullptr; // NOLINT(misc-const-correctness)\n+                    const unsigned long long magnitude = std::strtoull(reference_token.c_str(), &p_end, 10); // NOLINT(runtime/int)\n+                    if (JSON_HEDLEY_UNLIKELY(errno == ERANGE // the value exceeds ULLONG_MAX\n+                                             || magnitude >= static_cast<unsigned long long>((std::numeric_limits<typename BasicJsonType::size_type>::max)()))) // NOLINT(runtime/int)\n+                    {\n+                        // the array index cannot be represented as size_type\n+                        return false;\n+                    }\n+\n                     const auto idx = array_index<BasicJsonType>(reference_token);\n                     if (idx >= ptr->size())"
+  },
+  {
+   "path": "tests/src/unit-json_pointer.cpp",
+   "text": "@@ -320,4 +320,42 @@ TEST_CASE(\"JSON pointers\")\n                 CHECK_THROWS_WITH_AS(j[jp] = 1, throw_msg.c_str(), json::out_of_range&);\n                 CHECK_THROWS_WITH_AS(j_const[jp] == 1, throw_msg.c_str(), json::out_of_range&);\n+\n+                // #5395: contains() must not throw for a reference token that is a\n+                // syntactically valid array index but numerically exceeds ULLONG_MAX\n+                // (causing strtoull() to set errno to ERANGE) -- it should just report\n+                // that the pointer does not resolve to an element\n+                CHECK(!j.contains(jp));\n+                CHECK(!j_const.contains(jp));\n+            }\n+\n+            {\n+                // #5395: same as above, but using the exact reproduction from the issue\n+                json::json_pointer const jp(\"/99999999999999999999\");\n+                std::string const throw_msg = \"[json.exception.out_of_range.404] unresolved reference token '99999999999999999999'\";\n+\n+                CHECK_THROWS_WITH_AS(j[jp] = 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j_const[jp] == 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j.at(jp) = 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j_const.at(jp) == 1, throw_msg.c_str(), json::out_of_range&);\n+\n+                CHECK(!j.contains(jp));\n+                CHECK(!j_const.contains(jp));\n+            }\n+\n+            {\n+                // #5395: a reference token that is numerically representable in\n+                // unsigned long long but exceeds size_type's max (e.g. ULLONG_MAX\n+                // itself on typical 64-bit platforms, where size_type's max equals\n+                // ULLONG_MAX) must not make contains() throw either\n+                json::json_pointer const jp(\"/18446744073709551615\");\n+                std::string const throw_msg = \"[json.exception.out_of_range.410] array index 18446744073709551615 exceeds size_type\";\n+\n+                CHECK_THROWS_WITH_AS(j[jp] = 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j_const[jp] == 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j.at(jp) = 1, throw_msg.c_str(), json::out_of_range&);\n+                CHECK_THROWS_WITH_AS(j_const.at(jp) == 1, throw_msg.c_str(), json::out_of_range&);\n+\n+                CHECK(!j.contains(jp));\n+                CHECK(!j_const.contains(jp));\n             }\n "
+  },
+  {
+   "path": "tests/src/unit-json_pointer.cpp",
+   "text": "@@ -335,4 +373,8 @@ TEST_CASE(\"JSON pointers\")\n                 CHECK_THROWS_WITH_AS(j[jp] = 1, throw_msg.c_str(), json::out_of_range&);\n                 CHECK_THROWS_WITH_AS(j_const[jp] == 1, throw_msg.c_str(), json::out_of_range&);\n+\n+                // #5395: contains() must not throw for a reference token exceeding size_type's max\n+                CHECK(!j.contains(jp));\n+                CHECK(!j_const.contains(jp));\n             }\n "
+  }
+ ],
+ "id": "real_086",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Make contains(json_pointer) return false instead of throwing on unrepresentable array-index tokens (#5495)\n\ncontains(const json_pointer&) is documented to never throw, but a purely\nnumeric reference token that is syntactically a valid array index yet\nnumerically too large to be represented (exceeding size_type's max, or\nexceeding ULLONG_MAX and causing strtoull() to set errno to ERANGE) made\nit fall through to array_index(), which throws out_of_range.410/404.\n\nPre-check the token's magnitude the same way array_index() does, but\nreturn false instead of throwing, mirroring how the surrounding code\nalready rejects other malformed tokens (leading zero, non-digit\ncharacters, \"-\") without throwing. operator[]/at() are untouched and\nkeep throwing for these inputs.\n\nFixes #5395\n\nSigned-off-by: Niels Lohmann <mail@nlohmann.me>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "8e26b9d4b332eaee3bf57a7d586d16ec8d59e248"
+}

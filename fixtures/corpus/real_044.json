@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": ".github/dependabot.yml",
+   "removed": 8,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/dependabot.yml",
+   "text": "@@ -10,8 +10,4 @@ updates:\n       prefix: \"chore\"\n       include: \"scope\"\n-    groups:\n-      gomod:\n-        patterns:\n-          - \"*\"\n   - package-ecosystem: \"github-actions\"\n     directory: \"/\""
+  },
+  {
+   "path": ".github/dependabot.yml",
+   "text": "@@ -23,8 +19,4 @@ updates:\n       prefix: \"chore\"\n       include: \"scope\"\n-    groups:\n-      github-actions:\n-        patterns:\n-          - \"*\"\n   - package-ecosystem: \"docker\"\n     directory: \"/\""
+  }
+ ],
+ "id": "real_044",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "ci: disable dependabot grouping",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "597d9328d1c3b40de5c93b836c00efce06bb062d"
+}

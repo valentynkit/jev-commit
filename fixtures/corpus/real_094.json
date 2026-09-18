@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "activerecord/lib/active_record/associations/join_dependency.rb",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "activerecord/lib/active_record/associations/join_dependency.rb",
+   "text": "@@ -104,4 +104,7 @@ def join_constraints(joins_to_add, alias_tracker, references)\n       end\n \n+      EMPTY_HASH = {}.freeze\n+      private_constant :EMPTY_HASH\n+\n       def instantiate(result_set, strict_loading_value, &block)\n         primary_key = Array(join_root.primary_key).map { |column| aliases.column_alias(join_root, column) }"
+  },
+  {
+   "path": "activerecord/lib/active_record/associations/join_dependency.rb",
+   "text": "@@ -117,17 +120,17 @@ def instantiate(result_set, strict_loading_value, &block)\n \n         column_aliases = aliases.column_aliases(join_root)\n-        column_names = []\n \n-        result_set.columns.each do |name|\n-          column_names << name unless /\\At\\d+_r\\d+\\z/.match?(name)\n+        column_names = result_set.columns.reject do |name|\n+          /\\At\\d+_r\\d+\\z/.match?(name)\n         end\n \n         if column_names.empty?\n-          column_types = {}\n+          column_types = EMPTY_HASH\n         else\n           column_types = result_set.column_types\n           unless column_types.empty?\n             attribute_types = join_root.attribute_types\n-            column_types = column_types.slice(*column_names).delete_if { |k, _| attribute_types.key?(k) }\n+            column_types = column_types.slice(*column_names).delete_if { |k, _| attribute_types.key?(k) }.freeze\n+            column_types = EMPTY_HASH if column_types.empty?\n           end\n           column_aliases += column_names.map! { |name| Aliases::Column.new(name, name) }"
+  }
+ ],
+ "id": "real_094",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "JoinDependency: deduplicate empty type hashes",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "44c1d10ee940a81bb58e2e1c38ea8d8feb6f381e"
+}

@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 54,
+   "path": "packages/reactivity/__tests__/effectScope.spec.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "packages/reactivity/src/effectScope.ts",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/reactivity/__tests__/effectScope.spec.ts",
+   "text": "@@ -363,3 +363,57 @@ describe('reactivity/effect/scope', () => {\n     expect(scope.cleanups.length).toBe(0)\n   })\n+\n+  it('should still trigger updates after stopping scope stored in reactive object', () => {\n+    const rs = ref({\n+      stage: 0,\n+      scope: null as any,\n+    })\n+\n+    let renderCount = 0\n+    effect(() => {\n+      renderCount++\n+      return rs.value.stage\n+    })\n+\n+    const handleBegin = () => {\n+      const status = rs.value\n+      status.stage = 1\n+      status.scope = effectScope()\n+      status.scope.run(() => {\n+        watch([() => status.stage], () => {})\n+      })\n+    }\n+\n+    const handleExit = () => {\n+      const status = rs.value\n+      status.stage = 0\n+      const watchScope = status.scope\n+      status.scope = null\n+      if (watchScope) {\n+        watchScope.stop()\n+      }\n+    }\n+\n+    expect(rs.value.stage).toBe(0)\n+    expect(renderCount).toBe(1)\n+\n+    // 1. Click begin\n+    handleBegin()\n+    expect(rs.value.stage).toBe(1)\n+    expect(renderCount).toBe(2)\n+\n+    // 2. Click add\n+    rs.value.stage++\n+    expect(rs.value.stage).toBe(2)\n+    expect(renderCount).toBe(3)\n+\n+    // 3. Click end\n+    handleExit()\n+    expect(rs.value.stage).toBe(0)\n+    expect(renderCount).toBe(4)\n+\n+    handleBegin()\n+    expect(rs.value.stage).toBe(1)\n+    expect(renderCount).toBe(5)\n+  })\n })"
+  },
+  {
+   "path": "packages/reactivity/src/effectScope.ts",
+   "text": "@@ -41,4 +41,7 @@ export class EffectScope {\n   private index: number | undefined\n \n+  readonly __v_skip = true\n+  // TODO isolatedDeclarations ReactiveFlags.SKIP\n+\n   constructor(public detached = false) {\n     this.parent = activeEffectScope"
+  }
+ ],
+ "id": "real_074",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(reactivity): add __v_skip flag to EffectScope to prevent reactive conversion (#14359)\n\nclose #14357",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "48b7552cce784725376a4fab078272676ce02d69"
+}

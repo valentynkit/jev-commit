@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": "pre_commit/clientlib.py",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 17,
+   "path": "tests/clientlib_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/clientlib.py",
+   "text": "@@ -271,8 +271,17 @@ class InvalidManifestError(FatalError):\n \n \n+def _load_manifest_forward_compat(contents: str) -> object:\n+    obj = yaml_load(contents)\n+    if isinstance(obj, dict):\n+        check_min_version('5')\n+        raise AssertionError('unreachable')\n+    else:\n+        return obj\n+\n+\n load_manifest = functools.partial(\n     cfgv.load_from_filename,\n     schema=MANIFEST_SCHEMA,\n-    load_strategy=yaml_load,\n+    load_strategy=_load_manifest_forward_compat,\n     exc_tp=InvalidManifestError,\n )"
+  },
+  {
+   "path": "tests/clientlib_test.py",
+   "text": "@@ -13,4 +13,6 @@\n from pre_commit.clientlib import CONFIG_SCHEMA\n from pre_commit.clientlib import DEFAULT_LANGUAGE_VERSION\n+from pre_commit.clientlib import InvalidManifestError\n+from pre_commit.clientlib import load_manifest\n from pre_commit.clientlib import MANIFEST_HOOK_DICT\n from pre_commit.clientlib import MANIFEST_SCHEMA"
+  },
+  {
+   "path": "tests/clientlib_test.py",
+   "text": "@@ -589,2 +591,17 @@ def test_config_hook_stages_defaulting():\n         'stages': ['commit-msg', 'pre-push', 'pre-commit', 'pre-merge-commit'],\n     }\n+\n+\n+def test_manifest_v5_forward_compat(tmp_path):\n+    manifest = tmp_path.joinpath('.pre-commit-hooks.yaml')\n+    manifest.write_text('hooks: {}')\n+\n+    with pytest.raises(InvalidManifestError) as excinfo:\n+        load_manifest(manifest)\n+    assert str(excinfo.value) == (\n+        f'\\n'\n+        f'==> File {manifest}\\n'\n+        f'=====> \\n'\n+        f'=====> pre-commit version 5 is required but version {C.VERSION} '\n+        f'is installed.  Perhaps run `pip install --upgrade pre-commit`.'\n+    )"
+  }
+ ],
+ "id": "real_006",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "add forward-compat error message",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "844dacc168d68a32553ecf8a99178ab395fdb11e"
+}

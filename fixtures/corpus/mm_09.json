@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 11,
+   "path": "docs/mkdocs/docs/features/binary_formats/bson.md",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "docs/mkdocs/docs/features/binary_formats/bson.md",
+   "text": "@@ -99,4 +99,15 @@ The library maps BSON record types to JSON value types as follows:\n     but the Timestamp type information is not.\n \n+!!! warning \"Lenient BSON input handling\"\n+\n+    The BSON reader is lenient in a few areas where the BSON specification is more restrictive:\n+\n+    - array element keys are not checked against the required decimal sequence (`0`, `1`, `2`, ...),\n+    - any non-zero byte is accepted as `true` for the boolean type, and\n+    - the payload for binary subtype `0x02` is returned as-is, including its inner length prefix.\n+\n+    If BSON input must be validated for strict specification compliance, validate it separately before passing it to\n+    `from_bson()`.\n+\n ??? example\n "
+  }
+ ],
+ "id": "mm_09",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": ":arrow_up: Bump github/codeql-action from 4.32.0 to 4.32.1 (#5067)",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "01853ed6bcf9ebe88ec2e248ea757b86417b1487"
+}

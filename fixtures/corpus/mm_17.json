@@ -1,0 +1,42 @@
+{
+ "files": [
+  {
+   "added": 11,
+   "path": "test/script.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "Cargo.toml",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "test/script.js",
+   "text": "@@ -241,4 +241,15 @@ test('$ splits expressions - \\\\u{0063}}', testScriptStdout, () => $`echo.js ${'a\n test('$ concatenates expressions - \\\\u{0063}}', testScriptStdout, () => $`echo.js \\u{0063}}${'a'}\\u{0063}} b`, 'c}ac}\\nb');\n \n+const testScriptErrorStdout = async (t, getChildProcess, expectedStdout) => {\n+\tconst {command} = await t.throwsAsync(getChildProcess(), {code: 'ERR_INVALID_ARG_VALUE'});\n+\tt.is(command, `echo.js ${expectedStdout}`);\n+};\n+\n+test('$ handles tokens - \\\\0', testScriptErrorStdout, () => $`echo.js \\0`, '\\0');\n+test('$ splits tokens - \\\\0', testScriptErrorStdout, () => $`echo.js a\\0b`, 'a\\0b');\n+test('$ splits expressions - \\\\0', testScriptErrorStdout, () => $`echo.js ${'a'}\\0${'b'}`, 'a\\0b');\n+test('$ concatenates tokens - \\\\0', testScriptErrorStdout, () => $`echo.js \\0a\\0 b`, '\\0a\\0 b');\n+test('$ concatenates expressions - \\\\0', testScriptErrorStdout, () => $`echo.js \\0${'a'}\\0 b`, '\\0a\\0 b');\n+\n const testScriptStdoutSync = (t, getChildProcess, expectedStdout) => {\n \tconst {stdout} = getChildProcess();"
+  },
+  {
+   "path": "Cargo.toml",
+   "text": "@@ -2,3 +2,3 @@\n name = \"app\"\n-version = \"4.2.1\"\n+version = \"4.3.0\"\n edition = \"2021\""
+  }
+ ],
+ "id": "mm_17",
+ "label": {
+  "catch_on": [
+   "message_matches_diff",
+   "scope_creep"
+  ],
+  "kind": "version_bump",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Add more tests related to using `\\0` with `$` (#850)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "55800c313a5ec9fe8ada3c7eca3510480329986f"
+}

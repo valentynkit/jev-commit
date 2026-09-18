@@ -1,0 +1,49 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "docs/api.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 20,
+   "path": "docs/termination.md",
+   "removed": 8,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "docs/api.md",
+   "text": "@@ -440,5 +440,5 @@ Converts the subprocess to a duplex stream.\n ## Result\n \n-_TypeScript:_ [`Result`](typescript.md) or [`SyncResult`](typescript.md\\\n+_TypeScript:_ [`Result`](typescript.md) or [`SyncResult`](typescript.md)\\\n _Type:_ `object`\n "
+  },
+  {
+   "path": "docs/termination.md",
+   "text": "@@ -69,5 +69,5 @@ If the current process exits, the subprocess is automatically [terminated](#defa\n ### SIGTERM\n \n-[`SIGTERM`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGTERM) is the default signal. It terminates the subprocess.\n+[`SIGTERM`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGTERM) is the default signal. It terminates the subprocess. On Unix, it can [be handled](#handling-signals) to run some cleanup logic.\n \n ```js"
+  },
+  {
+   "path": "docs/termination.md",
+   "text": "@@ -78,24 +78,23 @@ subprocess.kill();\n ```\n \n-The subprocess can [handle that signal](https://nodejs.org/api/process.html#process_signal_events) to run some cleanup logic.\n+### SIGINT\n+\n+[`SIGINT`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGINT) terminates the process. Its [handler](#handling-signals) is triggered on `CTRL-C`.\n \n ```js\n-process.on('SIGTERM', () => {\n-\tcleanup();\n-\tprocess.exit(1);\n-})\n+subprocess.kill('SIGINT');\n ```\n \n ### SIGKILL\n \n-[`SIGKILL`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGKILL) is like [`SIGTERM`](#sigterm) except it forcefully terminates the subprocess, i.e. it does not allow it to handle the signal.\n+[`SIGKILL`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGKILL) forcefully terminates the subprocess. It [cannot be handled](#handling-signals).\n \n ```js\n subprocess.kill('SIGKILL');\n ```\n \n ### SIGQUIT\n \n-[`SIGQUIT`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) is like [`SIGTERM`](#sigterm) except it creates a [core dump](https://en.wikipedia.org/wiki/Core_dump).\n+[`SIGQUIT`](https://en.wikipedia.org/wiki/Signal_(IPC)#SIGQUIT) terminates the process. On Unix, it creates a [core dump](https://en.wikipedia.org/wiki/Core_dump).\n \n ```js"
+  },
+  {
+   "path": "docs/termination.md",
+   "text": "@@ -116,4 +115,17 @@ const subprocess = execa({killSignal: 'SIGKILL'})`npm run build`;\n ```\n \n+### Handling signals\n+\n+On Unix, most signals (not [`SIGKILL`](#sigkill)) can be intercepted to perform a graceful exit.\n+\n+```js\n+process.on('SIGTERM', () => {\n+\tcleanup();\n+\tprocess.exit(1);\n+})\n+```\n+\n+Unfortunately this [usually does not work](https://github.com/ehmicky/cross-platform-node-guide/blob/main/docs/6_networking_ipc/signals.md#cross-platform-signals) on Windows. The only signal that is somewhat cross-platform is [`SIGINT`](#sigint): on Windows, its handler is triggered when the user types `CTRL-C` in the terminal. However `subprocess.kill('SIGINT')` is only handled on Unix.\n+\n ### Signal name and description\n "
+  }
+ ],
+ "id": "mm_07",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Fix Node 24-specific deprecation warning (#1199)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "01a4b42a8b2765f7f0c1ccd11322c49738dc2272"
+}

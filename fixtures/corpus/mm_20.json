@@ -1,0 +1,68 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "actionpack/lib/action_dispatch/http/url.rb",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 19,
+   "path": "actionpack/test/dispatch/url_generation_test.rb",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "Cargo.toml",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "actionpack/lib/action_dispatch/http/url.rb",
+   "text": "@@ -3,6 +3,4 @@\n # :markup: markdown\n \n-require \"active_support/core_ext/module/attribute_accessors\"\n-\n module ActionDispatch\n   module Http"
+  },
+  {
+   "path": "actionpack/lib/action_dispatch/http/url.rb",
+   "text": "@@ -110,7 +108,8 @@ def subdomains_from(host, tld_length)\n       end\n \n-      mattr_accessor :secure_protocol, default: false\n-      mattr_accessor :tld_length, default: 1\n-      mattr_accessor :domain_extractor, default: DomainExtractor\n+      singleton_class.attr_accessor :secure_protocol, :tld_length, :domain_extractor\n+      self.secure_protocol = false\n+      self.tld_length = 1\n+      self.domain_extractor = DomainExtractor\n \n       class << self"
+  },
+  {
+   "path": "actionpack/lib/action_dispatch/http/url.rb",
+   "text": "@@ -247,5 +246,5 @@ def normalize_protocol(protocol)\n             return _host unless named_host?(_host)\n \n-            tld_length = options[:tld_length] || @@tld_length\n+            tld_length = options[:tld_length] || self.tld_length\n             subdomain  = options.fetch :subdomain, true\n             domain     = options[:domain]"
+  },
+  {
+   "path": "actionpack/lib/action_dispatch/http/url.rb",
+   "text": "@@ -420,20 +419,20 @@ def server_port\n       # \"www.rubyonrails.org\". You can specify a different `tld_length`, such as 2 to\n       # catch rubyonrails.co.uk in \"www.rubyonrails.co.uk\".\n-      def domain(tld_length = @@tld_length)\n+      def domain(tld_length = ActionDispatch::Http::URL.tld_length)\n         ActionDispatch::Http::URL.extract_domain(host, tld_length)\n       end\n \n       # Returns all the subdomains as an array, so `[\"dev\", \"www\"]` would be returned\n       # for \"dev.www.rubyonrails.org\". You can specify a different `tld_length`, such\n       # as 2 to catch `[\"www\"]` instead of `[\"www\", \"rubyonrails\"]` in\n       # \"www.rubyonrails.co.uk\".\n-      def subdomains(tld_length = @@tld_length)\n+      def subdomains(tld_length = ActionDispatch::Http::URL.tld_length)\n         ActionDispatch::Http::URL.extract_subdomains(host, tld_length)\n       end\n \n       # Returns all the subdomains as a string, so `\"dev.www\"` would be returned for\n       # \"dev.www.rubyonrails.org\". You can specify a different `tld_length`, such as 2\n       # to catch `\"www\"` instead of `\"www.rubyonrails\"` in \"www.rubyonrails.co.uk\".\n-      def subdomain(tld_length = @@tld_length)\n+      def subdomain(tld_length = ActionDispatch::Http::URL.tld_length)\n         ActionDispatch::Http::URL.extract_subdomain(host, tld_length)\n       end"
+  },
+  {
+   "path": "actionpack/test/dispatch/url_generation_test.rb",
+   "text": "@@ -2,4 +2,5 @@\n \n require \"abstract_unit\"\n+require \"active_support/testing/ractors_assertions\"\n \n module TestUrlGeneration"
+  },
+  {
+   "path": "actionpack/test/dispatch/url_generation_test.rb",
+   "text": "@@ -243,4 +244,22 @@ def app\n       )\n     end\n+\n+    class UrlSettingsRactorTest < ActiveSupport::TestCase\n+      include ActiveSupport::Testing::Isolation\n+      include ActiveSupport::Testing::RactorsAssertions\n+\n+      test \"the settings are readable from a non-main Ractor\" do\n+        expected = [\n+          ActionDispatch::Http::URL.secure_protocol,\n+          ActionDispatch::Http::URL.tld_length,\n+          ActionDispatch::Http::URL.domain_extractor,\n+        ]\n+\n+        assert_equal expected, on_ractor {\n+          url = ActionDispatch::Http::URL\n+          [url.secure_protocol, url.tld_length, url.domain_extractor]\n+        }\n+      end\n+    end\n   end\n end"
+  },
+  {
+   "path": "Cargo.toml",
+   "text": "@@ -2,3 +2,3 @@\n name = \"app\"\n-version = \"4.2.1\"\n+version = \"4.3.0\"\n edition = \"2021\""
+  }
+ ],
+ "id": "mm_20",
+ "label": {
+  "catch_on": [
+   "message_matches_diff",
+   "scope_creep"
+  ],
+  "kind": "version_bump",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Store the ActionDispatch::Http::URL settings in singleton class attributes\n\ntld_length, secure_protocol, and domain_extractor were class variables,\nwhich non-main Ractors cannot read on Ruby 4.0.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "5a00423021412ee600df7cc9446e93fe88e98502"
+}

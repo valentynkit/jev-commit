@@ -1,0 +1,1117 @@
+{
+ "files": [
+  {
+   "added": 7,
+   "path": ".github/workflows/main.yml",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".gitignore",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/api.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/binary.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/termination.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "lib/arguments/escape.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "lib/arguments/specific.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "lib/convert/readable.js",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "lib/convert/writable.js",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "lib/io/output-async.js",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "lib/io/output-sync.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "lib/ipc/reference.js",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "lib/methods/bind.js",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "lib/methods/main-async.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "lib/resolve/wait-stream.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": "lib/return/final-error.js",
+   "removed": 11,
+   "status": "M"
+  },
+  {
+   "added": 13,
+   "path": "lib/stdio/input-option.js",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "lib/transform/normalize.js",
+   "removed": 11,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "lib/utils/max-listeners.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 14,
+   "path": "lib/verbose/log.js",
+   "removed": 14,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "lib/verbose/output.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 42,
+   "path": "package.json",
+   "removed": 16,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test-d/arguments/encoding-option.test-d.ts",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 25,
+   "path": "test-d/arguments/options.test-d.ts",
+   "removed": 25,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "test-d/arguments/specific.test-d.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "test-d/ipc/message.test-d.ts",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "test-d/stdio/option/fd-integer-0.test-d.ts",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/arguments/encoding-option.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "test/arguments/escape-no-icu.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 13,
+   "path": "test/arguments/escape.js",
+   "removed": 12,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-disconnect.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-print.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-send-echo.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-send-print.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-send-string.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-send-twice.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-send.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-twice.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/graceful-wait.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/ipc-iterate-error.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/ipc-iterate-twice.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/ipc-print-many-each.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/convert.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/encoding.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/fixtures-directory.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/input.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/node-version.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "test/helpers/override-promise.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/helpers/verbose.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "test/helpers/wait.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "test/io/output-async.js",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "test/ipc/buffer-messages.js",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "test/ipc/get-one.js",
+   "removed": 7,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "test/ipc/send.js",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/methods/command.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "test/methods/parameters-options.js",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "test/methods/promise.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 20,
+   "path": "test/methods/template.js",
+   "removed": 20,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/resolve/exit.js",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "test/return/early-error.js",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "test/return/message.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "test/return/result.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/terminate/kill-force.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "test/terminate/kill-signal.js",
+   "removed": 18,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "test/terminate/signal.js",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/transform/encoding-final.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/transform/encoding-multibyte.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/transform/split-lines.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "test/verbose/error.js",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "test/verbose/ipc.js",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/verbose/log.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "test/verbose/output-enable.js",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "test/verbose/output-progressive.js",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "test/verbose/start.js",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "tsconfig.json",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "types/arguments/encoding-option.d.ts",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "types/arguments/options.d.ts",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "types/arguments/specific.d.ts",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "types/convert.d.ts",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "types/ipc.d.ts",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "types/return/final-error.d.ts",
+   "removed": 7,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "types/return/result-all.d.ts",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "types/return/result-ipc.d.ts",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "types/return/result-stdio.d.ts",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "types/return/result-stdout.d.ts",
+   "removed": 7,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "types/return/result.d.ts",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "types/stdio/type.d.ts",
+   "removed": 13,
+   "status": "M"
+  },
+  {
+   "added": 64,
+   "path": "types/subprocess/subprocess.d.ts",
+   "removed": 63,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "types/transform/normalize.d.ts",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "types/verbose.d.ts",
+   "removed": 4,
+   "status": "M"
+  }
+ ],
+ "group": "over_budget",
+ "hunks": [
+  {
+   "path": ".github/workflows/main.yml",
+   "text": "@@ -13,26 +13,27 @@ jobs:\n           - 26\n           - 24\n-          - 18\n+          - 22\n         os:\n           - ubuntu\n           - macos\n           - windows\n     steps:\n-      - uses: actions/cache@v4\n+      - uses: actions/cache@v6\n         with:\n           path: .lycheecache\n           key: cache-lychee-${{ github.sha }}\n           restore-keys: cache-lychee-\n-      - uses: actions/checkout@v4\n-      - uses: actions/setup-node@v4\n+      - uses: actions/checkout@v7\n+      - uses: actions/setup-node@v6\n         with:\n           node-version: ${{ matrix.node-version }}\n       - run: npm install\n-      - uses: lycheeverse/lychee-action@v1\n+      - uses: lycheeverse/lychee-action@v2\n         with:\n-          args: --cache --verbose --no-progress --include-fragments --exclude packagephobia --exclude /pull/ --exclude linkedin --exclude stackoverflow --exclude stackexchange --exclude github.com/nodejs/node --exclude file:///test --exclude invalid.com '*.md' 'docs/*.md' '.github/**/*.md' '*.json' '*.js' 'lib/**/*.js' 'test/**/*.js' '*.ts' 'test-d/**/*.ts'\n+          args: --cache --verbose --no-progress --include-fragments --exclude packagephobia --exclude /pull/ --exclude linkedin --exclude stackoverflow --exclude stackexchange --exclude github.com/nodejs/node --exclude github.com/denoland/deno --exclude file:///test --exclude invalid.com '*.md' 'docs/*.md' '.github/**/*.md' '*.json' '*.js' 'lib/**/*.js' 'test/**/*.js' '*.ts' 'test-d/**/*.ts'\n           fail: true\n         if: ${{ matrix.os == 'ubuntu' && matrix.node-version == 26 }}\n       - run: npm run lint\n+        if: ${{ matrix.os == 'ubuntu' && matrix.node-version == 26 }}\n       - run: npm run type\n       - run: npm run unit"
+  },
+  {
+   "path": ".gitignore",
+   "text": "@@ -3,2 +3,3 @@ node_modules\n .nyc_output\n coverage\n+lychee"
+  },
+  {
+   "path": "docs/api.md",
+   "text": "@@ -946,5 +946,5 @@ If the subprocess outputs text, specifies its character encoding, either [`'utf8\n If it outputs binary data instead, this should be either:\n - `'buffer'`: returns the binary output as an [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array).\n-- [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64), [`'base64url'`](https://en.wikipedia.org/wiki/Base64#URL_applications), [`'latin1'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) or [`'ascii'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings): encodes the binary output as a string.\n+- [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64), [`'base64url'`](https://en.wikipedia.org/wiki/Base64#RFC_4648), [`'latin1'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) or [`'ascii'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings): encodes the binary output as a string.\n \n The output is available with [`result.stdout`](#resultstdout), [`result.stderr`](#resultstderr) and [`result.stdio`](#resultstdio)."
+  },
+  {
+   "path": "docs/binary.md",
+   "text": "@@ -31,5 +31,5 @@ console.log(stdout.byteLength);\n ## Encoding\n \n-When the output is binary, the [`encoding`](api.md#optionsencoding) option can also be set to [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64) or [`'base64url'`](https://en.wikipedia.org/wiki/Base64#URL_applications). The output will be a string then.\n+When the output is binary, the [`encoding`](api.md#optionsencoding) option can also be set to [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64) or [`'base64url'`](https://en.wikipedia.org/wiki/Base64#RFC_4648). The output will be a string then.\n \n ```js"
+  },
+  {
+   "path": "docs/termination.md",
+   "text": "@@ -119,5 +119,5 @@ addAbortListener(cancelSignal, async () => {\n ```\n \n-However, if any operation is still ongoing, the subprocess will keep running. It can be forcefully ended using [`process.exit(exitCode)`](https://nodejs.org/api/process.html#processexitcode) instead of [`process.exitCode`](https://nodejs.org/api/process.html#processexitcode_1).\n+However, if any operation is still ongoing, the subprocess will keep running. It can be forcefully ended using [`process.exit(exitCode)`](https://nodejs.org/api/process.html#processexitcode) instead of [`process.exitCode`](https://nodejs.org/api/process.html#processexitcode-1).\n \n If the subprocess is still alive after 5 seconds, it is forcefully terminated with [`SIGKILL`](#sigkill). This can be [configured or disabled](#forceful-termination) using the [`forceKillAfterDelay`](api.md#optionsforcekillafterdelay) option."
+  },
+  {
+   "path": "lib/arguments/escape.js",
+   "text": "@@ -50,5 +50,5 @@ const getSpecialCharRegExp = () => {\n \t\t// It does not cover some edge cases, such as Unicode reserved characters.\n \t\t// See https://github.com/sindresorhus/execa/issues/1143\n-\t\t// eslint-disable-next-line no-control-regex\n+\t\t// eslint-disable-next-line no-control-regex, regexp/no-control-character, unicorn/prefer-unicode-code-point-escapes\n \t\treturn /[\\s\\^@-\\^_\\u007F-\\^_\\u00AD]/g;\n \t}"
+  },
+  {
+   "path": "lib/arguments/escape.js",
+   "text": "@@ -86,3 +86,3 @@ const quoteString = escapedArgument => {\n };\n \n-const NO_ESCAPE_REGEXP = /^[\\w./-]+$/;\n+const NO_ESCAPE_REGEXP = /^[\\w\\-./]+$/;"
+  },
+  {
+   "path": "lib/arguments/specific.js",
+   "text": "@@ -83,9 +83,9 @@ export const parseFd = fdName => {\n \tconst regexpResult = FD_REGEXP.exec(fdName);\n \tif (regexpResult !== null) {\n-\t\treturn Number(regexpResult[1]);\n+\t\treturn Number(regexpResult.groups.fdNumber);\n \t}\n };\n \n-const FD_REGEXP = /^fd(\\d+)$/;\n+const FD_REGEXP = /^fd(?<fdNumber>\\d+)$/;\n \n const addDefaultValue = (optionArray, optionName) => optionArray.map(optionValue => optionValue === undefined"
+  },
+  {
+   "path": "lib/convert/readable.js",
+   "text": "@@ -103,8 +103,10 @@ export const onStdoutFinished = async ({subprocessStdout, onStdoutDataDone, read\n // When `readable` aborts/errors, do the same on `subprocess.stdout`\n export const onReadableDestroy = async ({subprocessStdout, subprocess, waitReadableDestroy}, error) => {\n-\tif (await waitForConcurrentStreams(waitReadableDestroy, subprocess)) {\n-\t\tdestroyOtherReadable(subprocessStdout, error);\n-\t\tawait waitForSubprocess(subprocess, error);\n+\tif (!await waitForConcurrentStreams(waitReadableDestroy, subprocess)) {\n+\t\treturn;\n \t}\n+\n+\tdestroyOtherReadable(subprocessStdout, error);\n+\tawait waitForSubprocess(subprocess, error);\n };\n "
+  },
+  {
+   "path": "lib/convert/writable.js",
+   "text": "@@ -55,11 +55,13 @@ const onWrite = (subprocessStdin, chunk, encoding, done) => {\n // When multiple writables are targeting the same stream, they wait for each other, unless the subprocess ends first.\n const onWritableFinal = async (subprocessStdin, subprocess, waitWritableFinal) => {\n-\tif (await waitForConcurrentStreams(waitWritableFinal, subprocess)) {\n-\t\tif (subprocessStdin.writable) {\n-\t\t\tsubprocessStdin.end();\n-\t\t}\n+\tif (!await waitForConcurrentStreams(waitWritableFinal, subprocess)) {\n+\t\treturn;\n+\t}\n \n-\t\tawait subprocess;\n+\tif (subprocessStdin.writable) {\n+\t\tsubprocessStdin.end();\n \t}\n+\n+\tawait subprocess;\n };\n "
+  },
+  {
+   "path": "lib/io/output-async.js",
+   "text": "@@ -11,9 +11,11 @@ export const pipeOutputAsync = (subprocess, fileDescriptors, controller) => {\n \n \tfor (const [fdNumber, {stdioItems, direction}] of Object.entries(fileDescriptors)) {\n-\t\tfor (const {stream} of stdioItems.filter(({type}) => TRANSFORM_TYPES.has(type))) {\n+\t\tconst transformItems = stdioItems.filter(({type}) => TRANSFORM_TYPES.has(type));\n+\t\tfor (const {stream} of transformItems) {\n \t\t\tpipeTransform(subprocess, stream, direction, fdNumber);\n \t\t}\n \n-\t\tfor (const {stream} of stdioItems.filter(({type}) => !TRANSFORM_TYPES.has(type))) {\n+\t\tconst nonTransformItems = stdioItems.filter(({type}) => !TRANSFORM_TYPES.has(type));\n+\t\tfor (const {stream} of nonTransformItems) {\n \t\t\tpipeStdioItem({\n \t\t\t\tsubprocess,"
+  },
+  {
+   "path": "lib/io/output-async.js",
+   "text": "@@ -27,5 +29,5 @@ export const pipeOutputAsync = (subprocess, fileDescriptors, controller) => {\n \t}\n \n-\tfor (const [outputStream, inputStreams] of pipeGroups.entries()) {\n+\tfor (const [outputStream, inputStreams] of pipeGroups) {\n \t\tconst inputStream = inputStreams.length === 1 ? inputStreams[0] : mergeStreams(inputStreams);\n \t\tpipeStreams(inputStream, outputStream);"
+  },
+  {
+   "path": "lib/io/output-sync.js",
+   "text": "@@ -14,5 +14,5 @@ export const transformOutputSync = ({fileDescriptors, syncResult: {output}, opti\n \n \tconst state = {};\n-\tconst outputFiles = new Set([]);\n+\tconst outputFiles = new Set();\n \tconst transformedOutput = output.map((result, fdNumber) =>\n \t\ttransformOutputResultSync({"
+  },
+  {
+   "path": "lib/io/output-sync.js",
+   "text": "@@ -124,5 +124,6 @@ const logOutputSync = ({serializedResult, fdNumber, state, verboseInfo, encoding\n // When the `std*` target is a file path/URL or a file descriptor\n const writeToFiles = (serializedResult, stdioItems, outputFiles) => {\n-\tfor (const {path, append} of stdioItems.filter(({type}) => FILE_TYPES.has(type))) {\n+\tconst fileItems = stdioItems.filter(({type}) => FILE_TYPES.has(type));\n+\tfor (const {path, append} of fileItems) {\n \t\tconst pathString = typeof path === 'string' ? path : path.toString();\n \t\tif (append || outputFiles.has(pathString)) {"
+  },
+  {
+   "path": "lib/ipc/reference.js",
+   "text": "@@ -30,15 +30,19 @@ const removeReferenceCount = channel => {\n // See https://github.com/nodejs/node/blob/1b965270a9c273d4cf70e8808e9d28b9ada7844f/lib/child_process.js#L180\n export const undoAddedReferences = (channel, isSubprocess) => {\n-\tif (isSubprocess) {\n-\t\tremoveReferenceCount(channel);\n-\t\tremoveReferenceCount(channel);\n+\tif (!isSubprocess) {\n+\t\treturn;\n \t}\n+\n+\tremoveReferenceCount(channel);\n+\tremoveReferenceCount(channel);\n };\n \n // Reverse it during `disconnect`\n export const redoAddedReferences = (channel, isSubprocess) => {\n-\tif (isSubprocess) {\n-\t\taddReferenceCount(channel);\n-\t\taddReferenceCount(channel);\n+\tif (!isSubprocess) {\n+\t\treturn;\n \t}\n+\n+\taddReferenceCount(channel);\n+\taddReferenceCount(channel);\n };"
+  },
+  {
+   "path": "lib/methods/bind.js",
+   "text": "@@ -6,10 +6,8 @@ import {FD_SPECIFIC_OPTIONS} from '../arguments/specific.js';\n export const mergeOptions = (boundOptions, options) => {\n \tconst safeBoundOptions = {__proto__: null, ...boundOptions};\n-\tconst mergedOptions = Object.fromEntries(\n-\t\tObject.entries(options).map(([optionName, optionValue]) => [\n-\t\t\toptionName,\n-\t\t\tmergeOption(optionName, safeBoundOptions[optionName], optionValue),\n-\t\t]),\n-\t);\n+\tconst mergedOptions = Object.fromEntries(Object.entries(options).map(([optionName, optionValue]) => [\n+\t\toptionName,\n+\t\tmergeOption(optionName, safeBoundOptions[optionName], optionValue),\n+\t]));\n \treturn {...safeBoundOptions, ...mergedOptions};\n };"
+  },
+  {
+   "path": "lib/methods/main-async.js",
+   "text": "@@ -91,5 +91,5 @@ const spawnSubprocessAsync = ({file, commandArguments, options, startTime, verbo\n \n \tconst controller = new AbortController();\n-\tsetMaxListeners(Number.POSITIVE_INFINITY, controller.signal);\n+\tsetMaxListeners(Infinity, controller.signal);\n \n \tconst originalStreams = [...subprocess.stdio];"
+  },
+  {
+   "path": "lib/resolve/wait-stream.js",
+   "text": "@@ -32,5 +32,6 @@ export const waitForStream = async (stream, fdNumber, streamInfo, {isSameDirecti\n // The only way to detect this is to spy on `subprocess.stdin._destroy()` by wrapping it.\n // If `subprocess.exitCode` or `subprocess.signalCode` is set, it means `.destroy()` is being called by Node.js itself.\n-const handleStdinDestroy = (stream, {originalStreams: [originalStdin], subprocess}) => {\n+const handleStdinDestroy = (stream, {originalStreams, subprocess}) => {\n+\tconst [originalStdin] = originalStreams;\n \tconst state = {stdinCleanedUp: false};\n \tif (stream === originalStdin) {"
+  },
+  {
+   "path": "lib/return/final-error.js",
+   "text": "@@ -12,15 +12,17 @@ export class DiscardedError extends Error {}\n // Proper way to set `error.name`: it should be inherited and non-enumerable\n const setErrorName = (ErrorClass, value) => {\n-\tObject.defineProperty(ErrorClass.prototype, 'name', {\n-\t\tvalue,\n-\t\twritable: true,\n-\t\tenumerable: false,\n-\t\tconfigurable: true,\n-\t});\n-\tObject.defineProperty(ErrorClass.prototype, execaErrorSymbol, {\n-\t\tvalue: true,\n-\t\twritable: false,\n-\t\tenumerable: false,\n-\t\tconfigurable: false,\n+\tObject.defineProperties(ErrorClass.prototype, {\n+\t\tname: {\n+\t\t\tvalue,\n+\t\t\twritable: true,\n+\t\t\tenumerable: false,\n+\t\t\tconfigurable: true,\n+\t\t},\n+\t\t[execaErrorSymbol]: {\n+\t\t\tvalue: true,\n+\t\t\twritable: false,\n+\t\t\tenumerable: false,\n+\t\t\tconfigurable: false,\n+\t\t},\n \t});\n };"
+  },
+  {
+   "path": "lib/return/final-error.js",
+   "text": "@@ -35,6 +37,8 @@ export const isErrorInstance = value => Object.prototype.toString.call(value) ==\n // We use two different Error classes for async/sync methods since they have slightly different shape and types\n export class ExecaError extends Error {}\n+// eslint-disable-next-line unicorn/no-top-level-side-effects -- `error.name` must be set as soon as the class is defined\n setErrorName(ExecaError, ExecaError.name);\n \n export class ExecaSyncError extends Error {}\n+// eslint-disable-next-line unicorn/no-top-level-side-effects -- `error.name` must be set as soon as the class is defined\n setErrorName(ExecaSyncError, ExecaSyncError.name);"
+  },
+  {
+   "path": "lib/stdio/input-option.js",
+   "text": "@@ -11,9 +11,11 @@ export const handleInputOptions = ({input, inputFile}, fdNumber) => fdNumber ===\n \t: [];\n \n-const handleInputOption = input => input === undefined ? [] : [{\n-\ttype: getInputType(input),\n-\tvalue: input,\n-\toptionName: 'input',\n-}];\n+const handleInputOption = input => input === undefined\n+\t? []\n+\t: [{\n+\t\ttype: getInputType(input),\n+\t\tvalue: input,\n+\t\toptionName: 'input',\n+\t}];\n \n const getInputType = input => {"
+  },
+  {
+   "path": "lib/stdio/input-option.js",
+   "text": "@@ -33,8 +35,10 @@ const getInputType = input => {\n };\n \n-const handleInputFileOption = inputFile => inputFile === undefined ? [] : [{\n-\t...getInputFileType(inputFile),\n-\toptionName: 'inputFile',\n-}];\n+const handleInputFileOption = inputFile => inputFile === undefined\n+\t? []\n+\t: [{\n+\t\t...getInputFileType(inputFile),\n+\t\toptionName: 'inputFile',\n+\t}];\n \n const getInputFileType = inputFile => {"
+  },
+  {
+   "path": "lib/transform/normalize.js",
+   "text": "@@ -52,15 +52,10 @@ const normalizeTransform = ({stdioItem, stdioItem: {type}, index, newTransforms,\n };\n \n-const normalizeDuplex = ({\n-\tstdioItem,\n-\tstdioItem: {\n-\t\tvalue: {\n-\t\t\ttransform,\n-\t\t\ttransform: {writableObjectMode, readableObjectMode},\n-\t\t\tobjectMode = readableObjectMode,\n-\t\t},\n-\t},\n-\toptionName,\n-}) => {\n+const normalizeDuplex = ({stdioItem, optionName}) => {\n+\tconst {value} = stdioItem;\n+\tconst {transform} = value;\n+\tconst {writableObjectMode, readableObjectMode} = transform;\n+\tconst {objectMode = readableObjectMode} = value;\n+\n \tif (objectMode && !readableObjectMode) {\n \t\tthrow new TypeError(`The \\`${optionName}.objectMode\\` option can only be \\`true\\` if \\`new Duplex({objectMode: true})\\` is used.`);"
+  },
+  {
+   "path": "lib/utils/max-listeners.js",
+   "text": "@@ -4,5 +4,5 @@ import {addAbortListener} from 'node:events';\n export const incrementMaxListeners = (eventEmitter, maxListenersIncrement, signal) => {\n \tconst maxListeners = eventEmitter.getMaxListeners();\n-\tif (maxListeners === 0 || maxListeners === Number.POSITIVE_INFINITY) {\n+\tif (maxListeners === 0 || maxListeners === Infinity) {\n \t\treturn;\n \t}"
+  },
+  {
+   "path": "lib/verbose/log.js",
+   "text": "@@ -21,17 +21,17 @@ export const verboseLog = ({type, verboseMessage, fdNumber, verboseInfo, result}\n };\n \n-const getVerboseObject = ({\n-\ttype,\n-\tresult,\n-\tverboseInfo: {escapedCommand, commandId, rawOptions: {piped = false, ...options}},\n-}) => ({\n-\ttype,\n-\tescapedCommand,\n-\tcommandId: `${commandId}`,\n-\ttimestamp: new Date(),\n-\tpiped,\n-\tresult,\n-\toptions,\n-});\n+const getVerboseObject = ({type, result, verboseInfo}) => {\n+\tconst {escapedCommand, commandId, rawOptions} = verboseInfo;\n+\tconst {piped = false, ...options} = rawOptions;\n+\treturn {\n+\t\ttype,\n+\t\tescapedCommand,\n+\t\tcommandId: `${commandId}`,\n+\t\ttimestamp: new Date(),\n+\t\tpiped,\n+\t\tresult,\n+\t\toptions,\n+\t};\n+};\n \n const getPrintedLines = (verboseMessage, verboseObject) => verboseMessage"
+  },
+  {
+   "path": "lib/verbose/log.js",
+   "text": "@@ -48,5 +48,5 @@ const getPrintedLine = verboseObject => {\n \tconst messageString = typeof message === 'string' ? message : inspect(message);\n \tconst escapedMessage = escapeLines(messageString);\n-\treturn escapedMessage.replaceAll('\\t', ' '.repeat(TAB_SIZE));\n+\treturn escapedMessage.replaceAll('\\t', () => ' '.repeat(TAB_SIZE));\n };\n "
+  },
+  {
+   "path": "lib/verbose/output.js",
+   "text": "@@ -14,5 +14,5 @@ export const shouldLogOutput = ({stdioItems, encoding, verboseInfo, fdNumber}) =\n \t&& fdUsesVerbose(fdNumber)\n \t&& (stdioItems.some(({type, value}) => type === 'native' && PIPED_STDIO_VALUES.has(value))\n-\t|| stdioItems.every(({type}) => TRANSFORM_TYPES.has(type)));\n+\t\t|| stdioItems.every(({type}) => TRANSFORM_TYPES.has(type)));\n \n // Printing input streams would be confusing."
+  },
+  {
+   "path": "package.json",
+   "text": "@@ -18,11 +18,11 @@\n \t\"sideEffects\": false,\n \t\"engines\": {\n-\t\t\"node\": \"^18.19.0 || >=20.5.0\"\n+\t\t\"node\": \">=22\"\n \t},\n \t\"scripts\": {\n \t\t\"test\": \"npm run lint && npm run unit && npm run type\",\n \t\t\"lint\": \"xo\",\n \t\t\"unit\": \"c8 --merge-async ava\",\n-\t\t\"type\": \"tsd && tsc && npx --yes tsd@0.29.0 && npx --yes --package typescript@5.1 tsc\"\n+\t\t\"type\": \"tsd && tsc\"\n \t},\n \t\"files\": ["
+  },
+  {
+   "path": "package.json",
+   "text": "@@ -55,29 +55,29 @@\n \t\t\"cross-spawn\": \"^7.0.6\",\n \t\t\"figures\": \"^6.1.0\",\n-\t\t\"get-stream\": \"^9.0.0\",\n+\t\t\"get-stream\": \"^9.0.1\",\n \t\t\"human-signals\": \"^8.0.1\",\n \t\t\"is-plain-obj\": \"^4.1.0\",\n \t\t\"is-stream\": \"^4.0.1\",\n \t\t\"npm-run-path\": \"^6.0.0\",\n-\t\t\"pretty-ms\": \"^9.2.0\",\n+\t\t\"pretty-ms\": \"^9.3.0\",\n \t\t\"signal-exit\": \"^4.1.0\",\n \t\t\"strip-final-newline\": \"^4.0.0\",\n-\t\t\"yoctocolors\": \"^2.1.1\"\n+\t\t\"yoctocolors\": \"^2.1.2\"\n \t},\n \t\"devDependencies\": {\n-\t\t\"@types/node\": \"^22.15.21\",\n-\t\t\"ava\": \"^6.3.0\",\n-\t\t\"c8\": \"^10.1.3\",\n-\t\t\"get-node\": \"^15.0.3\",\n-\t\t\"is-in-ci\": \"^1.0.0\",\n+\t\t\"@types/node\": \"^26.1.0\",\n+\t\t\"ava\": \"^8.0.1\",\n+\t\t\"c8\": \"^11.0.0\",\n+\t\t\"get-node\": \"^15.0.4\",\n+\t\t\"is-in-ci\": \"^2.0.0\",\n \t\t\"is-running\": \"^2.1.0\",\n \t\t\"log-process-errors\": \"^12.0.1\",\n \t\t\"path-exists\": \"^5.0.0\",\n \t\t\"path-key\": \"^4.0.0\",\n-\t\t\"tempfile\": \"^5.0.0\",\n-\t\t\"tsd\": \"^0.32.0\",\n-\t\t\"typescript\": \"^5.8.3\",\n-\t\t\"which\": \"^5.0.0\",\n-\t\t\"xo\": \"^0.60.0\"\n+\t\t\"tempfile\": \"^6.0.1\",\n+\t\t\"tsd\": \"^0.33.0\",\n+\t\t\"typescript\": \"^6.0.3\",\n+\t\t\"which\": \"^7.0.0\",\n+\t\t\"xo\": \"^3.0.2\"\n \t},\n \t\"c8\": {"
+  },
+  {
+   "path": "package.json",
+   "text": "@@ -100,5 +100,31 @@\n \t\t\"rules\": {\n \t\t\t\"unicorn/no-empty-file\": \"off\",\n-\t\t\t\"@typescript-eslint/ban-types\": \"off\"\n+\t\t\t\"unicorn/prefer-string-raw\": \"off\",\n+\t\t\t\"ava/test-title\": \"off\",\n+\t\t\t\"@typescript-eslint/no-empty-object-type\": \"off\",\n+\t\t\t\"unicorn/no-useless-template-literals\": \"off\",\n+\t\t\t\"require-unicode-regexp\": \"off\",\n+\t\t\t\"ava/no-nested-assertions\": \"off\",\n+\t\t\t\"@stylistic/max-len\": \"off\",\n+\t\t\t\"@typescript-eslint/no-unsafe-call\": \"off\",\n+\t\t\t\"@typescript-eslint/no-unsafe-member-access\": \"off\",\n+\t\t\t\"@typescript-eslint/no-unsafe-assignment\": \"off\",\n+\t\t\t\"@typescript-eslint/await-thenable\": \"off\",\n+\t\t\t\"@typescript-eslint/no-unnecessary-type-assertion\": \"off\",\n+\t\t\t\"@typescript-eslint/no-restricted-types\": \"off\",\n+\t\t\t\"no-shadow\": \"off\",\n+\t\t\t\"unicorn/no-computed-property-existence-check\": \"off\",\n+\t\t\t\"unicorn/max-nested-calls\": \"off\",\n+\t\t\t\"markdown/fenced-code-language\": \"off\",\n+\t\t\t\"unicorn/no-array-sort\": \"off\",\n+\t\t\t\"unicorn/prefer-minimal-ternary\": \"off\",\n+\t\t\t\"unicorn/no-array-reverse\": \"off\",\n+\t\t\t\"unicorn/no-array-from-fill\": \"off\",\n+\t\t\t\"unicorn/prefer-number-is-safe-integer\": \"off\",\n+\t\t\t\"unicorn/require-array-sort-compare\": \"off\",\n+\t\t\t\"@typescript-eslint/ban-types\": \"off\",\n+\t\t\t\"regexp/strict\": \"off\",\n+\t\t\t\"unicorn/require-module-specifiers\": \"off\",\n+\t\t\t\"jsdoc/require-asterisk-prefix\": \"off\"\n \t\t}\n \t}"
+  },
+  {
+   "path": "test-d/arguments/encoding-option.test-d.ts",
+   "text": "@@ -4,5 +4,5 @@ import {execa, execaSync} from '../../index.js';\n await execa('unicorns', {encoding: 'utf8'});\n execaSync('unicorns', {encoding: 'utf8'});\n-/* eslint-disable unicorn/text-encoding-identifier-case */\n+/* eslint-disable unicorn/text-encoding-identifier-case -- intentionally testing invalid encoding casing */\n expectError(await execa('unicorns', {encoding: 'utf-8'}));\n expectError(execaSync('unicorns', {encoding: 'utf-8'}));"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -26,6 +26,6 @@ expectError(execaSync('unicorns', {preferLocal: 'false'}));\n await execa('unicorns', {localDir: '.'});\n execaSync('unicorns', {localDir: '.'});\n-await execa('unicorns', {localDir: '.' as string});\n-execaSync('unicorns', {localDir: '.' as string});\n+await execa('unicorns', {localDir: '.'});\n+execaSync('unicorns', {localDir: '.'});\n await execa('unicorns', {localDir: fileUrl});\n execaSync('unicorns', {localDir: fileUrl});"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -42,6 +42,6 @@ expectError(execaSync('unicorns', {node: 'true'}));\n await execa('unicorns', {nodePath: './node'});\n execaSync('unicorns', {nodePath: './node'});\n-await execa('unicorns', {nodePath: './node' as string});\n-execaSync('unicorns', {nodePath: './node' as string});\n+await execa('unicorns', {nodePath: './node'});\n+execaSync('unicorns', {nodePath: './node'});\n await execa('unicorns', {nodePath: fileUrl});\n execaSync('unicorns', {nodePath: fileUrl});"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -58,6 +58,6 @@ expectError(execaSync('unicorns', {nodeOptions: [false] as const}));\n await execa('unicorns', {input: ''});\n execaSync('unicorns', {input: ''});\n-await execa('unicorns', {input: '' as string});\n-execaSync('unicorns', {input: '' as string});\n+await execa('unicorns', {input: ''});\n+execaSync('unicorns', {input: ''});\n await execa('unicorns', {input: new Uint8Array()});\n execaSync('unicorns', {input: new Uint8Array()});"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -69,6 +69,6 @@ expectError(execaSync('unicorns', {input: false}));\n await execa('unicorns', {inputFile: ''});\n execaSync('unicorns', {inputFile: ''});\n-await execa('unicorns', {inputFile: '' as string});\n-execaSync('unicorns', {inputFile: '' as string});\n+await execa('unicorns', {inputFile: ''});\n+execaSync('unicorns', {inputFile: ''});\n await execa('unicorns', {inputFile: fileUrl});\n execaSync('unicorns', {inputFile: fileUrl});"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -106,12 +106,12 @@ expectError(execaSync('unicorns', {extendEnv: 'false'}));\n await execa('unicorns', {cwd: '.'});\n execaSync('unicorns', {cwd: '.'});\n-await execa('unicorns', {cwd: '.' as string});\n-execaSync('unicorns', {cwd: '.' as string});\n+await execa('unicorns', {cwd: '.'});\n+execaSync('unicorns', {cwd: '.'});\n await execa('unicorns', {cwd: fileUrl});\n execaSync('unicorns', {cwd: fileUrl});\n expectError(await execa('unicorns', {cwd: false}));\n expectError(execaSync('unicorns', {cwd: false}));\n \n-/* eslint-disable @typescript-eslint/naming-convention */\n+/* eslint-disable @typescript-eslint/naming-convention -- `PATH` is a real environment variable name */\n await execa('unicorns', {env: {PATH: ''}});\n execaSync('unicorns', {env: {PATH: ''}});"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -125,20 +125,20 @@ expectError(execaSync('unicorns', {env: false}));\n await execa('unicorns', {argv0: ''});\n execaSync('unicorns', {argv0: ''});\n-await execa('unicorns', {argv0: '' as string});\n-execaSync('unicorns', {argv0: '' as string});\n+await execa('unicorns', {argv0: ''});\n+execaSync('unicorns', {argv0: ''});\n expectError(await execa('unicorns', {argv0: false}));\n expectError(execaSync('unicorns', {argv0: false}));\n \n await execa('unicorns', {uid: 0});\n execaSync('unicorns', {uid: 0});\n-await execa('unicorns', {uid: 0 as number});\n-execaSync('unicorns', {uid: 0 as number});\n+await execa('unicorns', {uid: 0});\n+execaSync('unicorns', {uid: 0});\n expectError(await execa('unicorns', {uid: '0'}));\n expectError(execaSync('unicorns', {uid: '0'}));\n \n await execa('unicorns', {gid: 0});\n execaSync('unicorns', {gid: 0});\n-await execa('unicorns', {gid: 0 as number});\n-execaSync('unicorns', {gid: 0 as number});\n+await execa('unicorns', {gid: 0});\n+execaSync('unicorns', {gid: 0});\n expectError(await execa('unicorns', {gid: '0'}));\n expectError(execaSync('unicorns', {gid: '0'}));"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -150,22 +150,22 @@ await execa('unicorns', {shell: true as boolean});\n await execa('unicorns', {shell: '/bin/sh'});\n execaSync('unicorns', {shell: '/bin/sh'});\n-await execa('unicorns', {shell: '/bin/sh' as string});\n-execaSync('unicorns', {shell: '/bin/sh' as string});\n+await execa('unicorns', {shell: '/bin/sh'});\n+execaSync('unicorns', {shell: '/bin/sh'});\n await execa('unicorns', {shell: fileUrl});\n execaSync('unicorns', {shell: fileUrl});\n expectError(await execa('unicorns', {shell: {}}));\n expectError(execaSync('unicorns', {shell: {}}));\n \n await execa('unicorns', {timeout: 1000});\n execaSync('unicorns', {timeout: 1000});\n-await execa('unicorns', {timeout: 1000 as number});\n-execaSync('unicorns', {timeout: 1000 as number});\n+await execa('unicorns', {timeout: 1000});\n+execaSync('unicorns', {timeout: 1000});\n expectError(await execa('unicorns', {timeout: '1000'}));\n expectError(execaSync('unicorns', {timeout: '1000'}));\n \n await execa('unicorns', {maxBuffer: 1000});\n execaSync('unicorns', {maxBuffer: 1000});\n-await execa('unicorns', {maxBuffer: 1000 as number});\n-execaSync('unicorns', {maxBuffer: 1000 as number});\n+await execa('unicorns', {maxBuffer: 1000});\n+execaSync('unicorns', {maxBuffer: 1000});\n expectError(await execa('unicorns', {maxBuffer: '1000'}));\n expectError(execaSync('unicorns', {maxBuffer: '1000'}));"
+  },
+  {
+   "path": "test-d/arguments/options.test-d.ts",
+   "text": "@@ -177,6 +177,6 @@ expectError(await execa('unicorns', {killSignal: 'SIGTERM' as string}));\n await execa('unicorns', {killSignal: 9});\n execaSync('unicorns', {killSignal: 9});\n-await execa('unicorns', {killSignal: 9 as number});\n-execaSync('unicorns', {killSignal: 9 as number});\n+await execa('unicorns', {killSignal: 9});\n+execaSync('unicorns', {killSignal: 9});\n expectError(await execa('unicorns', {killSignal: false}));\n expectError(execaSync('unicorns', {killSignal: false}));"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -10,4 +10,5 @@ await execa('unicorns', {maxBuffer: {stdout: 0, stderr: 0} as const});\n await execa('unicorns', {maxBuffer: {fd1: 0}});\n await execa('unicorns', {maxBuffer: {fd2: 0}});\n+await execa('unicorns', {maxBuffer: {fd3: 0}});\n await execa('unicorns', {maxBuffer: {fd3: 0}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n await execa('unicorns', {maxBuffer: {ipc: 0}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -22,4 +23,5 @@ execaSync('unicorns', {maxBuffer: {stdout: 0, stderr: 0} as const});\n execaSync('unicorns', {maxBuffer: {fd1: 0}});\n execaSync('unicorns', {maxBuffer: {fd2: 0}});\n+execaSync('unicorns', {maxBuffer: {fd3: 0}});\n execaSync('unicorns', {maxBuffer: {fd3: 0}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n execaSync('unicorns', {maxBuffer: {ipc: 0}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -34,4 +36,5 @@ await execa('unicorns', {verbose: {stdout: 'none', stderr: 'none'} as const});\n await execa('unicorns', {verbose: {fd1: 'none'}});\n await execa('unicorns', {verbose: {fd2: 'none'}});\n+await execa('unicorns', {verbose: {fd3: 'none'}});\n await execa('unicorns', {verbose: {fd3: 'none'}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n await execa('unicorns', {verbose: {ipc: 'none'}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -46,4 +49,5 @@ execaSync('unicorns', {verbose: {stdout: 'none', stderr: 'none'} as const});\n execaSync('unicorns', {verbose: {fd1: 'none'}});\n execaSync('unicorns', {verbose: {fd2: 'none'}});\n+execaSync('unicorns', {verbose: {fd3: 'none'}});\n execaSync('unicorns', {verbose: {fd3: 'none'}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n execaSync('unicorns', {verbose: {ipc: 'none'}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -58,4 +62,5 @@ await execa('unicorns', {stripFinalNewline: {stdout: true, stderr: true} as cons\n await execa('unicorns', {stripFinalNewline: {fd1: true}});\n await execa('unicorns', {stripFinalNewline: {fd2: true}});\n+await execa('unicorns', {stripFinalNewline: {fd3: true}});\n await execa('unicorns', {stripFinalNewline: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n await execa('unicorns', {stripFinalNewline: {ipc: true}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -70,4 +75,5 @@ execaSync('unicorns', {stripFinalNewline: {stdout: true, stderr: true} as const}\n execaSync('unicorns', {stripFinalNewline: {fd1: true}});\n execaSync('unicorns', {stripFinalNewline: {fd2: true}});\n+execaSync('unicorns', {stripFinalNewline: {fd3: true}});\n execaSync('unicorns', {stripFinalNewline: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n execaSync('unicorns', {stripFinalNewline: {ipc: true}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -82,4 +88,5 @@ await execa('unicorns', {lines: {stdout: true, stderr: true} as const});\n await execa('unicorns', {lines: {fd1: true}});\n await execa('unicorns', {lines: {fd2: true}});\n+await execa('unicorns', {lines: {fd3: true}});\n await execa('unicorns', {lines: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n await execa('unicorns', {lines: {ipc: true}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -94,4 +101,5 @@ execaSync('unicorns', {lines: {stdout: true, stderr: true} as const});\n execaSync('unicorns', {lines: {fd1: true}});\n execaSync('unicorns', {lines: {fd2: true}});\n+execaSync('unicorns', {lines: {fd3: true}});\n execaSync('unicorns', {lines: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n execaSync('unicorns', {lines: {ipc: true}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -106,4 +114,5 @@ await execa('unicorns', {buffer: {stdout: true, stderr: true} as const});\n await execa('unicorns', {buffer: {fd1: true}});\n await execa('unicorns', {buffer: {fd2: true}});\n+await execa('unicorns', {buffer: {fd3: true}});\n await execa('unicorns', {buffer: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n await execa('unicorns', {buffer: {ipc: true}});"
+  },
+  {
+   "path": "test-d/arguments/specific.test-d.ts",
+   "text": "@@ -118,4 +127,5 @@ execaSync('unicorns', {buffer: {stdout: true, stderr: true} as const});\n execaSync('unicorns', {buffer: {fd1: true}});\n execaSync('unicorns', {buffer: {fd2: true}});\n+execaSync('unicorns', {buffer: {fd3: true}});\n execaSync('unicorns', {buffer: {fd3: true}, stdio: ['pipe', 'pipe', 'pipe', 'pipe']});\n execaSync('unicorns', {buffer: {ipc: true}});"
+  },
+  {
+   "path": "test-d/ipc/message.test-d.ts",
+   "text": "@@ -63,13 +63,13 @@ expectAssignable<Message>(null);\n expectAssignable<Message<'json'>>(null);\n \n-await sendMessage(Number.NaN);\n-expectAssignable<Message>(Number.NaN);\n-expectAssignable<Message<'advanced'>>(Number.NaN);\n-expectAssignable<Message<'json'>>(Number.NaN);\n-\n-await sendMessage(Number.POSITIVE_INFINITY);\n-expectAssignable<Message>(Number.POSITIVE_INFINITY);\n-expectAssignable<Message<'advanced'>>(Number.POSITIVE_INFINITY);\n-expectAssignable<Message<'json'>>(Number.POSITIVE_INFINITY);\n+await sendMessage(NaN);\n+expectAssignable<Message>(NaN);\n+expectAssignable<Message<'advanced'>>(NaN);\n+expectAssignable<Message<'json'>>(NaN);\n+\n+await sendMessage(Infinity);\n+expectAssignable<Message>(Infinity);\n+expectAssignable<Message<'advanced'>>(Infinity);\n+expectAssignable<Message<'json'>>(Infinity);\n \n await sendMessage(new Map());"
+  },
+  {
+   "path": "test-d/stdio/option/fd-integer-0.test-d.ts",
+   "text": "@@ -39,6 +39,6 @@ expectAssignable<StdinSyncOption>([0]);\n expectNotAssignable<StdinOption>(0.5);\n expectNotAssignable<StdinSyncOption>(-1);\n-expectNotAssignable<StdinOption>(Number.POSITIVE_INFINITY);\n-expectNotAssignable<StdinSyncOption>(Number.NaN);\n+expectNotAssignable<StdinOption>(Infinity);\n+expectNotAssignable<StdinSyncOption>(NaN);\n \n expectNotAssignable<StdoutStderrOption>(0);"
+  },
+  {
+   "path": "test-d/stdio/option/fd-integer-0.test-d.ts",
+   "text": "@@ -49,4 +49,4 @@ expectNotAssignable<StdoutStderrSyncOption>([0]);\n expectNotAssignable<StdoutStderrOption>(0.5);\n expectNotAssignable<StdoutStderrSyncOption>(-1);\n-expectNotAssignable<StdoutStderrOption>(Number.POSITIVE_INFINITY);\n-expectNotAssignable<StdoutStderrSyncOption>(Number.NaN);\n+expectNotAssignable<StdoutStderrOption>(Infinity);\n+expectNotAssignable<StdoutStderrSyncOption>(NaN);"
+  },
+  {
+   "path": "test/arguments/encoding-option.js",
+   "text": "@@ -22,5 +22,5 @@ test('cannot pass encoding: false', testInvalidEncoding, false, UNKNOWN_ENCODING\n test('cannot pass encoding: null', testInvalidEncoding, null, getCorrectEncodingMessage('buffer'), execa);\n test('cannot pass encoding: null, sync', testInvalidEncoding, null, getCorrectEncodingMessage('buffer'), execaSync);\n-/* eslint-disable unicorn/text-encoding-identifier-case */\n+/* eslint-disable unicorn/text-encoding-identifier-case -- intentionally testing invalid encoding casing */\n test('cannot pass encoding: utf-8', testInvalidEncoding, 'utf-8', getCorrectEncodingMessage('utf8'), execa);\n test('cannot pass encoding: utf-8, sync', testInvalidEncoding, 'utf-8', getCorrectEncodingMessage('utf8'), execaSync);"
+  },
+  {
+   "path": "test/arguments/escape-no-icu.js",
+   "text": "@@ -1,14 +1,15 @@\n // Mimics Node.js when built without ICU support\n // See https://github.com/sindresorhus/execa/issues/1143\n+// eslint-disable-next-line unicorn/no-global-object-property-assignment -- intentionally mocking the global `RegExp`\n globalThis.RegExp = class extends RegExp {\n+\tstatic isMocked = true;\n+\n \tconstructor(regExpString, flags) {\n \t\tif (flags?.includes('u') && regExpString.includes('\\\\p{')) {\n \t\t\tthrow new Error('Invalid property name');\n \t\t}\n \n \t\tsuper(regExpString, flags);\n \t}\n-\n-\tstatic isMocked = true;\n };\n "
+  },
+  {
+   "path": "test/arguments/escape.js",
+   "text": "@@ -24,4 +24,5 @@ test(testResultCommand, '');\n // eslint-disable-next-line max-params\n const testEscapedCommand = async (t, commandArguments, expectedUnix, expectedWindows, expectedUnixNoIcu = expectedUnix, expectedWindowsNoIcu = expectedWindows) => {\n+\t// eslint-disable-next-line no-use-extend-native/no-use-extend-native -- `RegExp.isMocked` is a static property added by `escape-no-icu.js`, not a native extension\n \tconst expected = RegExp.isMocked\n \t\t? (isWindows ? expectedWindowsNoIcu : expectedUnixNoIcu)"
+  },
+  {
+   "path": "test/arguments/escape.js",
+   "text": "@@ -81,22 +82,22 @@ test('result.escapedCommand - {}', testEscapedCommand, ['{}'], '\\'{}\\'', '\"{}\"')\n test('result.escapedCommand - <>', testEscapedCommand, ['<>'], '\\'<>\\'', '\"<>\"');\n test('result.escapedCommand - \u00e3', testEscapedCommand, ['\u00e3'], '\\'\u00e3\\'', '\"\u00e3\"');\n-test('result.escapedCommand - \\\\a', testEscapedCommand, ['\\^G'], '\\'\\\\^G\\'', '\"\\\\^G\"');\n+test('result.escapedCommand - \\\\a', testEscapedCommand, ['\\u{7}'], '\\'\\\\^G\\'', '\"\\\\^G\"');\n test('result.escapedCommand - \\\\b', testEscapedCommand, ['\\b'], '\\'\\\\b\\'', '\"\\\\b\"');\n-test('result.escapedCommand - \\\\e', testEscapedCommand, ['\\^['], '\\'\\\\^[\\'', '\"\\\\^[\"');\n+test('result.escapedCommand - \\\\e', testEscapedCommand, ['\\u{1B}'], '\\'\\\\^[\\'', '\"\\\\^[\"');\n test('result.escapedCommand - \\\\f', testEscapedCommand, ['\\f'], '\\'\\\\f\\'', '\"\\\\f\"');\n test('result.escapedCommand - \\\\n', testEscapedCommand, ['\\n'], '\\'\\\\n\\'', '\"\\\\n\"');\n test('result.escapedCommand - \\\\r\\\\n', testEscapedCommand, ['\\r\\n'], '\\'\\\\r\\\\n\\'', '\"\\\\r\\\\n\"');\n test('result.escapedCommand - \\\\t', testEscapedCommand, ['\\t'], '\\'\\\\t\\'', '\"\\\\t\"');\n test('result.escapedCommand - \\\\v', testEscapedCommand, ['\\v'], '\\'\\\\u000b\\'', '\"\\\\u000b\"');\n-test('result.escapedCommand - \\\\x01', testEscapedCommand, ['\\^A'], '\\'\\\\^A\\'', '\"\\\\^A\"');\n-test('result.escapedCommand - \\\\x7f', testEscapedCommand, ['\\u007F'], '\\'\\\\u007f\\'', '\"\\\\u007f\"');\n-test('result.escapedCommand - \\\\^E', testEscapedCommand, ['\\^E'], '\\'\\\\^E\\'', '\"\\\\^E\"');\n-test('result.escapedCommand - \\\\u2000', testEscapedCommand, ['\\u2000'], '\\'\\\\u2000\\'', '\"\\\\u2000\"');\n-test('result.escapedCommand - \\\\u200E', testEscapedCommand, ['\\u200E'], '\\'\\\\u200e\\'', '\"\\\\u200e\"', '\\'\\u200E\\'', '\"\\u200E\"');\n-test('result.escapedCommand - \\\\u2028', testEscapedCommand, ['\\u2028'], '\\'\\\\u2028\\'', '\"\\\\u2028\"');\n-test('result.escapedCommand - \\\\u2029', testEscapedCommand, ['\\u2029'], '\\'\\\\u2029\\'', '\"\\\\u2029\"');\n-test('result.escapedCommand - \\\\u5555', testEscapedCommand, ['\\u5555'], '\\'\\u5555\\'', '\"\\u5555\"');\n-test('result.escapedCommand - \\\\uD800', testEscapedCommand, ['\\uD800'], '\\'\\\\ud800\\'', '\"\\\\ud800\"', '\\'\\uD800\\'', '\"\\uD800\"');\n-test('result.escapedCommand - \\\\uE000', testEscapedCommand, ['\\uE000'], '\\'\\\\ue000\\'', '\"\\\\ue000\"', '\\'\\uE000\\'', '\"\\uE000\"');\n+test('result.escapedCommand - \\\\x01', testEscapedCommand, ['\\u{1}'], '\\'\\\\^A\\'', '\"\\\\^A\"');\n+test('result.escapedCommand - \\\\x7f', testEscapedCommand, ['\\u{7F}'], '\\'\\\\u007f\\'', '\"\\\\u007f\"');\n+test('result.escapedCommand - \\\\^E', testEscapedCommand, ['\\u{85}'], '\\'\\\\^E\\'', '\"\\\\^E\"');\n+test('result.escapedCommand - \\\\u2000', testEscapedCommand, ['\\u{2000}'], '\\'\\\\u2000\\'', '\"\\\\u2000\"');\n+test('result.escapedCommand - \\\\u200E', testEscapedCommand, ['\\u{200E}'], '\\'\\\\u200e\\'', '\"\\\\u200e\"', '\\'\\u{200E}\\'', '\"\\u{200E}\"');\n+test('result.escapedCommand - \\\\u2028', testEscapedCommand, ['\\u{2028}'], '\\'\\\\u2028\\'', '\"\\\\u2028\"');\n+test('result.escapedCommand - \\\\u2029', testEscapedCommand, ['\\u{2029}'], '\\'\\\\u2029\\'', '\"\\\\u2029\"');\n+test('result.escapedCommand - \\\\u5555', testEscapedCommand, ['\\u{5555}'], '\\'\\u{5555}\\'', '\"\\u{5555}\"');\n+test('result.escapedCommand - \\\\uD800', testEscapedCommand, ['\\u{D800}'], '\\'\\\\ud800\\'', '\"\\\\ud800\"', '\\'\\u{D800}\\'', '\"\\u{D800}\"');\n+test('result.escapedCommand - \\\\uE000', testEscapedCommand, ['\\u{E000}'], '\\'\\\\ue000\\'', '\"\\\\ue000\"', '\\'\\u{E000}\\'', '\"\\u{E000}\"');\n test('result.escapedCommand - \\\\U1D172', testEscapedCommand, ['\\u{1D172}'], '\\'\\u{1D172}\\'', '\"\\u{1D172}\"');\n test('result.escapedCommand - \\\\U1D173', testEscapedCommand, ['\\u{1D173}'], '\\'\\\\U1d173\\'', '\"\\\\U1d173\"', '\\'\\u{1D173}\\'', '\"\\u{1D173}\"');"
+  },
+  {
+   "path": "test/fixtures/graceful-disconnect.js",
+   "text": "@@ -2,6 +2,6 @@\n import process from 'node:process';\n import {once} from 'node:events';\n-import {getCancelSignal, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-print.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-send-echo.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, getOneMessage, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, getOneMessage, sendMessage} from 'execa';\n \n const message = await getOneMessage();"
+  },
+  {
+   "path": "test/fixtures/graceful-send-print.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-send-string.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, sendMessage} from 'execa';\n import {foobarString} from '../helpers/input.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-send-twice.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-send.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-twice.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal, sendMessage} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal, sendMessage} from 'execa';\n \n await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/graceful-wait.js",
+   "text": "@@ -1,5 +1,5 @@\n #!/usr/bin/env node\n-import {getCancelSignal} from 'execa';\n import {onAbortedSignal} from '../helpers/graceful.js';\n+import {getCancelSignal} from 'execa';\n \n const cancelSignal = await getCancelSignal();"
+  },
+  {
+   "path": "test/fixtures/ipc-iterate-error.js",
+   "text": "@@ -15,5 +15,5 @@ const echoMessages = async () => {\n \n process.on('error', () => {});\n-// eslint-disable-next-line unicorn/prefer-top-level-await\n+\n const promise = echoMessages();\n process.emit('error', new Error(foobarString));"
+  },
+  {
+   "path": "test/fixtures/ipc-iterate-twice.js",
+   "text": "@@ -9,4 +9,5 @@ for (let index = 0; index < 2; index += 1) {\n \tfor await (const message of getEachMessage()) {\n \t\tif (message === foobarString) {\n+\t\t\t// eslint-disable-next-line unicorn/no-break-in-nested-loop -- breaks only the inner loop, the outer loop must continue\n \t\t\tbreak;\n \t\t}"
+  },
+  {
+   "path": "test/fixtures/ipc-print-many-each.js",
+   "text": "@@ -9,4 +9,5 @@ for (let index = 0; index < count; index += 1) {\n \tfor await (const message of getEachMessage()) {\n \t\tconsole.log(message);\n+\t\t// eslint-disable-next-line unicorn/no-break-in-nested-loop -- breaks only the inner loop, the outer loop must continue\n \t\tbreak;\n \t}"
+  },
+  {
+   "path": "test/helpers/convert.js",
+   "text": "@@ -4,5 +4,5 @@ import {finished} from 'node:stream/promises';\n import isPlainObj from 'is-plain-obj';\n import {execa} from '../../index.js';\n-import {foobarString} from '../helpers/input.js';\n+import {foobarString} from './input.js';\n \n export const arrayFromAsync = async (asyncIterable, lines = []) => {"
+  },
+  {
+   "path": "test/helpers/encoding.js",
+   "text": "@@ -5,3 +5,3 @@ export const multibyteChar = '\\u{1F984}';\n export const multibyteUint8Array = textEncoder.encode(multibyteString);\n export const breakingLength = multibyteUint8Array.length * 0.75;\n-export const brokenSymbol = '\\uFFFD';\n+export const brokenSymbol = '\\u{FFFD}';"
+  },
+  {
+   "path": "test/helpers/fixtures-directory.js",
+   "text": "@@ -6,4 +6,5 @@ import logProcessErrors from 'log-process-errors';\n \n // Make tests fail if any warning (such as a deprecation warning) is emitted\n+// eslint-disable-next-line unicorn/no-top-level-side-effects -- must run as soon as this helper is imported\n logProcessErrors({\n \tonError(error, event) {"
+  },
+  {
+   "path": "test/helpers/input.js",
+   "text": "@@ -5,5 +5,5 @@ import {inspect} from 'node:util';\n \n export const foobarString = 'foobar';\n-export const foobarRed = `\\^[[31m${foobarString}\\^[[39m`;\n+export const foobarRed = `\\u{1B}[31m${foobarString}\\u{1B}[39m`;\n export const foobarArray = ['foo', 'bar'];\n export const foobarUint8Array = textEncoder.encode(foobarString);"
+  },
+  {
+   "path": "test/helpers/node-version.js",
+   "text": "@@ -1,3 +1,3 @@\n import {version} from 'node:process';\n \n-export const majorNodeVersion = Number(version.split('.')[0].slice(1));\n+export const majorNodeVersion = Number(version.split('.', 1)[0].slice(1));"
+  },
+  {
+   "path": "test/helpers/override-promise.js",
+   "text": "@@ -1,11 +1,13 @@\n // Can't use `test.before`, because `ava` needs `Promise`.\n const nativePromise = Promise;\n+// eslint-disable-next-line unicorn/no-global-object-property-assignment -- intentionally mocking the global `Promise`\n globalThis.Promise = class BrokenPromise {\n \tthen() { // eslint-disable-line unicorn/no-thenable\n \t\tthrow new Error('error');\n \t}\n };\n \n export function restorePromise() {\n+\t// eslint-disable-next-line unicorn/no-global-object-property-assignment -- restoring the mocked global `Promise`\n \tglobalThis.Promise = nativePromise;\n }"
+  },
+  {
+   "path": "test/helpers/verbose.js",
+   "text": "@@ -86,5 +86,5 @@ const splitLines = stderr => stderr.split('\\n');\n const normalizeStderr = stderr => replaceSymbols(normalizeDuration(normalizeTimestamp(stripVTControlCharacters(stderr))), {useFallback: true});\n export const testTimestamp = '[00:00:00.000]';\n-const normalizeTimestamp = stderr => stderr.replaceAll(/^\\[\\d{2}:\\d{2}:\\d{2}.\\d{3}]/gm, testTimestamp);\n+const normalizeTimestamp = stderr => stderr.replaceAll(/^\\[\\d{2}:\\d{2}:\\d{2}.\\d{3}\\]/gm, () => testTimestamp);\n const normalizeDuration = stderr => stderr.replaceAll(/\\(done in [^)]+\\)/g, '(done in 0ms)');\n "
+  },
+  {
+   "path": "test/helpers/wait.js",
+   "text": "@@ -1,4 +1,4 @@\n-import {getStdio} from '../helpers/stdio.js';\n-import {noopGenerator} from '../helpers/generator.js';\n+import {getStdio} from './stdio.js';\n+import {noopGenerator} from './generator.js';\n \n export const endOptionStream = ({stream}) => {"
+  },
+  {
+   "path": "test/io/output-async.js",
+   "text": "@@ -42,7 +42,5 @@ test.serial('process.std* listeners are cleaned up on success with a single inpu\n \n test.serial('Can spawn many subprocesses in parallel', async t => {\n-\tconst results = await Promise.all(\n-\t\tArray.from({length: PARALLEL_COUNT}, () => execa('noop.js', [foobarString])),\n-\t);\n+\tconst results = await Promise.all(Array.from({length: PARALLEL_COUNT}, () => execa('noop.js', [foobarString])));\n \tt.true(results.every(({stdout}) => stdout === foobarString));\n });"
+  },
+  {
+   "path": "test/io/output-async.js",
+   "text": "@@ -56,7 +54,5 @@ const testMaxListeners = async (t, isMultiple, maxListenersCount) => {\n \n \ttry {\n-\t\tconst results = await Promise.all(\n-\t\t\tArray.from({length: PARALLEL_COUNT}, () => execa('empty.js', getComplexStdio(isMultiple))),\n-\t\t);\n+\t\tconst results = await Promise.all(Array.from({length: PARALLEL_COUNT}, () => execa('empty.js', getComplexStdio(isMultiple))));\n \t\tt.true(results.every(({exitCode}) => exitCode === 0));\n \t} finally {"
+  },
+  {
+   "path": "test/io/output-async.js",
+   "text": "@@ -75,9 +71,9 @@ const testMaxListeners = async (t, isMultiple, maxListenersCount) => {\n test.serial('No warning with maxListeners default and [\"pipe\", \"inherit\"]', testMaxListeners, false, defaultMaxListeners);\n test.serial('No warning with maxListeners 100 and [\"pipe\", \"inherit\"]', testMaxListeners, false, 100);\n-test.serial('No warning with maxListeners Infinity and [\"pipe\", \"inherit\"]', testMaxListeners, false, Number.POSITIVE_INFINITY);\n+test.serial('No warning with maxListeners Infinity and [\"pipe\", \"inherit\"]', testMaxListeners, false, Infinity);\n test.serial('No warning with maxListeners 0 and [\"pipe\", \"inherit\"]', testMaxListeners, false, 0);\n test.serial('No warning with maxListeners 1 and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, 1);\n test.serial('No warning with maxListeners default and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, defaultMaxListeners);\n test.serial('No warning with maxListeners 100 and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, 100);\n-test.serial('No warning with maxListeners Infinity and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, Number.POSITIVE_INFINITY);\n+test.serial('No warning with maxListeners Infinity and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, Infinity);\n test.serial('No warning with maxListeners 0 and [\"pipe\", \"inherit\"], multiple inputs', testMaxListeners, true, 0);"
+  },
+  {
+   "path": "test/ipc/buffer-messages.js",
+   "text": "@@ -80,9 +80,7 @@ test('Sets empty error.ipcOutput, sync', t => {\n \n test.serial('Can retrieve initial IPC messages under heavy load', async t => {\n-\tawait Promise.all(\n-\t\tArray.from({length: PARALLEL_COUNT}, async (_, index) => {\n-\t\t\tconst {ipcOutput} = await execa('ipc-send-argv.js', [`${index}`], {ipc: true});\n-\t\t\tt.deepEqual(ipcOutput, [`${index}`]);\n-\t\t}),\n-\t);\n+\tawait Promise.all(Array.from({length: PARALLEL_COUNT}, async (_, index) => {\n+\t\tconst {ipcOutput} = await execa('ipc-send-argv.js', [`${index}`], {ipc: true});\n+\t\tt.deepEqual(ipcOutput, [`${index}`]);\n+\t}));\n });"
+  },
+  {
+   "path": "test/ipc/get-one.js",
+   "text": "@@ -56,11 +56,9 @@ test('Throwing from exports.getOneMessage() filter disconnects', async t => {\n \n test.serial('Can retrieve initial IPC messages under heavy load', async t => {\n-\tawait Promise.all(\n-\t\tArray.from({length: PARALLEL_COUNT}, async (_, index) => {\n-\t\t\tconst subprocess = execa('ipc-send-argv.js', [`${index}`], {ipc: true, buffer: false});\n-\t\t\tt.is(await subprocess.getOneMessage(), `${index}`);\n-\t\t\tawait subprocess;\n-\t\t}),\n-\t);\n+\tawait Promise.all(Array.from({length: PARALLEL_COUNT}, async (_, index) => {\n+\t\tconst subprocess = execa('ipc-send-argv.js', [`${index}`], {ipc: true, buffer: false});\n+\t\tt.is(await subprocess.getOneMessage(), `${index}`);\n+\t\tawait subprocess;\n+\t}));\n });\n "
+  },
+  {
+   "path": "test/ipc/send.js",
+   "text": "@@ -16,12 +16,10 @@ test('Can exchange IPC messages', async t => {\n \n test.serial('Can exchange IPC messages under heavy load', async t => {\n-\tawait Promise.all(\n-\t\tArray.from({length: PARALLEL_COUNT}, async (_, index) => {\n-\t\t\tconst subprocess = execa('ipc-echo.js', {ipc: true});\n-\t\t\tawait subprocess.sendMessage(index);\n-\t\t\tt.is(await subprocess.getOneMessage(), index);\n-\t\t\tawait subprocess;\n-\t\t}),\n-\t);\n+\tawait Promise.all(Array.from({length: PARALLEL_COUNT}, async (_, index) => {\n+\t\tconst subprocess = execa('ipc-echo.js', {ipc: true});\n+\t\tawait subprocess.sendMessage(index);\n+\t\tt.is(await subprocess.getOneMessage(), index);\n+\t\tawait subprocess;\n+\t}));\n });\n "
+  },
+  {
+   "path": "test/ipc/send.js",
+   "text": "@@ -88,5 +86,4 @@ test('Disconnects IPC on subprocess.sendMessage() error', async t => {\n // EPIPE happens based on timing conditions, so we must repeat it until it happens\n const findEpipeError = async t => {\n-\t// eslint-disable-next-line no-constant-condition\n \twhile (true) {\n \t\t// eslint-disable-next-line no-await-in-loop"
+  },
+  {
+   "path": "test/ipc/send.js",
+   "text": "@@ -100,5 +97,5 @@ const findEpipeError = async t => {\n const getEpipeError = async () => {\n \tconst subprocess = execa('delay.js', ['0'], {ipc: true});\n-\t// eslint-disable-next-line no-constant-condition\n+\n \twhile (true) {\n \t\t// eslint-disable-next-line no-await-in-loop"
+  },
+  {
+   "path": "test/methods/command.js",
+   "text": "@@ -196,4 +196,5 @@ test('parseCommandString() can get empty strings', t => {\n \n test('parseCommandString() can get only whitespaces', t => {\n+\t// eslint-disable-next-line unicorn/prefer-string-repeat\n \tt.deepEqual(parseCommandString('   '), []);\n });"
+  },
+  {
+   "path": "test/methods/parameters-options.js",
+   "text": "@@ -22,38 +22,38 @@ const testSerializeArgument = async (t, commandArgument, execaMethod) => {\n test('execa()\\'s arguments can be numbers', testSerializeArgument, 1, execa);\n test('execa()\\'s arguments can be booleans', testSerializeArgument, true, execa);\n-test('execa()\\'s arguments can be NaN', testSerializeArgument, Number.NaN, execa);\n-test('execa()\\'s arguments can be Infinity', testSerializeArgument, Number.POSITIVE_INFINITY, execa);\n+test('execa()\\'s arguments can be NaN', testSerializeArgument, NaN, execa);\n+test('execa()\\'s arguments can be Infinity', testSerializeArgument, Infinity, execa);\n test('execa()\\'s arguments can be null', testSerializeArgument, null, execa);\n test('execa()\\'s arguments can be undefined', testSerializeArgument, undefined, execa);\n test('execa()\\'s arguments can be bigints', testSerializeArgument, 1n, execa);\n test('execa()\\'s arguments can be symbols', testSerializeArgument, Symbol('test'), execa);\n test('execaSync()\\'s arguments can be numbers', testSerializeArgument, 1, execaSync);\n test('execaSync()\\'s arguments can be booleans', testSerializeArgument, true, execaSync);\n-test('execaSync()\\'s arguments can be NaN', testSerializeArgument, Number.NaN, execaSync);\n-test('execaSync()\\'s arguments can be Infinity', testSerializeArgument, Number.POSITIVE_INFINITY, execaSync);\n+test('execaSync()\\'s arguments can be NaN', testSerializeArgument, NaN, execaSync);\n+test('execaSync()\\'s arguments can be Infinity', testSerializeArgument, Infinity, execaSync);\n test('execaSync()\\'s arguments can be null', testSerializeArgument, null, execaSync);\n test('execaSync()\\'s arguments can be undefined', testSerializeArgument, undefined, execaSync);\n test('execaSync()\\'s arguments can be bigints', testSerializeArgument, 1n, execaSync);\n test('execaSync()\\'s arguments can be symbols', testSerializeArgument, Symbol('test'), execaSync);\n test('execaNode()\\'s arguments can be numbers', testSerializeArgument, 1, execaNode);\n test('execaNode()\\'s arguments can be booleans', testSerializeArgument, true, execaNode);\n-test('execaNode()\\'s arguments can be NaN', testSerializeArgument, Number.NaN, execaNode);\n-test('execaNode()\\'s arguments can be Infinity', testSerializeArgument, Number.POSITIVE_INFINITY, execaNode);\n+test('execaNode()\\'s arguments can be NaN', testSerializeArgument, NaN, execaNode);\n+test('execaNode()\\'s arguments can be Infinity', testSerializeArgument, Infinity, execaNode);\n test('execaNode()\\'s arguments can be null', testSerializeArgument, null, execaNode);\n test('execaNode()\\'s arguments can be undefined', testSerializeArgument, undefined, execaNode);\n test('execaNode()\\'s arguments can be bigints', testSerializeArgument, 1n, execaNode);\n test('execaNode()\\'s arguments can be symbols', testSerializeArgument, Symbol('test'), execaNode);\n test('$\\'s arguments can be numbers', testSerializeArgument, 1, $);\n test('$\\'s arguments can be booleans', testSerializeArgument, true, $);\n-test('$\\'s arguments can be NaN', testSerializeArgument, Number.NaN, $);\n-test('$\\'s arguments can be Infinity', testSerializeArgument, Number.POSITIVE_INFINITY, $);\n+test('$\\'s arguments can be NaN', testSerializeArgument, NaN, $);\n+test('$\\'s arguments can be Infinity', testSerializeArgument, Infinity, $);\n test('$\\'s arguments can be null', testSerializeArgument, null, $);\n test('$\\'s arguments can be undefined', testSerializeArgument, undefined, $);\n test('$\\'s arguments can be bigints', testSerializeArgument, 1n, $);\n test('$\\'s arguments can be symbols', testSerializeArgument, Symbol('test'), $);\n test('$.sync\\'s arguments can be numbers', testSerializeArgument, 1, $.sync);\n test('$.sync\\'s arguments can be booleans', testSerializeArgument, true, $.sync);\n-test('$.sync\\'s arguments can be NaN', testSerializeArgument, Number.NaN, $.sync);\n-test('$.sync\\'s arguments can be Infinity', testSerializeArgument, Number.POSITIVE_INFINITY, $.sync);\n+test('$.sync\\'s arguments can be NaN', testSerializeArgument, NaN, $.sync);\n+test('$.sync\\'s arguments can be Infinity', testSerializeArgument, Infinity, $.sync);\n test('$.sync\\'s arguments can be null', testSerializeArgument, null, $.sync);\n test('$.sync\\'s arguments can be undefined', testSerializeArgument, undefined, $.sync);"
+  },
+  {
+   "path": "test/methods/promise.js",
+   "text": "@@ -17,5 +17,5 @@ test('finally function is executed on success', async t => {\n \t\tisCalled = true;\n \t});\n-\tt.is(isCalled, true);\n+\tt.true(isCalled);\n \tt.is(stdout, 'foo');\n });"
+  },
+  {
+   "path": "test/methods/promise.js",
+   "text": "@@ -26,5 +26,5 @@ test('finally function is executed on failure', async t => {\n \t\tisError = true;\n \t}));\n-\tt.is(isError, true);\n+\tt.true(isError);\n \tt.is(typeof stdout, 'string');\n \tt.is(typeof stderr, 'string');"
+  },
+  {
+   "path": "test/methods/template.js",
+   "text": "@@ -76,4 +76,5 @@ test('$ splits expressions - \"  \" (2 spaces)', testScriptStdout, () => $`echo.js\n test('$ concatenates expressions - \"  \" (2 spaces)', testScriptStdout, () => $`echo.js   ${'a'}  `, 'a');\n test('$ handles tokens - \"   \" (3 spaces)', testScriptStdout, () => $`echo.js   `, '');\n+// eslint-disable-next-line unicorn/prefer-string-repeat\n test('$ handles expressions - \"   \" (3 spaces)', testScriptStdout, () => $`echo.js ${'   '}`, '   ');\n test('$ splits tokens - \"  \" (3 spaces)', testScriptStdout, () => $`echo.js a   b`, 'a\\nb');"
+  },
+  {
+   "path": "test/methods/template.js",
+   "text": "@@ -115,23 +116,23 @@ test('$ concatenates tokens - \\\\n (escape)', testScriptStdout, () => $`echo.js \\\n test('$ handles tokens - \\\\r (no escape)', testScriptStdout, () => escapedCall('echo.js \\r '), '');\n test('$ splits tokens - \\\\r (no escape)', testScriptStdout, () => escapedCall('echo.js a\\rb'), 'a\\nb');\n-test('$ splits expressions - \\\\r (no escape)', testScriptStdout, () => escapedCall(`echo.js ${'a'}\\r${'b'}`), 'a\\nb');\n+test('$ splits expressions - \\\\r (no escape)', testScriptStdout, () => escapedCall('echo.js a\\rb'), 'a\\nb');\n test('$ concatenates tokens - \\\\r (no escape)', testScriptStdout, () => escapedCall('echo.js \\ra\\r b'), 'a\\nb');\n-test('$ concatenates expressions - \\\\r (no escape)', testScriptStdout, () => escapedCall(`echo.js \\r${'a'}\\r b`), 'a\\nb');\n+test('$ concatenates expressions - \\\\r (no escape)', testScriptStdout, () => escapedCall('echo.js \\ra\\r b'), 'a\\nb');\n test('$ splits tokens - \\\\r (escape)', testScriptStdout, () => $`echo.js a\\r b`, 'a\\r\\nb');\n test('$ splits expressions - \\\\r (escape)', testScriptStdout, () => $`echo.js ${'a'}\\r ${'b'}`, 'a\\r\\nb');\n test('$ concatenates tokens - \\\\r (escape)', testScriptStdout, () => $`echo.js \\ra\\r b`, '\\ra\\r\\nb');\n test('$ concatenates expressions - \\\\r (escape)', testScriptStdout, () => $`echo.js \\r${'a'}\\r b`, '\\ra\\r\\nb');\n test('$ handles tokens - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall('echo.js \\r\\n '), '');\n test('$ splits tokens - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall('echo.js a\\r\\nb'), 'a\\nb');\n-test('$ splits expressions - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall(`echo.js ${'a'}\\r\\n${'b'}`), 'a\\nb');\n+test('$ splits expressions - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall('echo.js a\\r\\nb'), 'a\\nb');\n test('$ concatenates tokens - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall('echo.js \\r\\na\\r\\n b'), 'a\\nb');\n-test('$ concatenates expressions - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall(`echo.js \\r\\n${'a'}\\r\\n b`), 'a\\nb');\n+test('$ concatenates expressions - \\\\r\\\\n (no escape)', testScriptStdout, () => escapedCall('echo.js \\r\\na\\r\\n b'), 'a\\nb');\n test('$ handles tokens - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js \\r\\n `, '\\r\\n');\n test('$ handles expressions - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js ${'\\r\\n'} `, '\\r\\n');\n test('$ splits tokens - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js a\\r\\n b`, 'a\\r\\n\\nb');\n test('$ splits expressions - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js ${'a'}\\r\\n ${'b'}`, 'a\\r\\n\\nb');\n test('$ concatenates tokens - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js \\r\\na\\r\\n b`, '\\r\\na\\r\\n\\nb');\n test('$ concatenates expressions - \\\\r\\\\n (escape)', testScriptStdout, () => $`echo.js \\r\\n${'a'}\\r\\n b`, '\\r\\na\\r\\n\\nb');\n-/* eslint-disable no-irregular-whitespace */\n+/* eslint-disable no-irregular-whitespace -- intentionally testing a literal form feed character */\n test('$ handles expressions - \\\\f (no escape)', testScriptStdout, () => $`echo.js ${'\n'}`, '\\f');\n test('$ splits tokens - \\\\f (no escape)', testScriptStdout, () => $`echo.js a\nb`, 'a\\fb');"
+  },
+  {
+   "path": "test/methods/template.js",
+   "text": "@@ -170,10 +171,10 @@ test('$ splits tokens - \\\\v', testScriptStdout, () => $`echo.js a\\vb`, 'a\\vb');\n test('$ concatenates tokens - \\\\v', testScriptStdout, () => $`echo.js \\va\\v b`, '\\va\\v\\nb');\n test('$ concatenates expressions - \\\\v', testScriptStdout, () => $`echo.js \\v${'a'}\\v b`, '\\va\\v\\nb');\n-test('$ handles tokens - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028`, '\\u2028');\n-test('$ handles expressions - \\\\u2028', testScriptStdout, () => $`echo.js ${'\\u2028'}`, '\\u2028');\n-test('$ splits tokens - \\\\u2028', testScriptStdout, () => $`echo.js a\\u2028b`, 'a\\u2028b');\n-test('$ splits expressions - \\\\u2028', testScriptStdout, () => $`echo.js ${'a'}\\u2028${'b'}`, 'a\\u2028b');\n-test('$ concatenates tokens - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028a\\u2028 b`, '\\u2028a\\u2028\\nb');\n-test('$ concatenates expressions - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028${'a'}\\u2028 b`, '\\u2028a\\u2028\\nb');\n+test('$ handles tokens - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028`, '\\u{2028}');\n+test('$ handles expressions - \\\\u2028', testScriptStdout, () => $`echo.js ${'\\u{2028}'}`, '\\u{2028}');\n+test('$ splits tokens - \\\\u2028', testScriptStdout, () => $`echo.js a\\u2028b`, 'a\\u{2028}b');\n+test('$ splits expressions - \\\\u2028', testScriptStdout, () => $`echo.js ${'a'}\\u2028${'b'}`, 'a\\u{2028}b');\n+test('$ concatenates tokens - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028a\\u2028 b`, '\\u{2028}a\\u{2028}\\nb');\n+test('$ concatenates expressions - \\\\u2028', testScriptStdout, () => $`echo.js \\u2028${'a'}\\u2028 b`, '\\u{2028}a\\u{2028}\\nb');\n test('$ handles tokens - \\\\a', testScriptStdout, () => $`echo.js \\a`, 'a');\n test('$ splits tokens - \\\\a', testScriptStdout, () => $`echo.js a\\ab`, 'aab');"
+  },
+  {
+   "path": "test/methods/template.js",
+   "text": "@@ -191,21 +192,21 @@ test('$ splits tokens - \\\\.', testScriptStdout, () => $`echo.js a\\.b`, 'a.b');\n test('$ concatenates tokens - \\\\.', testScriptStdout, () => $`echo.js \\.a\\. b`, '.a.\\nb');\n test('$ concatenates expressions - \\\\.', testScriptStdout, () => $`echo.js \\.${'a'}\\. b`, '.a.\\nb');\n-/* eslint-disable unicorn/no-hex-escape */\n+\n test('$ handles tokens - \\\\x63', testScriptStdout, () => $`echo.js \\x63`, 'c');\n test('$ splits tokens - \\\\x63', testScriptStdout, () => $`echo.js a\\x63b`, 'acb');\n test('$ splits expressions - \\\\x63', testScriptStdout, () => $`echo.js ${'a'}\\x63${'b'}`, 'acb');\n test('$ concatenates tokens - \\\\x63', testScriptStdout, () => $`echo.js \\x63a\\x63 b`, 'cac\\nb');\n test('$ concatenates expressions - \\\\x63', testScriptStdout, () => $`echo.js \\x63${'a'}\\x63 b`, 'cac\\nb');\n-/* eslint-enable unicorn/no-hex-escape */\n+\n test('$ handles tokens - \\\\u0063', testScriptStdout, () => $`echo.js \\u0063`, 'c');\n test('$ splits tokens - \\\\u0063', testScriptStdout, () => $`echo.js a\\u0063b`, 'acb');\n test('$ splits expressions - \\\\u0063', testScriptStdout, () => $`echo.js ${'a'}\\u0063${'b'}`, 'acb');\n test('$ concatenates tokens - \\\\u0063', testScriptStdout, () => $`echo.js \\u0063a\\u0063 b`, 'cac\\nb');\n test('$ concatenates expressions - \\\\u0063', testScriptStdout, () => $`echo.js \\u0063${'a'}\\u0063 b`, 'cac\\nb');\n-test('$ handles tokens - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}`, '\\^A');\n-test('$ splits tokens - \\\\u{1}', testScriptStdout, () => $`echo.js a\\u{1}b`, 'a\\^Ab');\n-test('$ splits expressions - \\\\u{1}', testScriptStdout, () => $`echo.js ${'a'}\\u{1}${'b'}`, 'a\\^Ab');\n-test('$ concatenates tokens - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}a\\u{1} b`, '\\^Aa\\^A\\nb');\n-test('$ concatenates expressions - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}${'a'}\\u{1} b`, '\\^Aa\\^A\\nb');\n+test('$ handles tokens - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}`, '\\u{1}');\n+test('$ splits tokens - \\\\u{1}', testScriptStdout, () => $`echo.js a\\u{1}b`, 'a\\u{1}b');\n+test('$ splits expressions - \\\\u{1}', testScriptStdout, () => $`echo.js ${'a'}\\u{1}${'b'}`, 'a\\u{1}b');\n+test('$ concatenates tokens - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}a\\u{1} b`, '\\u{1}a\\u{1}\\nb');\n+test('$ concatenates expressions - \\\\u{1}', testScriptStdout, () => $`echo.js \\u{1}${'a'}\\u{1} b`, '\\u{1}a\\u{1}\\nb');\n test('$ handles tokens - \\\\u{63}', testScriptStdout, () => $`echo.js \\u{63}`, 'c');\n test('$ splits tokens - \\\\u{63}', testScriptStdout, () => $`echo.js a\\u{63}b`, 'acb');"
+  },
+  {
+   "path": "test/methods/template.js",
+   "text": "@@ -289,9 +290,8 @@ test('$ handles invalid escape sequence - \\\\ug', testInvalidSequence, () => $`ec\n test('$ handles invalid escape sequence - \\\\u{0000', testInvalidSequence, () => $`echo.js \\u{0000`);\n test('$ handles invalid escape sequence - \\\\u{g}', testInvalidSequence, () => $`echo.js \\u{g}`);\n-/* eslint-disable unicorn/no-hex-escape */\n+\n test('$ handles invalid escape sequence - \\\\x', testInvalidSequence, () => $`echo.js \\x`);\n test('$ handles invalid escape sequence - \\\\x0', testInvalidSequence, () => $`echo.js \\x0`);\n test('$ handles invalid escape sequence - \\\\xgg', testInvalidSequence, () => $`echo.js \\xgg`);\n-/* eslint-enable unicorn/no-hex-escape */\n \n const testEmptyScript = (t, getSubprocess) => {"
+  },
+  {
+   "path": "test/resolve/exit.js",
+   "text": "@@ -14,7 +14,5 @@ test('exitCode is 0 on success', async t => {\n \n const testExitCode = async (t, expectedExitCode) => {\n-\tconst {exitCode, originalMessage, shortMessage, message} = await t.throwsAsync(\n-\t\texeca('exit.js', [`${expectedExitCode}`]),\n-\t);\n+\tconst {exitCode, originalMessage, shortMessage, message} = await t.throwsAsync(execa('exit.js', [`${expectedExitCode}`]));\n \tt.is(exitCode, expectedExitCode);\n \tt.is(originalMessage, undefined);"
+  },
+  {
+   "path": "test/return/early-error.js",
+   "text": "@@ -27,5 +27,4 @@ test('execaSync() throws error if ENOENT', t => {\n \tconst subprocess = getEarlyErrorSubprocess({reject});\n \tt.notThrows(() => {\n-\t\t// eslint-disable-next-line promise/prefer-await-to-then\n \t\tsubprocess.catch(() => {});\n \t\tsubprocess.unref();"
+  },
+  {
+   "path": "test/return/early-error.js",
+   "text": "@@ -66,10 +65,13 @@ if (!isWindows) {\n \tif (arch() === 'x64') {\n \t\ttest('write to fast-exit subprocess', async t => {\n-\t\t// Try-catch here is necessary, because this test is not 100% accurate\n-\t\t// Sometimes subprocess can manage to accept input before exiting\n+\t\t\tt.plan(1);\n+\n+\t\t\t// Try-catch here is necessary, because this test is not 100% accurate\n+\t\t\t// Sometimes subprocess can manage to accept input before exiting\n \t\t\ttry {\n \t\t\t\tawait execa(`fast-exit-${process.platform}`, [], {input: 'data'});\n \t\t\t\tt.pass();\n \t\t\t} catch (error) {\n+\t\t\t\t// eslint-disable-next-line ava/no-conditional-assertion -- either outcome is acceptable, see comment above\n \t\t\t\tt.is(error.code, 'EPIPE');\n \t\t\t}"
+  },
+  {
+   "path": "test/return/message.js",
+   "text": "@@ -74,5 +74,6 @@ test('error.message does not contain stdout if it is an object', testPartialIgno\n \n const testFullIgnoreMessage = async (t, options, resultProperty) => {\n-\tconst {[resultProperty]: message} = await t.throwsAsync(execa('echo-fail.js', options));\n+\tconst result = await t.throwsAsync(execa('echo-fail.js', options));\n+\tconst message = result[resultProperty];\n \tt.false(message.includes('stderr'));\n \tt.false(message.includes('stdout'));"
+  },
+  {
+   "path": "test/return/result.js",
+   "text": "@@ -98,9 +98,9 @@ test('error.isTerminated is true if subprocess was killed indirectly', async t =\n \tif (isWindows) {\n \t\tconst {isTerminated, signal} = await t.throwsAsync(subprocess, {message: /failed with exit code 1/});\n-\t\tt.is(isTerminated, false);\n+\t\tt.false(isTerminated);\n \t\tt.is(signal, undefined);\n \t} else {\n \t\tconst {isTerminated, signal} = await t.throwsAsync(subprocess, {message: /was killed with SIGINT/});\n-\t\tt.is(isTerminated, true);\n+\t\tt.true(isTerminated);\n \t\tt.is(signal, 'SIGINT');\n \t}"
+  },
+  {
+   "path": "test/terminate/kill-force.js",
+   "text": "@@ -46,5 +46,5 @@ const testInvalidForceKill = async (t, forceKillAfterDelay) => {\n };\n \n-test('`forceKillAfterDelay` should not be NaN', testInvalidForceKill, Number.NaN);\n+test('`forceKillAfterDelay` should not be NaN', testInvalidForceKill, NaN);\n test('`forceKillAfterDelay` should not be negative', testInvalidForceKill, -1);\n "
+  },
+  {
+   "path": "test/terminate/kill-signal.js",
+   "text": "@@ -1,15 +1,11 @@\n import {once} from 'node:events';\n-import {platform} from 'node:process';\n import {constants} from 'node:os';\n import {setImmediate} from 'node:timers/promises';\n import test from 'ava';\n import {execa, execaSync} from '../../index.js';\n import {setFixtureDirectory} from '../helpers/fixtures-directory.js';\n-import {majorNodeVersion} from '../helpers/node-version.js';\n \n setFixtureDirectory();\n \n-const isWindows = platform === 'win32';\n-\n const testKillSignal = async (t, killSignal) => {\n \tconst {isTerminated, signal} = await t.throwsAsync(execa('forever.js', {killSignal, timeout: 1}));"
+  },
+  {
+   "path": "test/terminate/kill-signal.js",
+   "text": "@@ -62,18 +58,8 @@ test('Can call `.kill()` multiple times', async t => {\n \n \tconst {exitCode, isTerminated, signal, code} = await t.throwsAsync(subprocess);\n-\t// On Windows, calling `subprocess.kill()` twice emits an `error` event on the subprocess.\n-\t// This does not happen when passing an `error` argument, nor when passing a non-terminating signal.\n-\t// There is no easy way to make this cross-platform, so we document the difference here.\n-\tif (isWindows && majorNodeVersion === 22) {\n-\t\tt.is(exitCode, undefined);\n-\t\tt.false(isTerminated);\n-\t\tt.is(signal, undefined);\n-\t\tt.is(code, 'EPERM');\n-\t} else {\n-\t\tt.is(exitCode, undefined);\n-\t\tt.true(isTerminated);\n-\t\tt.is(signal, 'SIGTERM');\n-\t\tt.is(code, undefined);\n-\t}\n+\tt.is(exitCode, undefined);\n+\tt.true(isTerminated);\n+\tt.is(signal, 'SIGTERM');\n+\tt.is(code, undefined);\n });\n "
+  },
+  {
+   "path": "test/terminate/signal.js",
+   "text": "@@ -37,6 +37,6 @@ test('Cannot use killSignal: -1', testInvalidKillSignal, -1, 'integer', execa);\n test('Cannot use killSignal: 1n', testInvalidKillSignal, 1n, 'other', execa);\n test('Cannot use killSignal: 1.5', testInvalidKillSignal, 1.5, 'other', execa);\n-test('Cannot use killSignal: Infinity', testInvalidKillSignal, Number.POSITIVE_INFINITY, 'other', execa);\n-test('Cannot use killSignal: NaN', testInvalidKillSignal, Number.NaN, 'other', execa);\n+test('Cannot use killSignal: Infinity', testInvalidKillSignal, Infinity, 'other', execa);\n+test('Cannot use killSignal: NaN', testInvalidKillSignal, NaN, 'other', execa);\n test('Cannot use killSignal: false', testInvalidKillSignal, false, 'other', execa);\n test('Cannot use killSignal: null', testInvalidKillSignal, null, 'other', execa);"
+  },
+  {
+   "path": "test/terminate/signal.js",
+   "text": "@@ -50,6 +50,6 @@ test('Cannot use killSignal: \"sigterm\", sync', testInvalidKillSignal, 'sigterm',\n test('Cannot use killSignal: 200, sync', testInvalidKillSignal, 200, 'integer', execaSync);\n test('Cannot use killSignal: 1.5, sync', testInvalidKillSignal, 1.5, 'other', execaSync);\n-test('Cannot use killSignal: Infinity, sync', testInvalidKillSignal, Number.POSITIVE_INFINITY, 'other', execaSync);\n-test('Cannot use killSignal: NaN, sync', testInvalidKillSignal, Number.NaN, 'other', execaSync);\n+test('Cannot use killSignal: Infinity, sync', testInvalidKillSignal, Infinity, 'other', execaSync);\n+test('Cannot use killSignal: NaN, sync', testInvalidKillSignal, NaN, 'other', execaSync);\n test('Cannot use killSignal: null, sync', testInvalidKillSignal, null, 'other', execaSync);\n test('Cannot use killSignal: symbol, sync', testInvalidKillSignal, Symbol('test'), 'other', execaSync);"
+  },
+  {
+   "path": "test/terminate/signal.js",
+   "text": "@@ -80,6 +80,6 @@ test('Cannot use subprocess.kill(-1)', testInvalidSignalArgument, -1, 'integer')\n test('Cannot use subprocess.kill(1n)', testInvalidSignalArgument, 1n, 'other');\n test('Cannot use subprocess.kill(1.5)', testInvalidSignalArgument, 1.5, 'other');\n-test('Cannot use subprocess.kill(Infinity)', testInvalidSignalArgument, Number.POSITIVE_INFINITY, 'other');\n-test('Cannot use subprocess.kill(NaN)', testInvalidSignalArgument, Number.NaN, 'other');\n+test('Cannot use subprocess.kill(Infinity)', testInvalidSignalArgument, Infinity, 'other');\n+test('Cannot use subprocess.kill(NaN)', testInvalidSignalArgument, NaN, 'other');\n test('Cannot use subprocess.kill(false)', testInvalidSignalArgument, false, 'other');\n test('Cannot use subprocess.kill(null)', testInvalidSignalArgument, null, 'other');"
+  },
+  {
+   "path": "test/transform/encoding-final.js",
+   "text": "@@ -42,5 +42,5 @@ const compareValues = (t, value, encoding) => {\n \n // This string gives different outputs with each encoding type\n-const STRING_TO_ENCODE = '\\u1000.';\n+const STRING_TO_ENCODE = '\\u{1000}.';\n const BUFFER_TO_ENCODE = Buffer.from(STRING_TO_ENCODE);\n "
+  },
+  {
+   "path": "test/transform/encoding-multibyte.js",
+   "text": "@@ -23,4 +23,5 @@ const testMultibyteCharacters = async (t, objectMode, addNoopTransform, execaMet\n \t\tt.deepEqual(stdout, foobarArray);\n \t} else {\n+\t\t// eslint-disable-next-line n/prefer-global/buffer, unicorn/prefer-uint8array-base64 -- `Uint8Array#toBase64()` is not available on the minimum supported Node.js version\n \t\tt.is(stdout, Buffer.from(foobarArray.join('')).toString('base64'));\n \t}"
+  },
+  {
+   "path": "test/transform/split-lines.js",
+   "text": "@@ -32,5 +32,5 @@ const emptyChunks = [emptyFull];\n const newlineFull = '\\n';\n const newlineChunks = [newlineFull];\n-const newlinesFull = '\\n\\n\\n';\n+const newlinesFull = '\\n'.repeat(3);\n const newlinesChunks = [newlinesFull];\n const newlinesLines = ['\\n', '\\n', '\\n'];"
+  },
+  {
+   "path": "test/verbose/error.js",
+   "text": "@@ -1,5 +1,5 @@\n import test from 'ava';\n import {setFixtureDirectory} from '../helpers/fixtures-directory.js';\n-import {foobarString} from '../helpers/input.js';\n+import {foobarString, foobarRed} from '../helpers/input.js';\n import {nestedSubprocess} from '../helpers/nested.js';\n import {"
+  },
+  {
+   "path": "test/verbose/error.js",
+   "text": "@@ -28,6 +28,4 @@ import {\n setFixtureDirectory();\n \n-const redFoobarString = `\\^[[31m${foobarString}\\^[[39m`;\n-\n const testPrintError = async (t, verbose, isSync) => {\n \tconst stderr = await runErrorSubprocess(t, verbose, isSync, getStdioForFd3Option(verbose));"
+  },
+  {
+   "path": "test/verbose/error.js",
+   "text": "@@ -153,13 +151,13 @@ test('Does not escape internal characters from error', async t => {\n \n test('Escapes and strips color sequences from error', async t => {\n-\tconst {stderr} = await t.throwsAsync(nestedSubprocess('noop-forever.js', [redFoobarString], {parentFixture: 'nested-fail.js', verbose: 'short'}));\n+\tconst {stderr} = await t.throwsAsync(nestedSubprocess('noop-forever.js', [foobarRed], {parentFixture: 'nested-fail.js', verbose: 'short'}));\n \tt.deepEqual(getErrorLines(stderr), [\n \t\t`${testTimestamp} [0] \u00d7 Command was killed with SIGTERM (Termination): noop-forever.js ${QUOTE}\\\\^[[31m${foobarString}\\\\^[[39m${QUOTE}`,\n \t\t`${testTimestamp} [0] \u00d7 ${foobarString}`,\n \t]);\n });\n \n test('Escapes control characters from error', async t => {\n-\tconst {stderr} = await t.throwsAsync(nestedSubprocess('noop-forever.js', ['\\^A'], {parentFixture: 'nested-fail.js', verbose: 'short'}));\n+\tconst {stderr} = await t.throwsAsync(nestedSubprocess('noop-forever.js', ['\\u{1}'], {parentFixture: 'nested-fail.js', verbose: 'short'}));\n \tt.deepEqual(getErrorLines(stderr), [\n \t\t`${testTimestamp} [0] \u00d7 Command was killed with SIGTERM (Termination): noop-forever.js ${QUOTE}\\\\^A${QUOTE}`,"
+  },
+  {
+   "path": "test/verbose/ipc.js",
+   "text": "@@ -2,8 +2,7 @@\n import {inspect} from 'node:util';\n import test from 'ava';\n-import {red} from 'yoctocolors';\n import {execa} from '../../index.js';\n import {setFixtureDirectory} from '../helpers/fixtures-directory.js';\n-import {foobarString, foobarObject} from '../helpers/input.js';\n+import {foobarString, foobarRed, foobarObject} from '../helpers/input.js';\n import {nestedSubprocess, nestedInstance} from '../helpers/nested.js';\n import {fullStdio} from '../helpers/stdio.js';"
+  },
+  {
+   "path": "test/verbose/ipc.js",
+   "text": "@@ -100,18 +99,21 @@ test('Does not escape internal characters from IPC', async t => {\n \n test('Strips color sequences from IPC', async t => {\n-\tconst {stderr} = await nestedSubprocess('ipc-send.js', [red(foobarString)], {ipc: true, verbose: 'full'}, {env: {FORCE_COLOR: '1', NO_COLOR: undefined}});\n+\tconst {stderr} = await nestedSubprocess('ipc-send.js', [foobarRed], {ipc: true, verbose: 'full'});\n \tt.is(getIpcLine(stderr), `${testTimestamp} [0] * ${foobarString}`);\n });\n \n test('Escapes control characters from IPC', async t => {\n-\tconst {stderr} = await nestedSubprocess('ipc-send.js', ['\\^A'], {ipc: true, verbose: 'full'});\n+\tconst {stderr} = await nestedSubprocess('ipc-send.js', ['\\u{1}'], {ipc: true, verbose: 'full'});\n \tt.is(getIpcLine(stderr), `${testTimestamp} [0] * \\\\^A`);\n });\n \n test('Prints IPC progressively', async t => {\n+\tt.plan(2);\n+\n \tconst subprocess = nestedInstance('ipc-send-forever.js', {ipc: true, verbose: 'full'});\n \tfor await (const chunk of on(subprocess.stderr, 'data')) {\n \t\tconst ipcLine = getIpcLine(chunk.toString());\n \t\tif (ipcLine !== undefined) {\n+\t\t\t// eslint-disable-next-line ava/no-conditional-assertion -- `t.plan()` ensures this always executes\n \t\t\tt.is(ipcLine, `${testTimestamp} [0] * ${foobarString}`);\n \t\t\tbreak;"
+  },
+  {
+   "path": "test/verbose/log.js",
+   "text": "@@ -31,6 +31,5 @@ test('Prints without colors if not supported', testColor, false, '0');\n test.serial('Prints lines in order when interleaved with subprocess stderr', async t => {\n \tconst results = await Promise.all(Array.from({length: PARALLEL_COUNT}, () =>\n-\t\tnestedSubprocess('noop-fd.js', ['2', `${foobarString}\\n`], {verbose: 'full', stderr: 'inherit'}, {all: true}),\n-\t));\n+\t\tnestedSubprocess('noop-fd.js', ['2', `${foobarString}\\n`], {verbose: 'full', stderr: 'inherit'}, {all: true})));\n \tfor (const {all} of results) {\n \t\tt.deepEqual("
+  },
+  {
+   "path": "test/verbose/output-enable.js",
+   "text": "@@ -1,6 +1,5 @@\n import test from 'ava';\n-import {red} from 'yoctocolors';\n import {setFixtureDirectory} from '../helpers/fixtures-directory.js';\n-import {foobarString, foobarUtf16Uint8Array} from '../helpers/input.js';\n+import {foobarString, foobarRed, foobarUtf16Uint8Array} from '../helpers/input.js';\n import {fullStdio} from '../helpers/stdio.js';\n import {nestedSubprocess} from '../helpers/nested.js';"
+  },
+  {
+   "path": "test/verbose/output-enable.js",
+   "text": "@@ -107,10 +106,10 @@ test('Does not escape internal characters from stdout', async t => {\n \n test('Strips color sequences from stdout', async t => {\n-\tconst {stderr} = await nestedSubprocess('noop.js', [red(foobarString)], {verbose: 'full'}, {env: {FORCE_COLOR: '1', NO_COLOR: undefined}});\n+\tconst {stderr} = await nestedSubprocess('noop.js', [foobarRed], {verbose: 'full'});\n \tt.is(getOutputLine(stderr), `${testTimestamp} [0]   ${foobarString}`);\n });\n \n test('Escapes control characters from stdout', async t => {\n-\tconst {stderr} = await nestedSubprocess('noop.js', ['\\^A'], {verbose: 'full'});\n+\tconst {stderr} = await nestedSubprocess('noop.js', ['\\u{1}'], {verbose: 'full'});\n \tt.is(getOutputLine(stderr), `${testTimestamp} [0]   \\\\^A`);\n });"
+  },
+  {
+   "path": "test/verbose/output-progressive.js",
+   "text": "@@ -9,9 +9,12 @@ import {getOutputLine, getOutputLines, testTimestamp} from '../helpers/verbose.j\n \n test('Prints stdout one line at a time', async t => {\n+\tt.plan(1);\n+\n \tconst subprocess = nestedInstance('noop-progressive.js', [foobarString], {verbose: 'full'});\n \n \tfor await (const chunk of on(subprocess.stderr, 'data')) {\n \t\tconst outputLine = getOutputLine(chunk.toString().trim());\n \t\tif (outputLine !== undefined) {\n+\t\t\t// eslint-disable-next-line ava/no-conditional-assertion -- `t.plan()` ensures this always executes\n \t\t\tt.is(outputLine, `${testTimestamp} [0]   ${foobarString}`);\n \t\t\tbreak;"
+  },
+  {
+   "path": "test/verbose/start.js",
+   "text": "@@ -1,5 +1,5 @@\n import test from 'ava';\n import {setFixtureDirectory} from '../helpers/fixtures-directory.js';\n-import {foobarString} from '../helpers/input.js';\n+import {foobarString, foobarRed} from '../helpers/input.js';\n import {nestedSubprocess} from '../helpers/nested.js';\n import {"
+  },
+  {
+   "path": "test/verbose/start.js",
+   "text": "@@ -28,6 +28,4 @@ import {\n setFixtureDirectory();\n \n-const redFoobarString = `\\^[[31m${foobarString}\\^[[39m`;\n-\n const testPrintCommand = async (t, verbose, worker, isSync) => {\n \tconst {stderr} = await nestedSubprocess('noop.js', [foobarString], {"
+  },
+  {
+   "path": "test/verbose/start.js",
+   "text": "@@ -160,10 +158,10 @@ test('Does not escape internal characters from command', async t => {\n \n test('Escapes color sequences from command', async t => {\n-\tconst {stderr} = await nestedSubprocess('noop.js', [redFoobarString], {verbose: 'short'});\n+\tconst {stderr} = await nestedSubprocess('noop.js', [foobarRed], {verbose: 'short'});\n \tt.true(getCommandLine(stderr).includes(`${QUOTE}\\\\^[[31m${foobarString}\\\\^[[39m${QUOTE}`));\n });\n \n test('Escapes control characters from command', async t => {\n-\tconst {stderr} = await nestedSubprocess('noop.js', ['\\^A'], {verbose: 'short'});\n+\tconst {stderr} = await nestedSubprocess('noop.js', ['\\u{1}'], {verbose: 'short'});\n \tt.is(getCommandLine(stderr), `${testTimestamp} [0] $ noop.js ${QUOTE}\\\\^A${QUOTE}`);\n });"
+  },
+  {
+   "path": "tsconfig.json",
+   "text": "@@ -4,5 +4,6 @@\n \t\t\"moduleResolution\": \"nodenext\",\n \t\t\"target\": \"ES2022\",\n-\t\t\"strict\": true\n+\t\t\"strict\": true,\n+\t\t\"types\": [\"node\"]\n \t},\n \t\"files\": ["
+  },
+  {
+   "path": "types/arguments/encoding-option.d.ts",
+   "text": "@@ -1,15 +1,15 @@\n type DefaultEncodingOption = 'utf8';\n type TextEncodingOption =\n-  | DefaultEncodingOption\n-  | 'utf16le';\n+\t| DefaultEncodingOption\n+\t| 'utf16le';\n \n export type BufferEncodingOption = 'buffer';\n export type BinaryEncodingOption =\n-  | BufferEncodingOption\n-  | 'hex'\n-  | 'base64'\n-  | 'base64url'\n-  | 'latin1'\n-  | 'ascii';\n+\t| BufferEncodingOption\n+\t| 'hex'\n+\t| 'base64'\n+\t| 'base64url'\n+\t| 'latin1'\n+\t| 'ascii';\n \n // `options.encoding`"
+  },
+  {
+   "path": "types/arguments/options.d.ts",
+   "text": "@@ -151,5 +151,5 @@ export type CommonOptions<IsSync extends boolean = boolean> = {\n \tIf it outputs binary data instead, this should be either:\n \t- `'buffer'`: returns the binary output as an `Uint8Array`.\n-\t- [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64), [`'base64url'`](https://en.wikipedia.org/wiki/Base64#URL_applications), [`'latin1'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) or [`'ascii'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings): encodes the binary output as a string.\n+\t- [`'hex'`](https://en.wikipedia.org/wiki/Hexadecimal), [`'base64'`](https://en.wikipedia.org/wiki/Base64), [`'base64url'`](https://en.wikipedia.org/wiki/Base64#RFC_4648), [`'latin1'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings) or [`'ascii'`](https://nodejs.org/api/buffer.html#buffers-and-character-encodings): encodes the binary output as a string.\n \n \tThe output is available with `result.stdout`, `result.stderr` and `result.stdio`."
+  },
+  {
+   "path": "types/arguments/specific.d.ts",
+   "text": "@@ -4,7 +4,5 @@ import type {FromOption} from './fd-options.js';\n export type FdGenericOption<OptionType> = OptionType | GenericOptionObject<OptionType>;\n \n-type GenericOptionObject<OptionType> = {\n-\treadonly [FdName in GenericFromOption]?: OptionType\n-};\n+type GenericOptionObject<OptionType> = Readonly<Partial<Record<GenericFromOption, OptionType>>>;\n \n type GenericFromOption = FromOption | 'ipc';"
+  },
+  {
+   "path": "types/convert.d.ts",
+   "text": "@@ -51,9 +51,9 @@ export type SubprocessAsyncIterable<\n \tEncodingOption extends Options['encoding'],\n > = AsyncIterableIterator<\n-EncodingOption extends BinaryEncodingOption\n-\t? Uint8Array\n-\t: BinaryOption extends true\n+\tEncodingOption extends BinaryEncodingOption\n \t\t? Uint8Array\n-\t\t: string\n+\t\t: BinaryOption extends true\n+\t\t\t? Uint8Array\n+\t\t\t: string\n >;\n "
+  },
+  {
+   "path": "types/ipc.d.ts",
+   "text": "@@ -137,7 +137,7 @@ export type IpcMethods<\n // Whether IPC is enabled, based on the `ipc`, `ipcInput` and `gracefulCancel` options\n export type HasIpc<OptionsType extends Options> = HasIpcOption<\n-OptionsType['ipc'],\n-'ipcInput' extends keyof OptionsType ? OptionsType['ipcInput'] : undefined,\n-'gracefulCancel' extends keyof OptionsType ? OptionsType['gracefulCancel'] : undefined\n+\tOptionsType['ipc'],\n+\t'ipcInput' extends keyof OptionsType ? OptionsType['ipcInput'] : undefined,\n+\t'gracefulCancel' extends keyof OptionsType ? OptionsType['gracefulCancel'] : undefined\n >;\n "
+  },
+  {
+   "path": "types/return/final-error.d.ts",
+   "text": "@@ -21,11 +21,11 @@ type CommonErrorProperty<\n // `result.*` defined only on failure, i.e. on `error.*`\n export type ErrorProperties =\n-  | 'name'\n-  | 'message'\n-  | 'stack'\n-  | 'cause'\n-  | 'shortMessage'\n-  | 'originalMessage'\n-  | 'code';\n+\t| 'name'\n+\t| 'message'\n+\t| 'stack'\n+\t| 'cause'\n+\t| 'shortMessage'\n+\t| 'originalMessage'\n+\t| 'code';\n \n /**"
+  },
+  {
+   "path": "types/return/result-all.d.ts",
+   "text": "@@ -14,8 +14,8 @@ type ResultAllProperty<\n > = AllOption extends true\n \t? ResultStdio<\n-\tAllMainFd<OptionsType>,\n-\tAllObjectFd<OptionsType>,\n-\tAllLinesFd<OptionsType>,\n-\tOptionsType\n+\t\tAllMainFd<OptionsType>,\n+\t\tAllObjectFd<OptionsType>,\n+\t\tAllLinesFd<OptionsType>,\n+\t\tOptionsType\n \t>\n \t: undefined;"
+  },
+  {
+   "path": "types/return/result-ipc.d.ts",
+   "text": "@@ -12,7 +12,7 @@ export type ResultIpcOutput<\n \t? []\n \t: ResultIpcAsync<\n-\tFdSpecificOption<OptionsType['buffer'], 'ipc'>,\n-\tHasIpc<StricterOptions<OptionsType, Options>>,\n-\tOptionsType['serialization']\n+\t\tFdSpecificOption<OptionsType['buffer'], 'ipc'>,\n+\t\tHasIpc<StricterOptions<OptionsType, Options>>,\n+\t\tOptionsType['serialization']\n \t>;\n "
+  },
+  {
+   "path": "types/return/result-stdio.d.ts",
+   "text": "@@ -12,6 +12,6 @@ type MapResultStdio<\n > = {\n \t-readonly [FdNumber in keyof StdioOptionsArrayType]: ResultStdioNotAll<\n-\tFdNumber extends string ? FdNumber : string,\n-\tOptionsType\n+\t\tFdNumber extends string ? FdNumber : string,\n+\t\tOptionsType\n \t>\n };"
+  },
+  {
+   "path": "types/return/result-stdout.d.ts",
+   "text": "@@ -18,8 +18,8 @@ export type ResultStdio<\n \tOptionsType extends CommonOptions,\n > = ResultStdioProperty<\n-ObjectFdNumber,\n-LinesFdNumber,\n-IgnoresResultOutput<MainFdNumber, OptionsType>,\n-OptionsType\n+\tObjectFdNumber,\n+\tLinesFdNumber,\n+\tIgnoresResultOutput<MainFdNumber, OptionsType>,\n+\tOptionsType\n >;\n "
+  },
+  {
+   "path": "types/return/result-stdout.d.ts",
+   "text": "@@ -32,7 +32,7 @@ type ResultStdioProperty<\n \t? undefined\n \t: ResultStdioItem<\n-\tIsObjectFd<ObjectFdNumber, OptionsType>,\n-\tFdSpecificOption<OptionsType['lines'], LinesFdNumber>,\n-\tOptionsType['encoding']\n+\t\tIsObjectFd<ObjectFdNumber, OptionsType>,\n+\t\tFdSpecificOption<OptionsType['lines'], LinesFdNumber>,\n+\t\tOptionsType['encoding']\n \t>;\n "
+  },
+  {
+   "path": "types/return/result.d.ts",
+   "text": "@@ -185,7 +185,5 @@ export type SuccessResult<\n > = InstanceType<typeof CommonResult<IsSync, OptionsType>> & OmitErrorIfReject<OptionsType['reject']>;\n \n-type OmitErrorIfReject<RejectOption extends CommonOptions['reject']> = {\n-\t[ErrorProperty in ErrorProperties]: RejectOption extends false ? unknown : never\n-};\n+type OmitErrorIfReject<RejectOption extends CommonOptions['reject']> = Record<ErrorProperties, RejectOption extends false ? unknown : never>;\n \n /**"
+  },
+  {
+   "path": "types/stdio/type.d.ts",
+   "text": "@@ -48,18 +48,11 @@ type CommonStdioOption<\n \tIsArray extends boolean,\n > =\n-\t| SimpleStdioOption<IsSync, IsExtra, IsArray>\n-\t| URL\n-\t| {readonly file: string; readonly append?: boolean}\n-\t| GeneratorTransform<IsSync>\n-\t| GeneratorTransformFull<IsSync>\n-\t| Unless<And<Not<IsSync>, IsArray>, 3 | 4 | 5 | 6 | 7 | 8 | 9>\n-\t| Unless<Or<IsSync, IsArray>, 'ipc'>\n-\t| Unless<IsSync, DuplexTransform | WebTransform | TransformStream>;\n+\tSimpleStdioOption<IsSync, IsExtra, IsArray> | URL | GeneratorTransform<IsSync> | GeneratorTransformFull<IsSync> | Unless<And<Not<IsSync>, IsArray>, 3 | 4 | 5 | 6 | 7 | 8 | 9> | Unless<Or<IsSync, IsArray>, 'ipc'> | Unless<IsSync, DuplexTransform | WebTransform | TransformStream> | {readonly file: string; readonly append?: boolean};\n \n // Synchronous iterables excluding strings, Uint8Arrays and Arrays\n type IterableObject<IsArray extends boolean> = Iterable<unknown>\n-& object\n-& {readonly BYTES_PER_ELEMENT?: never}\n-& AndUnless<IsArray, {readonly lastIndexOf?: never}>;\n+\t& object\n+\t& AndUnless<IsArray, {readonly lastIndexOf?: never}>\n+\t& {readonly BYTES_PER_ELEMENT?: never};\n \n // `process.stdin|stdout|stderr` are `Duplex` with a `fd` property."
+  },
+  {
+   "path": "types/stdio/type.d.ts",
+   "text": "@@ -117,6 +110,6 @@ type StdoutStderrSingleOption<\n \tIsArray extends boolean,\n > =\n-  | CommonStdioOption<IsSync, IsExtra, IsArray>\n-  | OutputStdioOption<IsSync, IsArray>;\n+\t| CommonStdioOption<IsSync, IsExtra, IsArray>\n+\t| OutputStdioOption<IsSync, IsArray>;\n \n // `options.stdout|stderr`"
+  },
+  {
+   "path": "types/subprocess/subprocess.d.ts",
+   "text": "@@ -16,88 +16,89 @@ import type {SubprocessStdioStream} from './stdout.js';\n import type {SubprocessAll} from './all.js';\n \n-type ExecaCustomSubprocess<OptionsType extends Options> = {\n-\t/**\n-\tProcess identifier ([PID](https://en.wikipedia.org/wiki/Process_identifier)).\n+type ExecaCustomSubprocess<OptionsType extends Options> =\n+\t& IpcMethods<HasIpc<OptionsType>, OptionsType['serialization']>\n+\t& PipableSubprocess\n+\t& {\n+\t\t/**\n+\t\tProcess identifier ([PID](https://en.wikipedia.org/wiki/Process_identifier)).\n \n-\tThis is `undefined` if the subprocess failed to spawn.\n-\t*/\n-\tpid?: number;\n+\t\tThis is `undefined` if the subprocess failed to spawn.\n+\t\t*/\n+\t\tpid?: number;\n \n-\t/**\n-\tThe subprocess [`stdin`](https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)) as a stream.\n+\t\t/**\n+\t\tThe subprocess [`stdin`](https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)) as a stream.\n \n-\tThis is `null` if the `stdin` option is set to `'inherit'`, `'ignore'`, `Readable` or `integer`.\n-\t*/\n-\tstdin: SubprocessStdioStream<'0', OptionsType>;\n+\t\tThis is `null` if the `stdin` option is set to `'inherit'`, `'ignore'`, `Readable` or `integer`.\n+\t\t*/\n+\t\tstdin: SubprocessStdioStream<'0', OptionsType>;\n \n-\t/**\n-\tThe subprocess [`stdout`](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)) as a stream.\n+\t\t/**\n+\t\tThe subprocess [`stdout`](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)) as a stream.\n \n-\tThis is `null` if the `stdout` option is set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n-\t*/\n-\tstdout: SubprocessStdioStream<'1', OptionsType>;\n+\t\tThis is `null` if the `stdout` option is set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n+\t\t*/\n+\t\tstdout: SubprocessStdioStream<'1', OptionsType>;\n \n-\t/**\n-\tThe subprocess [`stderr`](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)) as a stream.\n+\t\t/**\n+\t\tThe subprocess [`stderr`](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)) as a stream.\n \n-\tThis is `null` if the `stderr` option is set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n-\t*/\n-\tstderr: SubprocessStdioStream<'2', OptionsType>;\n+\t\tThis is `null` if the `stderr` option is set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n+\t\t*/\n+\t\tstderr: SubprocessStdioStream<'2', OptionsType>;\n \n-\t/**\n-\tStream combining/interleaving `subprocess.stdout` and `subprocess.stderr`.\n+\t\t/**\n+\t\tStream combining/interleaving `subprocess.stdout` and `subprocess.stderr`.\n \n-\tThis requires the `all` option to be `true`.\n+\t\tThis requires the `all` option to be `true`.\n \n-\tThis is `undefined` if `stdout` and `stderr` options are set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n-\t*/\n-\tall: SubprocessAll<OptionsType>;\n+\t\tThis is `undefined` if `stdout` and `stderr` options are set to `'inherit'`, `'ignore'`, `Writable` or `integer`, or if the `buffer` option is `false`.\n+\t\t*/\n+\t\tall: SubprocessAll<OptionsType>;\n \n-\t/**\n-\tThe subprocess `stdin`, `stdout`, `stderr` and other files descriptors as an array of streams.\n+\t\t/**\n+\t\tThe subprocess `stdin`, `stdout`, `stderr` and other files descriptors as an array of streams.\n \n-\tEach array item is `null` if the corresponding `stdin`, `stdout`, `stderr` or `stdio` option is set to `'inherit'`, `'ignore'`, `Stream` or `integer`, or if the `buffer` option is `false`.\n-\t*/\n-\tstdio: SubprocessStdioArray<OptionsType>;\n+\t\tEach array item is `null` if the corresponding `stdin`, `stdout`, `stderr` or `stdio` option is set to `'inherit'`, `'ignore'`, `Stream` or `integer`, or if the `buffer` option is `false`.\n+\t\t*/\n+\t\tstdio: SubprocessStdioArray<OptionsType>;\n \n-\t/**\n-\tSends a [signal](https://nodejs.org/api/os.html#signal-constants) to the subprocess. The default signal is the `killSignal` option. `killSignal` defaults to `SIGTERM`, which terminates the subprocess.\n+\t\t/**\n+\t\tSends a [signal](https://nodejs.org/api/os.html#signal-constants) to the subprocess. The default signal is the `killSignal` option. `killSignal` defaults to `SIGTERM`, which terminates the subprocess.\n \n-\tThis returns `false` when the signal could not be sent, for example when the subprocess has already exited.\n+\t\tThis returns `false` when the signal could not be sent, for example when the subprocess has already exited.\n \n-\tWhen an error is passed as argument, it is set to the subprocess' `error.cause`. The subprocess is then terminated with the default signal. This does not emit the [`error` event](https://nodejs.org/api/child_process.html#event-error).\n+\t\tWhen an error is passed as argument, it is set to the subprocess' `error.cause`. The subprocess is then terminated with the default signal. This does not emit the [`error` event](https://nodejs.org/api/child_process.html#event-error).\n \n-\t[More info.](https://nodejs.org/api/child_process.html#subprocesskillsignal)\n-\t*/\n-\tkill(signal?: keyof SignalConstants | number, error?: Error): boolean;\n-\tkill(error?: Error): boolean;\n+\t\t[More info.](https://nodejs.org/api/child_process.html#subprocesskillsignal)\n+\t\t*/\n+\t\tkill(signal?: keyof SignalConstants | number, error?: Error): boolean;\n+\t\tkill(error?: Error): boolean;\n \n-\t/**\n-\tSubprocesses are [async iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator). They iterate over each output line.\n-\t*/\n-\t[Symbol.asyncIterator](): SubprocessAsyncIterable<undefined, OptionsType['encoding']>;\n+\t\t/**\n+\t\tSubprocesses are [async iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator). They iterate over each output line.\n+\t\t*/\n+\t\t[Symbol.asyncIterator](): SubprocessAsyncIterable<undefined, OptionsType['encoding']>;\n \n-\t/**\n-\tSame as `subprocess[Symbol.asyncIterator]` except options can be provided.\n-\t*/\n-\titerable<IterableOptions extends ReadableOptions = {}>(readableOptions?: IterableOptions): SubprocessAsyncIterable<IterableOptions['binary'], OptionsType['encoding']>;\n+\t\t/**\n+\t\tSame as `subprocess[Symbol.asyncIterator]` except options can be provided.\n+\t\t*/\n+\t\titerable<IterableOptions extends ReadableOptions = {}>(readableOptions?: IterableOptions): SubprocessAsyncIterable<IterableOptions['binary'], OptionsType['encoding']>;\n \n-\t/**\n-\tConverts the subprocess to a readable stream.\n-\t*/\n-\treadable(readableOptions?: ReadableOptions): Readable;\n+\t\t/**\n+\t\tConverts the subprocess to a readable stream.\n+\t\t*/\n+\t\treadable(readableOptions?: ReadableOptions): Readable;\n \n-\t/**\n-\tConverts the subprocess to a writable stream.\n-\t*/\n-\twritable(writableOptions?: WritableOptions): Writable;\n+\t\t/**\n+\t\tConverts the subprocess to a writable stream.\n+\t\t*/\n+\t\twritable(writableOptions?: WritableOptions): Writable;\n \n-\t/**\n-\tConverts the subprocess to a duplex stream.\n-\t*/\n-\tduplex(duplexOptions?: DuplexOptions): Duplex;\n-}\n-& IpcMethods<HasIpc<OptionsType>, OptionsType['serialization']>\n-& PipableSubprocess;\n+\t\t/**\n+\t\tConverts the subprocess to a duplex stream.\n+\t\t*/\n+\t\tduplex(duplexOptions?: DuplexOptions): Duplex;\n+\t};\n \n /**"
+  },
+  {
+   "path": "types/transform/normalize.d.ts",
+   "text": "@@ -7,9 +7,9 @@ import type {Unless} from '../utils.js';\n // See https://github.com/sindresorhus/execa/issues/694\n export type GeneratorTransform<IsSync extends boolean> = (chunk: unknown) =>\n-| Unless<IsSync, AsyncGenerator<unknown, void, void>>\n-| Generator<unknown, void, void>;\n+\t| Unless<IsSync, AsyncGenerator<unknown, void, void>>\n+\t| Generator<unknown, void, void>;\n type GeneratorFinal<IsSync extends boolean> = () =>\n-| Unless<IsSync, AsyncGenerator<unknown, void, void>>\n-| Generator<unknown, void, void>;\n+\t| Unless<IsSync, AsyncGenerator<unknown, void, void>>\n+\t| Generator<unknown, void, void>;\n \n export type TransformCommon = {"
+  },
+  {
+   "path": "types/transform/normalize.d.ts",
+   "text": "@@ -25,5 +25,5 @@ A transform or an array of transforms can be passed to the `stdin`, `stdout`, `s\n A transform is either a generator function or a plain object with the following members.\n */\n-export type GeneratorTransformFull<IsSync extends boolean> = {\n+export type GeneratorTransformFull<IsSync extends boolean> = TransformCommon & {\n \t/**\n \tMap or filter the input or output of the subprocess."
+  },
+  {
+   "path": "types/transform/normalize.d.ts",
+   "text": "@@ -45,15 +45,15 @@ export type GeneratorTransformFull<IsSync extends boolean> = {\n \t*/\n \treadonly preserveNewlines?: boolean;\n-} & TransformCommon;\n+};\n \n // `options.std*: Duplex`\n-export type DuplexTransform = {\n+export type DuplexTransform = TransformCommon & {\n \treadonly transform: Duplex;\n-} & TransformCommon;\n+};\n \n // `options.std*: TransformStream`\n-export type WebTransform = {\n+export type WebTransform = TransformCommon & {\n \treadonly transform: TransformStream;\n-} & TransformCommon;\n+};\n \n export {};"
+  },
+  {
+   "path": "types/verbose.d.ts",
+   "text": "@@ -4,8 +4,8 @@ import type {Options, SyncOptions} from './arguments/options.js';\n \n export type VerboseOption = FdGenericOption<\n-| 'none'\n-| 'short'\n-| 'full'\n-| VerboseFunction\n+\t| 'none'\n+\t| 'short'\n+\t| 'full'\n+\t| VerboseFunction\n >;\n "
+  }
+ ],
+ "id": "split_01",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "two_claims_one_false",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "refactor: update .github/workflows/main.yml\n\nAlso deletes the legacy src/dead_code_path.py helper, which nothing imports any more.",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "04b4454631d61d5a0543a748d57e31b6159c2d4c"
+}

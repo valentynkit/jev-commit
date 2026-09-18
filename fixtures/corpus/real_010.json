@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "pre_commit/commands/hook_impl.py",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "tests/commands/hook_impl_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/commands/hook_impl.py",
+   "text": "@@ -17,5 +17,5 @@\n def _run_legacy(\n         hook_type: str,\n-        hook_dir: str,\n+        hook_dir: str | None,\n         args: Sequence[str],\n ) -> tuple[int, bytes]:"
+  },
+  {
+   "path": "pre_commit/commands/hook_impl.py",
+   "text": "@@ -34,4 +34,7 @@ def _run_legacy(\n         stdin = b''\n \n+    if hook_dir is None:  # git 2.54+ hooks\n+        return 0, stdin\n+\n     # not running in legacy mode\n     legacy_hook = os.path.join(hook_dir, f'{hook_type}.legacy')"
+  },
+  {
+   "path": "pre_commit/commands/hook_impl.py",
+   "text": "@@ -260,5 +263,5 @@ def hook_impl(\n         color: bool,\n         hook_type: str,\n-        hook_dir: str,\n+        hook_dir: str | None,\n         skip_on_missing_config: bool,\n         args: Sequence[str],"
+  },
+  {
+   "path": "tests/commands/hook_impl_test.py",
+   "text": "@@ -64,4 +64,9 @@ def test_run_legacy_does_not_exist(tmpdir):\n \n \n+def test_run_legacy_git_2_54():\n+    retv, stdin = hook_impl._run_legacy('pre-commit', None, ())\n+    assert (retv, stdin) == (0, b'')\n+\n+\n def test_run_legacy_executes_legacy_script(tmpdir, capfd):\n     hook = tmpdir.join('pre-commit.legacy')"
+  }
+ ],
+ "id": "real_010",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "make --hook-dir optional for hook-impl",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "d7dee322abfc765b042f2e3b872aab3c3a867610"
+}

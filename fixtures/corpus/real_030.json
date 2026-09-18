@@ -1,0 +1,181 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": "crates/ty_python_semantic/resources/mdtest/attributes.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "crates/ty_python_semantic/resources/mdtest/bidirectional.md",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 25,
+   "path": "crates/ty_python_semantic/resources/mdtest/descriptor_protocol.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "crates/ty_python_semantic/resources/mdtest/diagnostics/attribute_assignment.md",
+   "removed": 5,
+   "status": "M"
+  },
+  {
+   "added": 42,
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "removed": 30,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "crates/ty_python_semantic/src/types/diagnostic.rs",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 113,
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "removed": 101,
+   "status": "M"
+  },
+  {
+   "added": 27,
+   "path": "crates/ty_python_semantic/src/types/protocol_class.rs",
+   "removed": 21,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/attributes.md",
+   "text": "@@ -651,5 +651,4 @@ class C:\n \n     def update(self) -> None:\n-        # error: [invalid-assignment]\n         # error: [invalid-assignment]\n         self.value += 1"
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/bidirectional.md",
+   "text": "@@ -1615,7 +1615,5 @@ def _(flag: bool):\n         c.x = reveal_type([1])  # revealed: list[int]\n \n-        # TODO: Use the parameter type of `__set__` as type context to avoid this error.\n-        # error: [invalid-assignment]\n-        C.x = [1]\n+        C.x = reveal_type([1])  # revealed: list[Literal[1]]\n ```\n "
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/descriptor_protocol.md",
+   "text": "@@ -1945,4 +1945,29 @@ reveal_type(bound)  # revealed: Decorator[(value: str)]\n ```\n \n+### Static getters, setters and deleters\n+\n+```py\n+class Descriptor:\n+    @staticmethod\n+    def __get__(descriptor: object, instance: object, owner: type | None = None) -> int:\n+        return 1\n+\n+    @staticmethod\n+    def __set__(instance: object, value: int) -> None: ...\n+    @staticmethod\n+    def __delete__(instance: object) -> None: ...\n+\n+class Owner:\n+    value = Descriptor()\n+\n+owner = Owner()\n+reveal_type(owner.value)  # revealed: int\n+reveal_type(Owner.value)  # revealed: int\n+owner.value = 1\n+del owner.value\n+\n+owner.value = \"wrong\"  # error: [invalid-assignment] \"Expected `int`, found `Literal[\"wrong\"]`\"\n+```\n+\n [descriptors]: https://docs.python.org/3/howto/descriptor.html\n [precedence chain]: https://github.com/python/cpython/blob/3.13/Objects/typeobject.c#L5393-L5481"
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/diagnostics/attribute_assignment.md",
+   "text": "@@ -316,7 +316,7 @@ error[invalid-assignment]: Invalid assignment to data descriptor attribute `attr\n 11 | instance.attr = \"wrong\"  # snapshot: invalid-assignment\n    |                 ^^^^^^^ Expected `int`, found `Literal[\"wrong\"]`\n-info: Argument to function `Descriptor.__set__` is incorrect\n+info: Argument to bound method `Descriptor.__set__` is incorrect\n info: This assignment implicitly calls `__set__` on a descriptor of type `Descriptor`\n-info: Function defined here\n+info: Method defined here\n  --> src/mdtest_snippet.py:2:9\n   |"
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/diagnostics/attribute_assignment.md",
+   "text": "@@ -345,5 +345,5 @@ error[invalid-assignment]: Invalid assignment to data descriptor attribute `attr\n    |\n 10 | instance.attr = 1  # snapshot: invalid-assignment\n-   | ^^^^^^^^^^^^^ No argument provided for required parameter `extra` of function `WrongDescriptor.__set__`\n+   | ^^^^^^^^^^^^^ No argument provided for required parameter `extra` of bound method `WrongDescriptor.__set__`\n info: This assignment implicitly calls `__set__` on a descriptor of type `WrongDescriptor`\n info: Parameter declared here"
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/diagnostics/attribute_assignment.md",
+   "text": "@@ -408,8 +408,8 @@ error[invalid-assignment]: Invalid assignment to data descriptor attribute `x` o\n 8 | c.x = (1, b\"\")  # snapshot: invalid-assignment\n   |       ^^^^^^^^ Expected `tuple[int, str]`, found `tuple[Literal[1], Literal[b\"\"]]`\n-info: Argument to function `Descriptor.__set__` is incorrect\n+info: Argument to bound method `Descriptor.__set__` is incorrect\n info: This assignment implicitly calls `__set__` on a descriptor of type `Descriptor`\n info: the second tuple element is not compatible: `Literal[b\"\"]` is not assignable to `str`\n-info: Function defined here\n+info: Method defined here\n  --> src/mdtest_snippet.py:2:9\n   |"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -131,10 +131,6 @@ pub(super) enum ClassAttributeWriteMember<'db> {\n pub(super) enum ExplicitAttributeWriteRequirement<'db> {\n     /// Invoke a concrete descriptor's `__set__` method.\n-    ///\n-    /// `setter_ty` is the unbound method and is called with `descriptor_ty`, the object, and the\n-    /// assigned value.\n     Descriptor {\n         descriptor_ty: Type<'db>,\n-        setter_ty: Type<'db>,\n         qualifiers: TypeQualifiers,\n     },"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -595,11 +591,10 @@ fn explicit_attribute_write_requirement<'db>(\n     }\n \n-    if let Place::Defined(DefinedPlace { ty: setter_ty, .. }) = attr_ty\n+    if let Place::Defined(_) = attr_ty\n         .class_member_with_policy(db, env, \"__set__\", MemberLookupPolicy::REQUIRE_CONCRETE)\n         .place\n     {\n         ExplicitAttributeWriteRequirement::Descriptor {\n             descriptor_ty: attr_ty,\n-            setter_ty,\n             qualifiers,\n         }"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -869,4 +864,19 @@ pub(super) fn assignment_attribute_members<'db>(\n }\n \n+pub(super) fn descriptor_setter<'db>(\n+    db: &'db dyn Db,\n+    env: &ProgramEnvironment<'db>,\n+    descriptor_ty: Type<'db>,\n+) -> Place<'db> {\n+    descriptor_ty\n+        .member_lookup_with_policy(\n+            db,\n+            env,\n+            \"__set__\",\n+            MemberLookupPolicy::REQUIRE_CONCRETE | MemberLookupPolicy::NO_INSTANCE_FALLBACK,\n+        )\n+        .place\n+}\n+\n /// The values accepted by a descriptor setter, when representable as a single type.\n #[derive(Copy, Clone)]"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -884,4 +894,5 @@ pub(super) fn descriptor_setter_domain<'db>(\n     receiver_ty: Type<'db>,\n ) -> DescriptorSetterDomain<'db> {\n+    let descriptor_ty = descriptor_ty.resolve_type_alias(db);\n     match descriptor_ty {\n         Type::Union(union) => {"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -910,18 +921,21 @@ fn single_descriptor_setter_domain<'db>(\n     receiver_ty: Type<'db>,\n ) -> DescriptorSetterDomain<'db> {\n-    let Place::Defined(DefinedPlace {\n-        ty: setter_ty,\n-        definedness: Definedness::AlwaysDefined,\n-        ..\n-    }) = descriptor_ty\n-        .member_lookup_with_policy(\n-            db,\n-            env,\n-            \"__set__\",\n-            MemberLookupPolicy::REQUIRE_CONCRETE | MemberLookupPolicy::NO_INSTANCE_FALLBACK,\n-        )\n-        .place\n-    else {\n-        return DescriptorSetterDomain::Missing;\n+    let (setter_ty, self_ty) = if let Type::PropertyInstance(property) = descriptor_ty {\n+        // The synthesized `property.__set__` signature accepts `object`, but the property's\n+        // setter provides the actual value type. An owner method's `Self` refers to that owner.\n+        let Some(setter_ty) = property.setter(db) else {\n+            return DescriptorSetterDomain::Missing;\n+        };\n+        (setter_ty, receiver_ty)\n+    } else {\n+        let Place::Defined(DefinedPlace {\n+            ty: setter_ty,\n+            definedness: Definedness::AlwaysDefined,\n+            ..\n+        }) = descriptor_setter(db, env, descriptor_ty)\n+        else {\n+            return DescriptorSetterDomain::Missing;\n+        };\n+        (setter_ty, descriptor_ty)\n     };\n "
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -933,6 +947,5 @@ fn single_descriptor_setter_domain<'db>(\n         let mut write_types = Vec::new();\n         for signature in callable.signatures(db) {\n-            match descriptor_setter_signature_domain(db, env, signature, descriptor_ty, receiver_ty)\n-            {\n+            match descriptor_setter_signature_domain(db, env, signature, self_ty, receiver_ty) {\n                 DescriptorSetterSignatureDomain::Inapplicable => {}\n                 DescriptorSetterSignatureDomain::Known(write_ty) => write_types.push(write_ty),"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -956,10 +969,10 @@ enum DescriptorSetterSignatureDomain<'db> {\n }\n \n-/// Derive the values accepted by one `__set__` overload when they fit in [`Type`].\n+/// Derive the values accepted by one setter overload when they fit in [`Type`].\n fn descriptor_setter_signature_domain<'db>(\n     db: &'db dyn Db,\n     env: &ProgramEnvironment<'db>,\n     signature: &Signature<'db>,\n-    descriptor_ty: Type<'db>,\n+    self_ty: Type<'db>,\n     receiver_ty: Type<'db>,\n ) -> DescriptorSetterSignatureDomain<'db> {"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -986,8 +999,7 @@ fn descriptor_setter_signature_domain<'db>(\n         return missing_required_parameter();\n     };\n-    let receiver_parameter =\n-        receiver_parameter\n-            .annotated_type()\n-            .bind_self_typevars(db, env, descriptor_ty);\n+    let receiver_parameter = receiver_parameter\n+        .annotated_type()\n+        .bind_self_typevars(db, env, self_ty);\n     if contains_signature_typevar(db, env, signature, receiver_parameter) {\n         return DescriptorSetterSignatureDomain::Deferred;"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -1002,5 +1014,5 @@ fn descriptor_setter_signature_domain<'db>(\n     let write_ty = write_parameter\n         .annotated_type()\n-        .bind_self_typevars(db, env, descriptor_ty);\n+        .bind_self_typevars(db, env, self_ty);\n     if !contains_signature_typevar(db, env, signature, write_ty) {\n         return DescriptorSetterSignatureDomain::Known(write_ty);"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/attribute_write.rs",
+   "text": "@@ -1024,5 +1036,5 @@ fn descriptor_setter_signature_domain<'db>(\n     match typevar.require_bound_or_constraints(db, env) {\n         TypeVarBoundOrConstraints::UpperBound(bound) => {\n-            DescriptorSetterSignatureDomain::Known(bound.bind_self_typevars(db, env, descriptor_ty))\n+            DescriptorSetterSignatureDomain::Known(bound.bind_self_typevars(db, env, self_ty))\n         }\n         TypeVarBoundOrConstraints::Constraints(_) => DescriptorSetterSignatureDomain::Deferred,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/diagnostic.rs",
+   "text": "@@ -2401,5 +2401,4 @@ pub(super) fn report_bad_dunder_set_call<'db>(\n     object_type: Type<'db>,\n     descriptor_type: Type<'db>,\n-    includes_descriptor_argument: bool,\n     target: &ast::ExprAttribute,\n     value: &ast::Expr,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/diagnostic.rs",
+   "text": "@@ -2429,9 +2428,5 @@ pub(super) fn report_bad_dunder_set_call<'db>(\n         }\n     } else {\n-        let argument_ranges = if includes_descriptor_argument {\n-            &[target.range(), target.value.range(), value.range()][..]\n-        } else {\n-            &[target.value.range(), value.range()][..]\n-        };\n+        let argument_ranges = &[target.value.range(), value.range()];\n         dunder_set_failure.report_diagnostics_with_override(\n             context,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -1,11 +1,13 @@\n use ruff_python_ast as ast;\n use ruff_text_size::Ranged;\n+use smallvec::{SmallVec, smallvec};\n \n use super::{ArgumentsIter, MultiInferenceGuard, TypeInferenceBuilder};\n-use crate::place::{DefinedPlace, Place, PlaceAndQualifiers};\n+use crate::place::{DefinedPlace, Definedness, Place, PlaceAndQualifiers};\n use crate::types::attribute_write::{\n-    AttributeWriteRequirement, ClassAttributeWriteMember, ExplicitAttributeWriteRequirement,\n-    FallbackAttributeWriteRequirement, InstanceAttributeWriteMember,\n-    ProtocolMemberWriteRequirement, attribute_write_requirement, property_setter_returns_never,\n+    AttributeWriteRequirement, ClassAttributeWriteMember, DescriptorSetterDomain,\n+    ExplicitAttributeWriteRequirement, FallbackAttributeWriteRequirement,\n+    InstanceAttributeWriteMember, ProtocolMemberWriteRequirement, attribute_write_requirement,\n+    descriptor_setter_domain, property_setter_returns_never,\n };\n use crate::types::call::{Bindings, CallArguments, CallDiagnosticOverride, CallError};"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -74,5 +76,4 @@ enum AssignmentAttributeWriteDiagnostic<'db> {\n         failure: CallError<'db>,\n         descriptor_ty: Type<'db>,\n-        includes_descriptor_argument: bool,\n     },\n     PossiblyMissing,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -434,10 +435,24 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n                         return false;\n                     }\n-                    self.evaluate_protocol_descriptor_write(\n-                        *descriptor_ty,\n-                        *receiver_ty,\n-                        value_ty,\n-                        emit_diagnostics,\n-                    )\n+                    self.descriptor_write_alternatives(*descriptor_ty)\n+                        .all(|descriptor_ty| {\n+                            match self.evaluate_descriptor_write(\n+                                descriptor_ty,\n+                                *receiver_ty,\n+                                value_ty,\n+                                emit_diagnostics,\n+                            ) {\n+                                Some(Definedness::AlwaysDefined) => true,\n+                                Some(Definedness::PossiblyUndefined) => {\n+                                    if emit_diagnostics {\n+                                        self.report(\n+                                            AssignmentAttributeWriteDiagnostic::CannotAssign,\n+                                        );\n+                                    }\n+                                    false\n+                                }\n+                                None => false,\n+                            }\n+                        })\n                 }\n                 None => {"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -549,5 +564,11 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n             self.infer_and_try_call_setattr(setattr_receiver, emit_diagnostics)\n         } else {\n-            let value_ty = self.infer_value(TypeContext::default(), emit_diagnostics);\n+            let tcx = match member {\n+                InstanceAttributeWriteMember::Explicit { member, .. } => {\n+                    self.descriptor_type_context(object_ty, member)\n+                }\n+                _ => TypeContext::default(),\n+            };\n+            let value_ty = self.infer_value(tcx, emit_diagnostics);\n             let setattr_result = setattr_receiver.try_call_dunder_with_policy(\n                 db,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -694,5 +715,6 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n                     return false;\n                 }\n-                let value_ty = self.infer_value(TypeContext::default(), emit_diagnostics);\n+                let tcx = self.descriptor_type_context(object_ty, member);\n+                let value_ty = self.infer_value(tcx, emit_diagnostics);\n                 let member_valid =\n                     self.evaluate_explicit_member(object_ty, member, value_ty, emit_diagnostics);"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -760,4 +782,23 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n     }\n \n+    fn descriptor_type_context(\n+        &self,\n+        receiver_ty: Type<'db>,\n+        requirement: &ExplicitAttributeWriteRequirement<'db>,\n+    ) -> TypeContext<'db> {\n+        if let ExplicitAttributeWriteRequirement::Descriptor { descriptor_ty, .. } = requirement\n+            && let DescriptorSetterDomain::Known(write_ty) = descriptor_setter_domain(\n+                self.builder.db(),\n+                self.builder.program_environment(),\n+                *descriptor_ty,\n+                receiver_ty,\n+            )\n+        {\n+            TypeContext::new(Some(write_ty))\n+        } else {\n+            TypeContext::default()\n+        }\n+    }\n+\n     fn evaluate_explicit_member(\n         &mut self,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -768,131 +809,104 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n     ) -> bool {\n         match requirement {\n-            ExplicitAttributeWriteRequirement::Descriptor {\n-                descriptor_ty,\n-                setter_ty,\n-                ..\n-            } => self.evaluate_descriptor_write(\n-                *descriptor_ty,\n-                *setter_ty,\n-                object_ty,\n-                value_ty,\n-                emit_diagnostics,\n-            ),\n+            ExplicitAttributeWriteRequirement::Descriptor { descriptor_ty, .. } => self\n+                .descriptor_write_alternatives(*descriptor_ty)\n+                .all(|descriptor_ty| {\n+                    self.evaluate_descriptor_write(\n+                        descriptor_ty,\n+                        object_ty,\n+                        value_ty,\n+                        emit_diagnostics,\n+                    )\n+                    .is_some()\n+                }),\n             ExplicitAttributeWriteRequirement::AssignableTo { ty, .. } => {\n                 let value_ty = self.infer_value(TypeContext::new(Some(*ty)), false);\n                 self.check_type_pair(value_ty, *ty, emit_diagnostics)\n             }\n         }\n     }\n \n-    fn evaluate_protocol_descriptor_write(\n-        &mut self,\n+    /// Yield each possible descriptor type so writes can be checked one alternative at a time.\n+    ///\n+    /// For example, if an attribute has type `IntDescriptor | StrDescriptor`, an assignment must\n+    /// satisfy both setters: either descriptor could be present at runtime. Checking them\n+    /// separately lets the caller stop and report the first alternative that rejects the write.\n+    fn descriptor_write_alternatives(\n+        &self,\n         descriptor_ty: Type<'db>,\n-        receiver_ty: Type<'db>,\n-        value_ty: Type<'db>,\n-        emit_diagnostics: bool,\n-    ) -> bool {\n-        let env = self.builder.program_environment();\n+    ) -> impl Iterator<Item = Type<'db>> + use<'db> {\n         let db = self.builder.db();\n-        let descriptor_ty = descriptor_ty.resolve_type_alias(db);\n-        if let Type::Union(union) = descriptor_ty {\n-            for descriptor_ty in union.elements(db) {\n-                if !self.evaluate_protocol_descriptor_write(\n-                    *descriptor_ty,\n-                    receiver_ty,\n-                    value_ty,\n-                    false,\n-                ) {\n-                    if emit_diagnostics {\n-                        self.evaluate_protocol_descriptor_write(\n-                            *descriptor_ty,\n-                            receiver_ty,\n-                            value_ty,\n-                            true,\n-                        );\n-                    }\n-                    return false;\n-                }\n-            }\n-            return true;\n-        }\n-\n-        if property_setter_returns_never(db, env, descriptor_ty, receiver_ty, value_ty) {\n-            if emit_diagnostics {\n-                self.report(AssignmentAttributeWriteDiagnostic::TerminalDescriptor);\n-            }\n-            return false;\n-        }\n-\n-        match descriptor_ty.try_call_dunder_with_policy(\n-            db,\n-            env,\n-            \"__set__\",\n-            &mut CallArguments::positional([receiver_ty, value_ty]),\n-            TypeContext::default(),\n-            MemberLookupPolicy::REQUIRE_CONCRETE,\n-        ) {\n-            Ok(_) => true,\n-            Err(CallDunderError::CallError(kind, bindings, _)) => {\n-                if emit_diagnostics {\n-                    self.report(AssignmentAttributeWriteDiagnostic::BadDunderSet {\n-                        failure: CallError(kind, bindings),\n-                        descriptor_ty,\n-                        includes_descriptor_argument: false,\n-                    });\n-                }\n-                false\n-            }\n-            Err(CallDunderError::MethodNotAvailable | CallDunderError::PossiblyUnbound { .. }) => {\n-                if emit_diagnostics {\n-                    self.report(AssignmentAttributeWriteDiagnostic::CannotAssign);\n+        let mut pending: SmallVec<[_; 1]> = smallvec![descriptor_ty];\n+        std::iter::from_fn(move || {\n+            while let Some(descriptor_ty) = pending.pop() {\n+                let descriptor_ty = descriptor_ty.resolve_type_alias(db);\n+                if let Type::Union(union) = descriptor_ty {\n+                    pending.extend(union.elements(db).iter().rev().copied());\n+                } else {\n+                    return Some(descriptor_ty);\n                 }\n-                false\n             }\n-        }\n+            None\n+        })\n     }\n \n+    /// Check the setter call and return whether the setter is always or only possibly present.\n+    /// Return `None` when the write fails, reporting the error if `emit_diagnostics` is enabled.\n+    ///\n+    /// For example, a descriptor can define `__set__(self, instance, value: int)` inside an\n+    /// `if flag:` block. Assigning an integer returns `Some(PossiblyUndefined)`: the call is valid\n+    /// when the setter exists, but the setter might be absent. An unconditional setter accepting\n+    /// the same value returns `Some(AlwaysDefined)`. Passing a string to either setter returns\n+    /// `None`, since the call is invalid when the setter exists.\n     fn evaluate_descriptor_write(\n         &mut self,\n         descriptor_ty: Type<'db>,\n-        setter_ty: Type<'db>,\n-        object_ty: Type<'db>,\n+        receiver_ty: Type<'db>,\n         value_ty: Type<'db>,\n         emit_diagnostics: bool,\n-    ) -> bool {\n-        let db = self.builder.db();\n+    ) -> Option<Definedness> {\n         let env = self.builder.program_environment();\n-        let setter_result = setter_ty.try_call(\n+        let db = self.builder.db();\n+        let setter_result = descriptor_ty.try_call_dunder_with_policy(\n             db,\n             env,\n-            &CallArguments::positional([descriptor_ty, object_ty, value_ty]),\n+            \"__set__\",\n+            &mut CallArguments::positional([receiver_ty, value_ty]),\n+            TypeContext::default(),\n+            MemberLookupPolicy::REQUIRE_CONCRETE,\n         );\n         // `Never` supports arbitrary operations only because there can be no runtime value to\n         // mutate; it is not a concrete descriptor with a terminal setter.\n         let setter_returns_never = !descriptor_ty.is_never()\n             && match &setter_result {\n                 Ok(bindings) => bindings.return_type(db, env).is_never(),\n-                Err(error) => error.return_type(db, env).is_never(),\n+                Err(error) => error.return_type(db, env).is_some_and(|ty| ty.is_never()),\n             };\n         if setter_returns_never\n-            || property_setter_returns_never(db, env, descriptor_ty, object_ty, value_ty)\n+            || property_setter_returns_never(db, env, descriptor_ty, receiver_ty, value_ty)\n         {\n             if emit_diagnostics {\n                 self.report(AssignmentAttributeWriteDiagnostic::TerminalDescriptor);\n             }\n-            return false;\n+            return None;\n         }\n \n         match setter_result {\n-            Ok(_) => true,\n-            Err(error) => {\n+            Ok(_) => Some(Definedness::AlwaysDefined),\n+            Err(CallDunderError::PossiblyUnbound { .. }) => Some(Definedness::PossiblyUndefined),\n+            Err(CallDunderError::CallError(kind, bindings, _)) => {\n                 if emit_diagnostics {\n                     self.report(AssignmentAttributeWriteDiagnostic::BadDunderSet {\n-                        failure: error,\n+                        failure: CallError(kind, bindings),\n                         descriptor_ty,\n-                        includes_descriptor_argument: true,\n                     });\n                 }\n-                false\n+                None\n+            }\n+            Err(CallDunderError::MethodNotAvailable) => {\n+                if emit_diagnostics {\n+                    self.report(AssignmentAttributeWriteDiagnostic::CannotAssign);\n+                }\n+                None\n             }\n         }"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/infer/builder/attribute_assignment.rs",
+   "text": "@@ -1067,12 +1081,10 @@ impl<'db> AssignmentAttributeWriteEvaluator<'_, 'db, '_, '_> {\n                 failure,\n                 descriptor_ty,\n-                includes_descriptor_argument,\n             } => {\n                 report_bad_dunder_set_call(\n                     &self.builder.context,\n                     &failure,\n                     self.object_ty,\n                     descriptor_ty,\n-                    includes_descriptor_argument,\n                     self.target,\n                     self.value,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/protocol_class.rs",
+   "text": "@@ -12,5 +12,5 @@ use crate::types::attribute_write::{\n     ExplicitAttributeWriteRequirement, FallbackAttributeWriteRequirement,\n     InstanceAttributeWriteMember, ProtocolMemberWriteRequirement, attribute_write_requirement,\n-    descriptor_setter_domain,\n+    descriptor_setter, descriptor_setter_domain,\n };\n use crate::types::call::{CallArguments, CallDunderError};"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/protocol_class.rs",
+   "text": "@@ -2592,21 +2592,11 @@ impl<'c, 'db> TypeRelationChecker<'_, 'c, 'db> {\n         }\n         match requirement {\n-            ExplicitAttributeWriteRequirement::Descriptor {\n-                descriptor_ty,\n-                setter_ty,\n-                ..\n-            } => {\n+            ExplicitAttributeWriteRequirement::Descriptor { descriptor_ty, .. } => {\n                 if let Some(property) = descriptor_ty.as_property_instance()\n                     && let Some(set_type) = property_set_type(db, self.env, property, object_ty)\n                 {\n                     return self.check_type_pair(db, value_ty, set_type);\n                 }\n-                self.check_descriptor_property_write(\n-                    db,\n-                    *descriptor_ty,\n-                    *setter_ty,\n-                    object_ty,\n-                    value_ty,\n-                )\n+                self.check_descriptor_property_write(db, *descriptor_ty, object_ty, value_ty)\n             }\n             ExplicitAttributeWriteRequirement::AssignableTo { ty, .. } => {"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/protocol_class.rs",
+   "text": "@@ -2620,21 +2610,37 @@ impl<'c, 'db> TypeRelationChecker<'_, 'c, 'db> {\n         db: &'db dyn Db,\n         descriptor_ty: Type<'db>,\n-        setter_ty: Type<'db>,\n         object_ty: Type<'db>,\n         value_ty: Type<'db>,\n     ) -> ConstraintSet<'db, 'c> {\n         let env = self.env;\n-        if setter_ty\n-            .try_call(\n+        let descriptor_ty = descriptor_ty.resolve_type_alias(db);\n+        if let Type::Union(union) = descriptor_ty {\n+            return union\n+                .elements(db)\n+                .iter()\n+                .when_all(db, self.constraints, |descriptor_ty| {\n+                    self.check_descriptor_property_write(db, *descriptor_ty, object_ty, value_ty)\n+                });\n+        }\n+        if matches!(\n+            descriptor_ty.try_call_dunder_with_policy(\n                 db,\n                 env,\n-                &CallArguments::positional([descriptor_ty, object_ty, Type::unknown()]),\n-            )\n-            .is_err()\n-        {\n+                \"__set__\",\n+                &mut CallArguments::positional([object_ty, Type::unknown()]),\n+                TypeContext::default(),\n+                MemberLookupPolicy::REQUIRE_CONCRETE,\n+            ),\n+            Err(CallDunderError::CallError(..) | CallDunderError::MethodNotAvailable)\n+        ) {\n             return self.never();\n         }\n+        let Place::Defined(DefinedPlace { ty: setter_ty, .. }) =\n+            descriptor_setter(db, env, descriptor_ty)\n+        else {\n+            return self.never();\n+        };\n \n-        self.check_callable_write_parameter(db, setter_ty, 2, descriptor_ty, value_ty)\n+        self.check_callable_write_parameter(db, setter_ty, 1, descriptor_ty, value_ty)\n     }\n "
+  }
+ ],
+ "id": "real_030",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Respect descriptor protocol for `__set__` itself (#28408)\n\n## Summary\n\nThis PR properly models the fact that implicit `__set__` calls should\nalso go through the descriptor protocol themselves, which handles edge\ncases like `__set__` methods that are `@staticmethod`s. We also add\nbidirectional inference support for (more) descriptor attribute\nassignments, which is where the ecosystem improvement comes from:\n\n```py\nclass DataDescriptor:\n    def __set__(self, instance: object, value: list[int | None]) -> None:\n        pass\n\nclass Meta(type):\n    x: DataDescriptor = DataDescriptor()\n\nclass C(metaclass=Meta): ...\n\nC.x = [1]  # now accepted, previously an error (Expected `list[int | None]`, found `list[int]`)\n```\n\ncloses https://github.com/astral-sh/ty/issues/4485.\n\n## Ecosystem\n\n25 false positives removed!\n\n## Test Plan\n\nNew Markdown tests",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "eacd85e79b299421d8aa8e9a300cb5491538907f"
+}

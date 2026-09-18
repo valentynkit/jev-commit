@@ -1,0 +1,53 @@
+{
+ "files": [
+  {
+   "added": 52,
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "removed": 29,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "activesupport/test/ractors_test.rb",
+   "removed": 7,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "text": "@@ -95,5 +95,5 @@ def try_make_shareable(obj, **)\n       end\n \n-      if RUBY_VERSION >= \"4.0\"\n+      if defined?(Ractor) && RUBY_VERSION >= \"4.0\"\n         def on_main(obj = nil, &block)\n           if Ractor.main?"
+  },
+  {
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "text": "@@ -147,6 +147,12 @@ def shareable_lambda(...)\n \n       else\n-        def main?\n-          Ractor.current == Ractor.main\n+        if defined?(Ractor)\n+          def main?\n+            Ractor.current == Ractor.main\n+          end\n+        else\n+          def main?\n+            true\n+          end\n         end\n "
+  },
+  {
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "text": "@@ -173,37 +179,54 @@ def shareable_lambda(self: nil, &block)\n     end\n \n-    # Returns the value stored under +key+ in the current Ractor's local\n-    # storage. Returns +nil+ when nothing has been stored under +key+ yet.\n-    #\n-    # Each Ractor has an isolated local storage, so values set in one Ractor\n-    # are not visible to any other.\n-    def self.[](key)\n-      Ractor.current[key]\n-    end\n+    if defined?(Ractor)\n+      # Returns the value stored under +key+ in the current Ractor's local\n+      # storage. Returns +nil+ when nothing has been stored under +key+ yet.\n+      #\n+      # Each Ractor has an isolated local storage, so values set in one Ractor\n+      # are not visible to any other.\n+      def self.[](key)\n+        Ractor.current[key]\n+      end\n \n-    # Stores +value+ under +key+ in the current Ractor's local storage.\n-    # The value is only visible to the current Ractor, and other\n-    # Ractors have their own independent storage.\n-    def self.[]=(key, value)\n-      Ractor.current[key] = value\n-    end\n+      # Stores +value+ under +key+ in the current Ractor's local storage.\n+      # The value is only visible to the current Ractor, and other\n+      # Ractors have their own independent storage.\n+      def self.[]=(key, value)\n+        Ractor.current[key] = value\n+      end\n \n-    if Ractor.respond_to?(:store_if_absent)\n-      # Returns the value stored under +key+ in the current Ractor's local\n-      # storage, running +block+ to compute and store it on first access, by\n-      # delegating to +Ractor.store_if_absent+. Concurrent threads in the\n-      # same Ractor initialize the value only once.\n-      def self.store_if_absent(key, &block)\n-        Ractor.store_if_absent(key, &block)\n+      if Ractor.respond_to?(:store_if_absent)\n+        # Returns the value stored under +key+ in the current Ractor's local\n+        # storage, running +block+ to compute and store it on first access, by\n+        # delegating to +Ractor.store_if_absent+. Concurrent threads in the\n+        # same Ractor initialize the value only once.\n+        def self.store_if_absent(key, &block)\n+          Ractor.store_if_absent(key, &block)\n+        end\n+      else\n+        @local_storage_lock = Mutex.new\n+\n+        # Same contract as +Ractor.store_if_absent+ (Ruby 3.4) on top of the\n+        # Ractor-local storage that predates it: the value is initialized at\n+        # most once even when the Ractor's threads race, with an unsynchronized\n+        # fast path for the common hit.\n+        def self.store_if_absent(key, &block)\n+          Ractor.current[key] || @local_storage_lock.synchronize { Ractor.current[key] ||= block.call }\n+        end\n       end\n     else\n+      @local_storage = {}\n       @local_storage_lock = Mutex.new\n \n-      # Same contract as +Ractor.store_if_absent+ (Ruby 3.4) on top of the\n-      # Ractor-local storage that predates it: the value is initialized at\n-      # most once even when the Ractor's threads race, with an unsynchronized\n-      # fast path for the common hit.\n+      def self.[](key)\n+        @local_storage_lock.synchronize { @local_storage[key] }\n+      end\n+\n+      def self.[]=(key, value)\n+        @local_storage_lock.synchronize { @local_storage[key] = value }\n+      end\n+\n       def self.store_if_absent(key, &block)\n-        Ractor.current[key] || @local_storage_lock.synchronize { Ractor.current[key] ||= block.call }\n+        @local_storage_lock.synchronize { @local_storage[key] ||= block.call }\n       end\n     end"
+  },
+  {
+   "path": "activesupport/test/ractors_test.rb",
+   "text": "@@ -10,11 +10,13 @@ def test_main_is_true_on_the_main_ractor\n   end\n \n-  def test_main_is_false_on_a_non_main_ractor\n-    ractor = Ractor.new do\n-      ActiveSupport::Ractors.main?\n-    end\n-    value = ractor.respond_to?(:value) ? ractor.value : ractor.take\n+  if defined?(Ractor)\n+    def test_main_is_false_on_a_non_main_ractor\n+      ractor = Ractor.new do\n+        ActiveSupport::Ractors.main?\n+      end\n+      value = ractor.respond_to?(:value) ? ractor.value : ractor.take\n \n-    assert_not value\n+      assert_not value\n+    end\n   end\n "
+  },
+  {
+   "path": "activesupport/test/ractors_test.rb",
+   "text": "@@ -34,5 +36,5 @@ def test_ractor_local_storage_get_and_set\n   end\n \n-  if RUBY_VERSION >= \"4.0\"\n+  if defined?(Ractor) && RUBY_VERSION >= \"4.0\"\n     def test_on_main_runs_block_on_main_ractor\n       value = Ractor.new do"
+  }
+ ],
+ "id": "mm_10",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Set cause during exception translation\n\nWe've previously relied on the caller 1) being inside a rescue, and 2)\nimmediately raising the return value, to set the cause. In anticipation\nof callers prefering to retain the translated exception for later use,\nlet's instead make sure we return a fully-populated exception object,\nsetting the cause at the same time we set the backtrace.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "0342f76fa3e7aef5e6ad9eb13010f06677a76e89"
+}

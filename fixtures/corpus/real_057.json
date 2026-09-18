@@ -1,0 +1,35 @@
+{
+ "files": [
+  {
+   "added": 7,
+   "path": "bin/fzf-tmux",
+   "removed": 8,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "bin/fzf-tmux",
+   "text": "@@ -160,9 +160,9 @@ fi\n \n # Clean up named pipes on exit\n-id=$RANDOM\n-argsf=\"${TMPDIR:-/tmp}/fzf-args-$id\"\n-fifo1=\"${TMPDIR:-/tmp}/fzf-fifo1-$id\"\n-fifo2=\"${TMPDIR:-/tmp}/fzf-fifo2-$id\"\n-fifo3=\"${TMPDIR:-/tmp}/fzf-fifo3-$id\"\n+tmpdir=$(mktemp -d \"${TMPDIR:-/tmp}/fzf-tmux-XXXXXX\")\n+argsf=\"$tmpdir/args\"\n+fifo1=\"$tmpdir/fifo1\"\n+fifo2=\"$tmpdir/fifo2\"\n+fifo3=\"$tmpdir/fifo3\"\n if tmux_win_opts=$(tmux show-options -p remain-on-exit \\; show-options -p synchronize-panes 2> /dev/null); then\n   tmux_win_opts=($(sed '/ off/d; s/synchronize-panes/set-option -p synchronize-panes/; s/remain-on-exit/set-option -p remain-on-exit/; s/$/ \\\\;/' <<< \"$tmux_win_opts\"))"
+  },
+  {
+   "path": "bin/fzf-tmux",
+   "text": "@@ -173,6 +173,5 @@ else\n fi\n cleanup() {\n-  \\rm -f $argsf $fifo1 $fifo2 $fifo3\n-\n+  \\rm -rf \"$tmpdir\"\n   # Restore tmux window options\n   if [[ ${#tmux_win_opts[@]} -gt 1 ]]; then"
+  },
+  {
+   "path": "bin/fzf-tmux",
+   "text": "@@ -197,5 +196,5 @@ cleanup() {\n trap 'cleanup' EXIT\n \n-envs=\"export TERM=$TERM \"\n+envs=\"export TERM=$(printf %q \"$TERM\") \"\n if [[ $opt =~ \"-E\" ]]; then\n   if [[ $tmux_version == 3.2 ]]; then"
+  }
+ ],
+ "id": "real_057",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fzf-tmux: Use mktemp, and fix TERM quoting (#4664)",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "9725eac314551072538c06ef914a0e7bedf19018"
+}

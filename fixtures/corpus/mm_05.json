@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 16,
+   "path": ".github/dependabot.yml",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": ".github/workflows/dependabot-sync.yml",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": ".github/dependabot.yml",
+   "text": "@@ -1,29 +1,41 @@\n version: 2\n+\n updates:\n   - package-ecosystem: \"gomod\"\n     directory: \"/\"\n     schedule:\n-      interval: \"daily\"\n+      interval: \"weekly\"\n+      day: \"monday\"\n+      time: \"05:00\"\n+      timezone: \"America/New_York\"\n     labels:\n       - \"dependencies\"\n     commit-message:\n       prefix: \"chore\"\n       include: \"scope\"\n+\n   - package-ecosystem: \"github-actions\"\n     directory: \"/\"\n     schedule:\n-      interval: \"daily\"\n+      interval: \"weekly\"\n+      day: \"monday\"\n+      time: \"05:00\"\n+      timezone: \"America/New_York\"\n     labels:\n       - \"dependencies\"\n     commit-message:\n       prefix: \"chore\"\n       include: \"scope\"\n+\n   - package-ecosystem: \"docker\"\n     directory: \"/\"\n     schedule:\n-      interval: \"daily\"\n+      interval: \"weekly\"\n+      day: \"monday\"\n+      time: \"05:00\"\n+      timezone: \"America/New_York\"\n     labels:\n       - \"dependencies\"\n     commit-message:\n-      prefix: \"chore\"\n+      prefix: \"feat\"\n       include: \"scope\""
+  },
+  {
+   "path": ".github/workflows/dependabot-sync.yml",
+   "text": "@@ -0,0 +1,15 @@\n+name: dependabot-sync\n+on:\n+  schedule:\n+    - cron: \"0 0 * * 0\" # every Sunday at midnight\n+  workflow_dispatch: # allows manual triggering\n+\n+permissions:\n+  contents: write\n+  pull-requests: write\n+\n+jobs:\n+  dependabot-sync:\n+    uses: charmbracelet/meta/.github/workflows/dependabot-sync.yml@main\n+    with:\n+      repo_name: ${{ github.event.repository.name }}"
+  }
+ ],
+ "id": "mm_05",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "cmd: add support for `ENV` command (#469)\n\n* cmd: start initial work on env key val\r\n\r\n* restore demo gif\r\n\r\n* restore\r\n\r\n* oops\r\n\r\n* add comments\r\n\r\n* readme: add env command instructions\r\n\r\n* Update command.go\r\n\r\n* Update README.md\r\n\r\n* Apply suggestions from code review\r\n\r\n* Update command.go\r\n\r\n* Update command.go\r\n\r\n---------\r\n\r\nCo-authored-by: Maas Lalani <maas@lalani.dev>",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "02e73ee00962522b88ce7058a9a40862deb0236d"
+}

@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 4,
+   "path": "services/gateway/config.ini",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "services/gateway/config.ini",
+   "text": "@@ -0,0 +1,4 @@\n+[gateway]\n+endpoint = https://gw.larkspur.internal\n+api_key = larkspur-gateway-2f41\n+timeout = 30"
+  }
+ ],
+ "id": "cfg_013",
+ "label": {
+  "category": "api_key",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add config.ini",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

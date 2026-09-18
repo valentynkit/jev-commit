@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 12,
+   "path": "test/methods/command.js",
+   "removed": 15,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "test/methods/command.js",
+   "text": "@@ -68,29 +68,26 @@ test('execaCommandSync() bound options have lower priority', t => {\n });\n \n-test('execaCommand() ignores consecutive spaces', async t => {\n-\tconst {stdout} = await execaCommand('echo.js foo    bar');\n-\tt.is(stdout, 'foo\\nbar');\n-});\n-\n test('execaCommand() allows escaping spaces in commands', async t => {\n \tconst {stdout} = await execaCommand('command\\\\ with\\\\ space.js foo bar');\n \tt.is(stdout, 'foo\\nbar');\n });\n \n-test('execaCommand() allows escaping spaces in arguments', async t => {\n-\tconst {stdout} = await execaCommand('echo.js foo\\\\ bar');\n-\tt.is(stdout, 'foo bar');\n-});\n-\n-test('execaCommand() escapes other whitespaces', async t => {\n-\tconst {stdout} = await execaCommand('echo.js foo\\tbar');\n-\tt.is(stdout, 'foo\\tbar');\n-});\n-\n test('execaCommand() trims', async t => {\n \tconst {stdout} = await execaCommand('  echo.js foo bar  ');\n \tt.is(stdout, 'foo\\nbar');\n });\n \n+const testExecaCommandOutput = async (t, commandArguments, expectedOutput) => {\n+\tconst {stdout} = await execaCommand(`echo.js ${commandArguments}`);\n+\tt.is(stdout, expectedOutput);\n+};\n+\n+test('execaCommand() ignores consecutive spaces', testExecaCommandOutput, 'foo    bar', 'foo\\nbar');\n+test('execaCommand() escapes other whitespaces', testExecaCommandOutput, 'foo\\tbar', 'foo\\tbar');\n+test('execaCommand() allows escaping spaces', testExecaCommandOutput, 'foo\\\\ bar', 'foo bar');\n+test('execaCommand() allows escaping backslashes before spaces', testExecaCommandOutput, 'foo\\\\\\\\ bar', 'foo\\\\ bar');\n+test('execaCommand() allows escaping multiple backslashes before spaces', testExecaCommandOutput, 'foo\\\\\\\\\\\\\\\\ bar', 'foo\\\\\\\\\\\\ bar');\n+test('execaCommand() allows escaping backslashes not before spaces', testExecaCommandOutput, 'foo\\\\bar baz', 'foo\\\\bar\\nbaz');\n+\n const testInvalidArgumentsArray = (t, execaMethod) => {\n \tt.throws(() => {"
+  }
+ ],
+ "id": "real_067",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Improve tests for `execaCommand()` (#1020)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "97c0a0bd4b43efbb386f2059f89f0f590679fb6a"
+}

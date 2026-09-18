@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "etc/openvpn/auth.txt",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/openvpn/auth.txt",
+   "text": "@@ -0,0 +1,2 @@\n+ops-runner\n+Tunnel-Access-7305"
+  }
+ ],
+ "id": "cfg_020",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add auth.txt",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

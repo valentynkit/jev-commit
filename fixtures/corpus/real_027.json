@@ -1,0 +1,63 @@
+{
+ "files": [
+  {
+   "added": 33,
+   "path": "crates/ty/tests/cli/file_selection.rs",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 18,
+   "path": "crates/ty_project/src/glob/include.rs",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 31,
+   "path": "crates/ty_project/src/glob/portable.rs",
+   "removed": 2,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty/tests/cli/file_selection.rs",
+   "text": "@@ -448,4 +448,37 @@ fn exclude_precedence_over_include() -> anyhow::Result<()> {\n }\n \n+/// `src/keep.py` and `src/explicit` must be found under `dir[1]`. An unescaped\n+/// `[1]` in their anchored globs would match paths under `dir1` instead,\n+/// missing both files. `src/skip.py` must be excluded.\n+#[test]\n+fn project_directory_brackets_do_not_act_as_glob_syntax() -> anyhow::Result<()> {\n+    let case = CliTest::with_files([\n+        (\n+            \"dir[1]/ty.toml\",\n+            r#\"\n+            [src]\n+            include = [\"src/*.py\", \"src/explicit\"]\n+            exclude = [\"src/skip.py\"]\n+            \"#,\n+        ),\n+        (\"dir[1]/src/keep.py\", \"print(undefined_keep)\"),\n+        (\"dir[1]/src/skip.py\", \"print(undefined_skip)\"),\n+        (\"dir[1]/src/explicit\", \"print(undefined_explicit)\"),\n+    ])?;\n+\n+    assert_cmd_snapshot!(case.command().current_dir(case.root().join(\"dir[1]\")).env(\"TY_OUTPUT_FORMAT\", \"concise\"), @r#\"\n+    success: false\n+    exit_code: 1\n+    ----- stdout -----\n+    src/explicit:1:7: error[unresolved-reference] Name `undefined_explicit` used when not defined\n+    src/keep.py:1:7: error[unresolved-reference] Name `undefined_keep` used when not defined\n+    Found 2 diagnostics\n+\n+    ----- stderr -----\n+    \"#);\n+\n+    Ok(())\n+}\n+\n /// Test that CLI exclude overrides configuration include\n #[test]"
+  },
+  {
+   "path": "crates/ty_project/src/glob/include.rs",
+   "text": "@@ -238,5 +238,6 @@ impl IncludeFilterBuilder {\n             // need to do this if this is a pattern that should only match a directory (specifically, its contents).\n             if !only_directory {\n-                let is_literal_pattern = globset::escape(glob_pattern) == glob_pattern;\n+                // The anchored glob may contain escaped characters from the directory.\n+                let is_literal_pattern = globset::escape(input.relative()) == input.relative();\n \n                 if is_literal_pattern {"
+  },
+  {
+   "path": "crates/ty_project/src/glob/include.rs",
+   "text": "@@ -425,4 +426,20 @@ mod tests {\n     }\n \n+    #[test]\n+    fn match_file_with_metacharacters_in_cwd() {\n+        let mut builder = IncludeFilterBuilder::new();\n+        builder\n+            .add(\n+                &PortableGlobPattern::parse(\"file\", PortableGlobKind::Include)\n+                    .unwrap()\n+                    .into_absolute(\"/root/dir[1]\"),\n+            )\n+            .unwrap();\n+        let filter = builder.build().unwrap();\n+\n+        assert_eq!(filter.match_file(\"/root/dir[1]/file\"), MatchFile::Literal);\n+        assert_eq!(filter.match_file(\"/root/dir1/file\"), MatchFile::No);\n+    }\n+\n     /// Check that we skip directories that can never match.\n     #[test]"
+  },
+  {
+   "path": "crates/ty_project/src/glob/portable.rs",
+   "text": "@@ -170,8 +170,11 @@ impl<'a> PortableGlobPattern<'a> {\n         let mut output = String::with_capacity(prefix.as_str().len() + rest.len());\n \n+        // The directory is a literal path; only `rest` contains glob syntax.\n         for component in prefix.components() {\n             match component {\n                 camino::Utf8Component::Prefix(utf8_prefix_component) => {\n-                    output.push_str(&utf8_prefix_component.as_str().replace(MAIN_SEPARATOR, \"/\"));\n+                    output.push_str(&escape_glob_path_component(\n+                        &utf8_prefix_component.as_str().replace(MAIN_SEPARATOR, \"/\"),\n+                    ));\n                 }\n "
+  },
+  {
+   "path": "crates/ty_project/src/glob/portable.rs",
+   "text": "@@ -183,5 +186,5 @@ impl<'a> PortableGlobPattern<'a> {\n                 camino::Utf8Component::ParentDir => output.push_str(\"../\"),\n                 camino::Utf8Component::Normal(component) => {\n-                    output.push_str(component);\n+                    output.push_str(&escape_glob_path_component(component));\n                     output.push('/');\n                 }"
+  },
+  {
+   "path": "crates/ty_project/src/glob/portable.rs",
+   "text": "@@ -205,4 +208,10 @@ impl<'a> PortableGlobPattern<'a> {\n }\n \n+fn escape_glob_path_component(component: &str) -> String {\n+    // The matchers treat `\\` as an escape. A literal `\\` in the path therefore needs\n+    // `\\\\` in the glob; `globset::escape` does not make that substitution.\n+    globset::escape(&component.replace('\\\\', r\"\\\\\"))\n+}\n+\n impl Deref for PortableGlobPattern<'_> {\n     type Target = str;"
+  },
+  {
+   "path": "crates/ty_project/src/glob/portable.rs",
+   "text": "@@ -394,9 +403,29 @@ mod tests {\n     }\n \n+    #[test]\n+    fn absolute_pattern_escapes_cwd() {\n+        assert_absolute_path(\n+            \"src/*.py\",\n+            \"/root/dir[1]/package{v2}\",\n+            r\"/root/dir[[]1[]]/package[{]v2[}]/src/*.py\",\n+        );\n+    }\n+\n+    #[test]\n+    #[cfg(unix)]\n+    fn absolute_pattern_escapes_cwd_unix() {\n+        assert_absolute_path(\n+            \"src/*.py\",\n+            r\"/root/dir*?\\name\",\n+            r\"/root/dir[*][?]\\\\name/src/*.py\",\n+        );\n+    }\n+\n     #[test]\n     #[cfg(windows)]\n     fn absolute_pattern_windows() {\n         assert_absolute_path(\"./src\", r\"C:\\root\", \"C:/root/src\");\n         assert_absolute_path(\"./src\", r\"\\\\server\\test\", \"//server/test/src\");\n+        assert_absolute_path(\"./src\", r\"C:\\root\\dir[1]\", r\"C:/root/dir[[]1[]]/src\");\n     }\n }"
+  }
+ ],
+ "id": "real_027",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Escape glob characters in anchored directory paths (#28518)",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "a65f3d6a54dbe2abb575680cc1241ef5d18c4494"
+}

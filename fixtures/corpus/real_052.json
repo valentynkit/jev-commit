@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "CHANGELOG.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "shell/completion.bash",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "shell/completion.zsh",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -47,6 +47,6 @@ CHANGELOG\n - Added fish completion support (#4605) (@lalvarezt)\n - zsh: Handle multi-line history selection (#4595) (@LangLangBart)\n-- zsh: Fixed `_fzf_compgen_{path,dir}` to respect `FZF_COMPLETION_{PATH,DIR}_OPTS` (#4592) (@LangLangBart)\n - Bug fixes\n+    - Fixed `_fzf_compgen_{path,dir}` to respect `FZF_COMPLETION_{PATH,DIR}_OPTS` (#4592) (@shtse8, @LangLangBart)\n     - Fixed `--preview-window follow` not working correctly with wrapping (#3243, #4258)\n     - Fixed symlinks to directories being returned as files (#4676) (@skk64)"
+  },
+  {
+   "path": "shell/completion.bash",
+   "text": "@@ -371,13 +371,16 @@ __fzf_generic_path_completion() {\n           export FZF_DEFAULT_OPTS=$(__fzf_defaults \"--reverse --scheme=path\" \"${FZF_COMPLETION_OPTS-} $2\")\n           unset FZF_DEFAULT_COMMAND FZF_DEFAULT_OPTS_FILE\n+          if [[ $1 =~ dir ]]; then\n+            eval \"rest=(${FZF_COMPLETION_DIR_OPTS-})\"\n+          else\n+            eval \"rest=(${FZF_COMPLETION_PATH_OPTS-})\"\n+          fi\n           if declare -F \"$1\" > /dev/null; then\n-            eval \"$1 $(printf %q \"$dir\")\" | __fzf_comprun \"$4\" -q \"$leftover\"\n+            eval \"$1 $(printf %q \"$dir\")\" | __fzf_comprun \"$4\" -q \"$leftover\" \"${rest[@]}\"\n           else\n             if [[ $1 =~ dir ]]; then\n               walker=dir,follow\n-              eval \"rest=(${FZF_COMPLETION_DIR_OPTS-})\"\n             else\n               walker=file,dir,follow,hidden\n-              eval \"rest=(${FZF_COMPLETION_PATH_OPTS-})\"\n             fi\n             __fzf_comprun \"$4\" -q \"$leftover\" --walker \"$walker\" --walker-root=\"$dir\" \"${rest[@]}\""
+  },
+  {
+   "path": "shell/completion.zsh",
+   "text": "@@ -175,13 +175,16 @@ __fzf_generic_path_completion() {\n         FZF_DEFAULT_OPTS=$(__fzf_defaults \"--reverse --scheme=path\" \"${FZF_COMPLETION_OPTS-}\")\n         unset FZF_DEFAULT_COMMAND FZF_DEFAULT_OPTS_FILE\n+        if [[ $compgen =~ dir ]]; then\n+          rest=${FZF_COMPLETION_DIR_OPTS-}\n+        else\n+          rest=${FZF_COMPLETION_PATH_OPTS-}\n+        fi\n         if declare -f \"$compgen\" > /dev/null; then\n-          eval \"$compgen $(printf %q \"$dir\")\" | __fzf_comprun \"$cmd_word\" ${(Q)${(Z+n+)fzf_opts}} -q \"$leftover\"\n+          eval \"$compgen $(printf %q \"$dir\")\" | __fzf_comprun \"$cmd_word\" ${(Q)${(Z+n+)fzf_opts}} -q \"$leftover\" ${(Q)${(Z+n+)rest}}\n         else\n           if [[ $compgen =~ dir ]]; then\n             walker=dir,follow\n-            rest=${FZF_COMPLETION_DIR_OPTS-}\n           else\n             walker=file,dir,follow,hidden\n-            rest=${FZF_COMPLETION_PATH_OPTS-}\n           fi\n           __fzf_comprun \"$cmd_word\" ${(Q)${(Z+n+)fzf_opts}} -q \"$leftover\" --walker \"$walker\" --walker-root=\"$dir\" ${(Q)${(Z+n+)rest}} < /dev/tty"
+  },
+  {
+   "path": "shell/completion.zsh",
+   "text": "@@ -205,10 +208,10 @@ __fzf_generic_path_completion() {\n _fzf_path_completion() {\n   __fzf_generic_path_completion \"$1\" \"$2\" _fzf_compgen_path \\\n-    \"${FZF_COMPLETION_PATH_OPTS-} -m\" \"\" \" \"\n+    \"-m\" \"\" \" \"\n }\n \n _fzf_dir_completion() {\n   __fzf_generic_path_completion \"$1\" \"$2\" _fzf_compgen_dir \\\n-    \"${FZF_COMPLETION_DIR_OPTS-}\" \"/\" \"\"\n+    \"\" \"/\" \"\"\n }\n "
+  }
+ ],
+ "id": "real_052",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Fix FZF_COMPLETION_{DIR,PATH}_OPTS ignored with custom compgen functions (#4679)\n\nWhen users define custom _fzf_compgen_path or _fzf_compgen_dir functions,\nFZF_COMPLETION_PATH_OPTS and FZF_COMPLETION_DIR_OPTS were not applied\nbecause the options were only computed inside the walker fallback branch.\n\nClose #4592",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "1a50a3c0824773ac68e42ce4310fea759e8861cd"
+}

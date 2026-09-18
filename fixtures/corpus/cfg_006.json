@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "deploy/pgbouncer/userlist.txt",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "deploy/pgbouncer/userlist.txt",
+   "text": "@@ -0,0 +1,2 @@\n+\"reporting\" \"md5b8f3a2d61c0e7f4459a2d1bb3c7e5a90\"\n+\"migrator\" \"md542f19c8b0d63ae175c2f8e9a4b16d730\""
+  }
+ ],
+ "id": "cfg_006",
+ "label": {
+  "category": "hash",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add userlist.txt",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

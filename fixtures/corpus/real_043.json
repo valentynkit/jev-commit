@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": "go.mod",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "go.sum",
+   "removed": 6,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "go.mod",
+   "text": "@@ -24,5 +24,5 @@ require (\n \tgithub.com/muesli/termenv v0.15.3-0.20240618155329-98d742f6907a\n \tgithub.com/spf13/cobra v1.8.1\n-\tgolang.org/x/crypto v0.29.0\n+\tgolang.org/x/crypto v0.30.0\n \tgolang.org/x/term v0.27.0\n )"
+  },
+  {
+   "path": "go.mod",
+   "text": "@@ -66,6 +66,6 @@ require (\n \tgolang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect\n \tgolang.org/x/net v0.27.0 // indirect\n-\tgolang.org/x/sync v0.9.0 // indirect\n+\tgolang.org/x/sync v0.10.0 // indirect\n \tgolang.org/x/sys v0.28.0 // indirect\n-\tgolang.org/x/text v0.20.0 // indirect\n+\tgolang.org/x/text v0.21.0 // indirect\n )"
+  }
+ ],
+ "id": "real_043",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore(deps): bump golang.org/x/crypto from 0.29.0 to 0.30.0 (#553)\n\nBumps [golang.org/x/crypto](https://github.com/golang/crypto) from 0.29.0 to 0.30.0.\n- [Commits](https://github.com/golang/crypto/compare/v0.29.0...v0.30.0)\n\n---\nupdated-dependencies:\n- dependency-name: golang.org/x/crypto\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+ "more": "",
+ "omitted": "counts only: go.sum",
+ "repo": "charmbracelet/vhs",
+ "sha": "394d03e7976f361130d80bb8acbe9f0430cf0768"
+}

@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "shell/key-bindings.fish",
+   "removed": 3,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -22,4 +22,5 @@ CHANGELOG\n         - Requires tmux 3.7+ or Zellij 0.44+\n         - Set `g:fzf_layout` to pick a different layout\n+- fish: Fixed custom CTRL-T command not using the prefixed target directory in some cases (#4498)\n \n 0.74.3"
+  },
+  {
+   "path": "shell/key-bindings.fish",
+   "text": "@@ -105,16 +105,23 @@ function fzf_key_bindings\n   function fzf-file-widget -d \"List files and folders\"\n     set -l commandline (__fzf_parse_commandline)\n-    set -lx dir $commandline[1]\n+    set -l dir $commandline[1]\n     set -l fzf_query $commandline[2]\n     set -l prefix $commandline[3]\n \n     set -lx FZF_DEFAULT_OPTS (__fzf_defaults \\\n       \"--reverse --walker=file,dir,follow,hidden --scheme=path\" \\\n       \"--multi $FZF_CTRL_T_OPTS --print0\")\n \n-    set -lx FZF_DEFAULT_COMMAND \"$FZF_CTRL_T_COMMAND\"\n     set -lx FZF_DEFAULT_OPTS_FILE\n \n-    set -l result (eval (__fzfcmd) --walker-root=$dir --query=$fzf_query | string split0)\n+    set -lx FZF_DEFAULT_COMMAND\n+\n+    if test -n \"$FZF_CTRL_T_COMMAND\"\n+      set -f result (eval $FZF_CTRL_T_COMMAND \\| (__fzfcmd) --query=$fzf_query | string split0)\n+    else\n+      set -f result (eval (__fzfcmd) --walker-root=$dir --query=$fzf_query | string split0)\n+    end\n+\n+    test -n \"$result\"\n     and commandline -rt -- (string join -- ' ' $prefix(string escape -n -- $result))' '\n "
+  }
+ ],
+ "id": "real_058",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fish: Improve custom CTRL-T command execution (#4909)\n\nThe custom CTRL-T command is now executed by the script in the current\nshell session, instead of being called by fzf through a subshell. This\nensures that the value of $dir can't be altered by user initialization\nscripts, and is also a little faster.\n\nFix #4498",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "ad151d84154632a6abec67b40fe326c1ea2c9481"
+}

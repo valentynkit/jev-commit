@@ -1,0 +1,22 @@
+{
+ "files": [
+  {
+   "added": 146,
+   "path": "doc/en/reference/plugin_list.rst",
+   "removed": 82,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [],
+ "id": "real_015",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[automated] Update plugin list",
+ "more": "",
+ "omitted": "counts only: doc/en/reference/plugin_list.rst",
+ "repo": "pytest-dev/pytest",
+ "sha": "67794b0ae70bd5a00aaf1fc080cd9e923284b7c1"
+}

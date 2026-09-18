@@ -1,0 +1,57 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": ".github/workflows/codeql-analysis.yml",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/flawfinder.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/scorecards.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": ".github/workflows/semgrep.yml",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/codeql-analysis.yml",
+   "text": "@@ -37,13 +37,13 @@ jobs:\n     # Initializes the CodeQL tools for scanning.\n     - name: Initialize CodeQL\n-      uses: github/codeql-action/init@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0\n+      uses: github/codeql-action/init@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1\n       with:\n         languages: c-cpp\n \n     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).\n     # If this step fails, then you should remove it and run the build manually (see below)\n     - name: Autobuild\n-      uses: github/codeql-action/autobuild@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0\n+      uses: github/codeql-action/autobuild@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1\n \n     - name: Perform CodeQL Analysis\n-      uses: github/codeql-action/analyze@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0\n+      uses: github/codeql-action/analyze@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1"
+  },
+  {
+   "path": ".github/workflows/flawfinder.yml",
+   "text": "@@ -42,5 +42,5 @@ jobs:\n \n       - name: Upload analysis results to GitHub Security tab\n-        uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4\n+        uses: github/codeql-action/upload-sarif@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4\n         with:\n           sarif_file: ${{github.workspace}}/flawfinder_results.sarif"
+  },
+  {
+   "path": ".github/workflows/scorecards.yml",
+   "text": "@@ -77,5 +77,5 @@ jobs:\n       # Upload the results to GitHub's code scanning dashboard.\n       - name: \"Upload to code-scanning\"\n-        uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4.32.0\n+        uses: github/codeql-action/upload-sarif@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4.32.1\n         with:\n           sarif_file: results.sarif"
+  },
+  {
+   "path": ".github/workflows/semgrep.yml",
+   "text": "@@ -49,5 +49,5 @@ jobs:\n       # Upload SARIF file generated in previous step\n       - name: Upload SARIF file\n-        uses: github/codeql-action/upload-sarif@b20883b0cd1f46c72ae0ba6d1090936928f9fa30 # v4\n+        uses: github/codeql-action/upload-sarif@6bc82e05fd0ea64601dd4b465378bbcf57de0314 # v4\n         with:\n           sarif_file: semgrep.sarif"
+  }
+ ],
+ "id": "real_082",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": ":arrow_up: Bump github/codeql-action from 4.32.0 to 4.32.1 (#5067)",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "21b53746c9d73d314d5de454e2e7cddd20cbbe5d"
+}

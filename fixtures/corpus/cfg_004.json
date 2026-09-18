@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "etc/nslcd.conf",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/nslcd.conf",
+   "text": "@@ -0,0 +1,5 @@\n+uri ldaps://ldap.larkspur.internal\n+base dc=larkspur,dc=internal\n+binddn cn=nslcd,ou=service,dc=larkspur,dc=internal\n+bindpw_file /etc/nslcd.secret\n+ssl on"
+  }
+ ],
+ "id": "cfg_004",
+ "label": {
+  "category": "reference",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add nslcd.conf",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

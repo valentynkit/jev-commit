@@ -1,0 +1,61 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "AUTHORS",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "changelog/12860.improvement.rst",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 3,
+   "path": "src/_pytest/assertion/_guards.py",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 32,
+   "path": "testing/test_assertion.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "AUTHORS",
+   "text": "@@ -81,4 +81,5 @@ Brian Okken\n Bruno Oliveira\n Cal Jacobson\n+croc100\n Cal Leeming\n Carl Friedrich Bolz"
+  },
+  {
+   "path": "changelog/12860.improvement.rst",
+   "text": "@@ -0,0 +1,1 @@\n+Assertion diffs for ``dict.items()`` and ``dict.keys()`` comparisons (``>=``, ``<=``, ``>``, ``<``, ``==``) now show which items are missing, the same way set comparisons do."
+  },
+  {
+   "path": "src/_pytest/assertion/_guards.py",
+   "text": "@@ -3,4 +3,5 @@\n import collections.abc\n from collections.abc import Mapping\n+from collections.abc import Set as AbstractSet\n import dataclasses\n from typing import TypeGuard"
+  },
+  {
+   "path": "src/_pytest/assertion/_guards.py",
+   "text": "@@ -19,6 +20,6 @@ def ismapping(x: object) -> TypeGuard[Mapping[object, object]]:\n \n \n-def isset(x: object) -> TypeGuard[set[object] | frozenset[object]]:\n-    return isinstance(x, set | frozenset)\n+def isset(x: object) -> TypeGuard[AbstractSet[object]]:\n+    return isinstance(x, AbstractSet)\n \n "
+  },
+  {
+   "path": "testing/test_assertion.py",
+   "text": "@@ -1873,4 +1873,36 @@ def test_hello():\n         )\n \n+    @pytest.mark.parametrize(\"op\", [\">=\", \"<=\"])\n+    def test_dict_items_view_subset(self, op, pytester: Pytester) -> None:\n+        \"\"\"dict.items() supports set-like comparisons; assert diff should show the missing items.\"\"\"\n+        if op == \">=\":\n+            pytester.makepyfile(\n+                \"\"\"\n+                def test_hello():\n+                    x = {\"a\": 1, \"b\": 2}\n+                    y = {\"a\": 1, \"b\": 2, \"c\": 3}\n+                    assert x.items() >= y.items()\n+            \"\"\"\n+            )\n+        else:\n+            pytester.makepyfile(\n+                \"\"\"\n+                def test_hello():\n+                    x = {\"a\": 1, \"b\": 2, \"c\": 3}\n+                    y = {\"a\": 1, \"b\": 2}\n+                    assert x.items() <= y.items()\n+            \"\"\"\n+            )\n+        result = pytester.runpytest()\n+        side = \"right\" if op == \">=\" else \"left\"\n+        result.stdout.fnmatch_lines(\n+            [\n+                \"*def test_hello():*\",\n+                f\"*assert x.items() {op} y.items()*\",\n+                f\"*E*Extra items in the {side} set:*\",\n+                \"*E*('c', 3)*\",\n+            ]\n+        )\n+\n \n def test_assertrepr_loaded_per_dir(pytester: Pytester) -> None:"
+  }
+ ],
+ "id": "real_017",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "assertion: add support for `dict.keys()` and `dict.values()` types in assertion explanations (as sets)",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "9db664649af9b24d496fb7ad482b66c0c341a28c"
+}

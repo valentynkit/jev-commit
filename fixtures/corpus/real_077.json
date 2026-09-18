@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 23,
+   "path": "packages/runtime-core/__tests__/rendererOptimizedMode.spec.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "packages/runtime-core/src/renderer.ts",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/runtime-core/__tests__/rendererOptimizedMode.spec.ts",
+   "text": "@@ -826,4 +826,27 @@ describe('renderer: optimized mode', () => {\n   })\n \n+  // #6385\n+  test('should fully diff props when falling back from a non-isomorphic block', () => {\n+    render(h('div', { id: 'placeholder' }), root)\n+\n+    render(\n+      (openBlock(),\n+      createElementBlock(\n+        'div',\n+        { class: 'resolved' },\n+        [\n+          createTextVNode('hello '),\n+          createElementVNode('button', null, '0', PatchFlags.TEXT),\n+        ],\n+        PatchFlags.CLASS,\n+      )),\n+      root,\n+    )\n+\n+    expect(inner(root)).toBe(\n+      '<div class=\"resolved\">hello <button>0</button></div>',\n+    )\n+  })\n+\n   // #3828\n   test('patch Suspense in optimized mode w/ nested dynamic nodes', async () => {"
+  },
+  {
+   "path": "packages/runtime-core/src/renderer.ts",
+   "text": "@@ -856,6 +856,13 @@ function baseCreateRenderer(\n     parentComponent && toggleRecurse(parentComponent, true)\n \n-    if (__DEV__ && isHmrUpdating) {\n+    if (\n       // HMR updated, force full diff\n+      (__DEV__ && isHmrUpdating) ||\n+      // #6385 the old vnode may be a user-wrapped non-isomorphic block\n+      // Force full diff when block metadata is unstable.\n+      (dynamicChildren &&\n+        (!n1.dynamicChildren ||\n+          n1.dynamicChildren.length !== dynamicChildren.length))\n+    ) {\n       patchFlag = 0\n       optimized = false"
+  }
+ ],
+ "id": "real_077",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(runtime-core): handle non-isomorphic block element update (#15002)\n\nfix #6385",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "932ddd058d69be9bbd8cd796c89f0d1a4fc128d7"
+}

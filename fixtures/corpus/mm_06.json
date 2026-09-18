@@ -1,0 +1,35 @@
+{
+ "files": [
+  {
+   "added": 9,
+   "path": "CHANGELOG.md",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -11,4 +11,6 @@ CHANGELOG\n - Fixed adaptive height not reserving a line for the divider of an inline header or footer border, so the list came up one line short for each of them (#4904)\n     - e.g. `seq 10 | fzf --height=~100% --list-border --header-lines=1 --header-lines-border=inline`\n+- Fixed fzf erasing the line the prompt was on when it exits, which made the last line of the prompt flicker in fish, bash, and nushell (#4913)\n+- Fixed fzf exiting with status 2 while waiting for a key, when `--listen` is used and 100+ signals interrupt the wait (#4917)\n - Vim plugin\n     - fzf no longer blocks the editor, so live previews keep working while fzf is open"
+  },
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -22,9 +24,11 @@ CHANGELOG\n         - Requires tmux 3.7+ or Zellij 0.44+\n         - Set `g:fzf_layout` to pick a different layout\n-- fish:\n-    - Fixed custom CTRL-T command not using the prefixed target directory in some cases (#4498)\n-    - Optimized description alignment of completion items (#4910)\n-- nushell: Fixed CTRL-T inserting the selected paths unquoted\n-    - p4p3r (@P4P3R-HAK) reported the security vulnerability and suggested the fix\n+- fish\n+    - Fixed custom CTRL-T command not using the prefixed target directory in some cases (#4498) (@bitraid)\n+    - Optimized description alignment of completion items (#4910) (@bitraid)\n+- nushell\n+    - Added key bindings for Helix editing modes, on nushell 0.115.0 or above (#4914) (@sim590)\n+    - Fixed CTRL-T inserting the selected paths unquoted\n+        - p4p3r (@P4P3R-HAK) reported the security vulnerability and suggested the fix\n \n 0.74.3"
+  }
+ ],
+ "id": "mm_06",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Fix FZF_COMPLETION_{DIR,PATH}_OPTS ignored with custom compgen functions (#4679)\n\nWhen users define custom _fzf_compgen_path or _fzf_compgen_dir functions,\nFZF_COMPLETION_PATH_OPTS and FZF_COMPLETION_DIR_OPTS were not applied\nbecause the options were only computed inside the walker fallback branch.\n\nClose #4592",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "013532d5cd3c679644df06be355c0b2ff30d5d6d"
+}

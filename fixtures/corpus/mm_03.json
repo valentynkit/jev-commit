@@ -1,0 +1,35 @@
+{
+ "files": [
+  {
+   "added": 35,
+   "path": "crates/ty_python_semantic/src/types/generics.rs",
+   "removed": 37,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "crates/ty_python_semantic/src/types/generics.rs",
+   "text": "@@ -1069,44 +1069,37 @@ impl<'db> GenericContext<'db> {\n         // ```\n         //\n-        // If there is a mapping for `T`, we want to map `U` to that type, not to `T`. To handle\n-        // this, we repeatedly apply the specialization to itself, until we reach a fixed point.\n+        // If there is a mapping for `T`, we want to map `U` to that type, not to `T`.\n+        // Fill each argument in order so defaults can use the preceding arguments.\n         let mut expanded = Vec::with_capacity(types.len());\n-        for typevar in variables.clone() {\n-            expanded.push(match typevar.kind(db) {\n-                TypeVarKind::LegacyTypeVarTuple | TypeVarKind::Pep695TypeVarTuple => {\n-                    Type::homogeneous_tuple(db, &env, Type::unknown())\n-                }\n-                TypeVarKind::LegacyParamSpec | TypeVarKind::Pep695ParamSpec => {\n-                    Type::paramspec_value_callable(db, Parameters::unknown())\n+        for (ty, typevar) in types.zip(variables) {\n+            let ty = if let Some(ty) = ty {\n+                ty\n+            } else if let Some(default) = typevar.default_type(db) {\n+                // Typevars are only allowed to refer to earlier typevars in their defaults.\n+                // This is statically enforced for PEP 695 contexts, and explicitly required\n+                // for legacy contexts.\n+                let specialization = ApplySpecialization::Partial {\n+                    generic_context: self,\n+                    types: &expanded,\n+                    skip: None,\n+                };\n+                default.apply_type_mapping(\n+                    db,\n+                    &env,\n+                    &TypeMapping::ApplySpecialization(specialization),\n+                    TypeContext::default(),\n+                )\n+            } else {\n+                match typevar.kind(db) {\n+                    TypeVarKind::LegacyTypeVarTuple | TypeVarKind::Pep695TypeVarTuple => {\n+                        Type::homogeneous_tuple(db, &env, Type::unknown())\n+                    }\n+                    TypeVarKind::LegacyParamSpec | TypeVarKind::Pep695ParamSpec => {\n+                        Type::paramspec_value_callable(db, Parameters::unknown())\n+                    }\n+                    _ => Type::unknown(),\n                 }\n-                _ => Type::unknown(),\n-            });\n-        }\n-\n-        for (idx, (ty, typevar)) in types.zip(variables).enumerate() {\n-            if let Some(ty) = ty {\n-                expanded[idx] = ty;\n-                continue;\n-            }\n-\n-            let Some(default) = typevar.default_type(db) else {\n-                continue;\n-            };\n-\n-            // Typevars are only allowed to refer to _earlier_ typevars in their defaults. (This is\n-            // statically enforced for PEP-695 contexts, and is explicitly called out as a\n-            // requirement for legacy contexts.)\n-            let specialization = ApplySpecialization::Partial {\n-                generic_context: self,\n-                types: &expanded[0..idx],\n-                skip: None,\n             };\n-            let default = default.apply_type_mapping(\n-                db,\n-                &env,\n-                &TypeMapping::ApplySpecialization(specialization),\n-                TypeContext::default(),\n-            );\n-            expanded[idx] = default;\n+            expanded.push(ty);\n         }\n "
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/generics.rs",
+   "text": "@@ -3102,4 +3095,9 @@ impl<'db, 'c> SpecializationBuilder<'db, 'c> {\n         ty: Type<'db>,\n     ) -> bool {\n+        // Self references are not followed, so a cycle needs at least two pending mappings.\n+        if types.len() <= 1 {\n+            return false;\n+        }\n+\n         let db = self.db;\n         match ty {"
+  }
+ ],
+ "id": "mm_03",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "[ty] Prevent LSP hangs during inlay hint bursts (#28390)",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "0044db22fa125d977c3ea909a70e8dcadc35b78b"
+}

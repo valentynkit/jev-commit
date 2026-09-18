@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "etc/rsyncd.secrets",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/rsyncd.secrets",
+   "text": "@@ -0,0 +1,2 @@\n+backup:Cold-Storage-5523\n+mirror:Night-Sync-8807"
+  }
+ ],
+ "id": "cfg_015",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add rsyncd.secrets",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

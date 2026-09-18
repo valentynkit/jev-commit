@@ -1,0 +1,39 @@
+{
+ "files": [
+  {
+   "added": 28,
+   "path": "src/_pytest/assertion/_compare_any.py",
+   "removed": 31,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/_pytest/assertion/_compare_any.py",
+   "text": "@@ -1,4 +1,5 @@\n from __future__ import annotations\n \n+from collections.abc import Iterator\n import dataclasses\n import pprint"
+  },
+  {
+   "path": "src/_pytest/assertion/_compare_any.py",
+   "text": "@@ -55,10 +56,12 @@ def _compare_eq_any(\n             # intentionally only handles the same-type case, which was often\n             # used in older code bases before dataclasses/attrs were available.\n-            explanation = _compare_eq_cls(\n-                left,\n-                right,\n-                highlighter,\n-                verbose,\n-                assertion_text_diff_style,\n+            explanation = list(\n+                _compare_eq_cls(\n+                    left,\n+                    right,\n+                    highlighter,\n+                    verbose,\n+                    assertion_text_diff_style,\n+                )\n             )\n         elif issequence(left) and issequence(right):"
+  },
+  {
+   "path": "src/_pytest/assertion/_compare_any.py",
+   "text": "@@ -82,7 +85,7 @@ def _compare_eq_cls(\n     verbose: int,\n     assertion_text_diff_style: _AssertionTextDiffStyle,\n-) -> list[str]:\n+) -> Iterator[str]:\n     if not has_default_eq(left):\n-        return []\n+        return\n     if isdatacls(left):\n         all_fields = dataclasses.fields(left)"
+  },
+  {
+   "path": "src/_pytest/assertion/_compare_any.py",
+   "text": "@@ -105,32 +108,26 @@ def _compare_eq_cls(\n             diff.append(field)\n \n-    explanation = []\n     if same or diff:\n-        explanation += [\"\"]\n+        yield \"\"\n     if same and verbose < 2:\n-        explanation.append(f\"Omitting {len(same)} identical items, use -vv to show\")\n+        yield f\"Omitting {len(same)} identical items, use -vv to show\"\n     elif same:\n-        explanation += [\"Matching attributes:\"]\n-        explanation += highlighter(pprint.pformat(same)).splitlines()\n+        yield \"Matching attributes:\"\n+        yield from highlighter(pprint.pformat(same)).splitlines()\n     if diff:\n-        explanation += [\"Differing attributes:\"]\n-        explanation += highlighter(pprint.pformat(diff)).splitlines()\n+        yield \"Differing attributes:\"\n+        yield from highlighter(pprint.pformat(diff)).splitlines()\n         for field in diff:\n             field_left = getattr(left, field)\n             field_right = getattr(right, field)\n-            explanation += [\n-                \"\",\n-                f\"Drill down into differing attribute {field}:\",\n-                f\"{indent}{field}: {highlighter(repr(field_left))} != {highlighter(repr(field_right))}\",\n-            ]\n-            explanation += [\n-                indent + line\n-                for line in _compare_eq_any(\n-                    field_left,\n-                    field_right,\n-                    highlighter,\n-                    verbose,\n-                    assertion_text_diff_style,\n-                )\n-            ]\n-    return explanation\n+            yield \"\"\n+            yield f\"Drill down into differing attribute {field}:\"\n+            yield f\"{indent}{field}: {highlighter(repr(field_left))} != {highlighter(repr(field_right))}\"\n+            for line in _compare_eq_any(\n+                field_left,\n+                field_right,\n+                highlighter,\n+                verbose,\n+                assertion_text_diff_style,\n+            ):\n+                yield indent + line"
+  }
+ ],
+ "id": "real_016",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[refactor] Make ``_compare_eq_cls`` yield strings",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "7fbc6d2020f74f6f0581583d3c3822ce719b00b2"
+}

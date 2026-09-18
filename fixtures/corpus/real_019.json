@@ -1,0 +1,113 @@
+{
+ "files": [
+  {
+   "added": 11,
+   "path": "changelog/11418.improvement.rst",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "changelog/13292.bugfix.rst",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 0,
+   "path": "src/_pytest/assertion/__init__.py",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 24,
+   "path": "src/_pytest/assertion/rewrite.py",
+   "removed": 64,
+   "status": "M"
+  },
+  {
+   "added": 0,
+   "path": "src/_pytest/main.py",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 66,
+   "path": "testing/test_assertrewrite.py",
+   "removed": 83,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "changelog/11418.improvement.rst",
+   "text": "@@ -1,1 +1,11 @@\n-Added hash comparison for pyc cache files.\n+The cached rewritten modules in ``__pycache__`` are now invalidated by a hash of\n+the source instead of its modification time, using the checked-hash pyc format\n+from :pep:`552`.\n+\n+Timestamps make the cache useless wherever source files get fresh modification\n+times, most notably in CI: a checkout gives every file a new mtime, so a\n+restored cache is discarded in full and every test module is rewritten again.\n+Hashing the source costs roughly 15 microseconds per file and makes the cache\n+survive that.\n+\n+Existing timestamp based caches are ignored and rewritten once."
+  },
+  {
+   "path": "changelog/13292.bugfix.rst",
+   "text": "@@ -0,0 +1,3 @@\n+Fixed a stale rewritten module being used when a test file is modified twice\n+within the same second without changing its size -- the pyc header could only\n+record whole-second timestamps. The cache is now keyed on a hash of the source."
+  },
+  {
+   "path": "src/_pytest/assertion/__init__.py",
+   "text": "@@ -129,5 +129,4 @@ class AssertionState:\n         self.mode = mode\n         self.trace = config.trace.root.get(\"assertion\")\n-        self.invalidation_mode = config.known_args_namespace.invalidationmode\n         self.hook: rewrite.AssertionRewritingHook | None = None\n "
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -20,10 +20,8 @@\n from pathlib import Path\n from pathlib import PurePath\n-import struct\n import sys\n import tokenize\n import types\n from typing import IO\n-from typing import Literal\n from typing import TYPE_CHECKING\n "
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -39,6 +37,4 @@\n \n \n-import _imp\n-\n from _pytest._io.saferepr import DEFAULT_REPR_MAX_SIZE\n from _pytest._io.saferepr import saferepr"
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -180,9 +176,9 @@ def exec_module(self, module: types.ModuleType) -> None:\n         if co is None:\n             state.trace(f\"rewriting {fn!r}\")\n-            source_stat, source_hash, co = _rewrite_test(fn, self.config)\n+            source_hash, co = _rewrite_test(fn, self.config)\n             if write:\n                 self._writing_pyc = True\n                 try:\n-                    _write_pyc(state, co, source_stat, source_hash, pyc)\n+                    _write_pyc(state, co, source_hash, pyc)\n                 finally:\n                     self._writing_pyc = False"
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -301,44 +297,26 @@ def get_resource_reader(self, name: str) -> TraversableResources:\n \n \n-def _write_pyc_fp(\n-    fp: IO[bytes],\n-    source_stat: os.stat_result,\n-    source_hash: bytes,\n-    co: types.CodeType,\n-    invalidation_mode: Literal[\"timestamp\", \"checked-hash\"],\n-) -> None:\n+def _write_pyc_fp(fp: IO[bytes], source_hash: bytes, co: types.CodeType) -> None:\n     # Technically, we don't have to have the same pyc format as\n     # (C)Python, since these \"pycs\" should never be seen by builtin\n     # import. However, there's little reason to deviate.\n     fp.write(importlib.util.MAGIC_NUMBER)\n-    # https://www.python.org/dev/peps/pep-0552/\n-    if invalidation_mode == \"timestamp\":\n-        flags = b\"\\x00\\x00\\x00\\x00\"\n-        fp.write(flags)\n-        # as of now, bytecode header expects 32-bit numbers for size and mtime (#4903)\n-        mtime = int(source_stat.st_mtime) & 0xFFFFFFFF\n-        size = source_stat.st_size & 0xFFFFFFFF\n-        # \"<LL\" stands for 2 unsigned longs, little-endian.\n-        fp.write(struct.pack(\"<LL\", mtime, size))\n-    elif invalidation_mode == \"checked-hash\":\n-        flags = b\"\\x03\\x00\\x00\\x00\"\n-        fp.write(flags)\n-        # 64-bit source file hash\n-        source_hash = source_hash[:8]\n-        fp.write(source_hash)\n+    # A checked-hash pyc, per https://peps.python.org/pep-0552/: bit 0 marks\n+    # the pyc as hash-based, bit 1 requests that the hash is always verified.\n+    # Timestamps are unusable for us: a fresh checkout, or any cache restore,\n+    # gives every source file a new mtime and invalidates the whole cache.\n+    fp.write(b\"\\x03\\x00\\x00\\x00\")\n+    # 64-bit source hash, as computed by importlib.util.source_hash().\n+    fp.write(source_hash[:8])\n     fp.write(marshal.dumps(co))\n \n \n def _write_pyc(\n-    state: AssertionState,\n-    co: types.CodeType,\n-    source_stat: os.stat_result,\n-    source_hash: bytes,\n-    pyc: Path,\n+    state: AssertionState, co: types.CodeType, source_hash: bytes, pyc: Path\n ) -> bool:\n     proc_pyc = f\"{pyc}.{os.getpid()}\"\n     try:\n         with open(proc_pyc, \"wb\") as fp:\n-            _write_pyc_fp(fp, source_stat, source_hash, co, state.invalidation_mode)\n+            _write_pyc_fp(fp, source_hash, co)\n     except OSError as e:\n         state.trace(f\"error writing pyc file at {proc_pyc}: errno={e.errno}\")"
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -356,16 +334,13 @@ def _write_pyc(\n \n \n-def _rewrite_test(\n-    fn: Path, config: Config\n-) -> tuple[os.stat_result, bytes, types.CodeType]:\n-    \"\"\"Read and rewrite *fn* and return the code object.\"\"\"\n-    stat = os.stat(fn)\n+def _rewrite_test(fn: Path, config: Config) -> tuple[bytes, types.CodeType]:\n+    \"\"\"Read and rewrite *fn* and return its source hash and code object.\"\"\"\n     source = fn.read_bytes()\n     source_hash = importlib.util.source_hash(source)\n     strfn = str(fn)\n     tree = ast.parse(source, filename=strfn)\n     rewrite_asserts(tree, source, strfn, config)\n     co = compile(tree, strfn, \"exec\", dont_inherit=True)\n-    return stat, source_hash, co\n+    return source_hash, co\n \n "
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -383,7 +358,4 @@ def _read_pyc(\n     with fp:\n         try:\n-            stat_result = os.stat(source)\n-            mtime = int(stat_result.st_mtime)\n-            size = stat_result.st_size\n             data = fp.read(16)\n         except OSError as e:"
+  },
+  {
+   "path": "src/_pytest/assertion/rewrite.py",
+   "text": "@@ -397,27 +369,15 @@ def _read_pyc(\n             trace(f\"_read_pyc({source}): invalid pyc (bad magic number)\")\n             return None\n-\n-        hash_based = getattr(_imp, \"check_hash_based_pycs\", \"default\") == \"always\"\n-        if data[4:8] == b\"\\x00\\x00\\x00\\x00\" and not hash_based:\n-            trace(f\"_read_pyc({source}): timestamp based\")\n-            mtime_data = data[8:12]\n-            if int.from_bytes(mtime_data, \"little\") != mtime & 0xFFFFFFFF:\n-                trace(f\"_read_pyc({source}): out of date\")\n-                return None\n-            size_data = data[12:16]\n-            if int.from_bytes(size_data, \"little\") != size & 0xFFFFFFFF:\n-                trace(f\"_read_pyc({source}): invalid pyc (incorrect size)\")\n-                return None\n-        elif data[4:8] == b\"\\x03\\x00\\x00\\x00\":\n-            trace(f\"_read_pyc({source}): hash based\")\n-            hash = data[8:16]\n-            source_hash = importlib.util.source_hash(source.read_bytes())\n-            if source_hash[:8] != hash:\n-                trace(f\"_read_pyc({source}): hash doesn't match\")\n-                return None\n-        else:\n+        if data[4:8] != b\"\\x03\\x00\\x00\\x00\":\n             trace(f\"_read_pyc({source}): invalid pyc (unsupported flags)\")\n             return None\n-\n+        try:\n+            source_hash = importlib.util.source_hash(source.read_bytes())\n+        except OSError as e:\n+            trace(f\"_read_pyc({source}): OSError {e}\")\n+            return None\n+        if source_hash[:8] != data[8:16]:\n+            trace(f\"_read_pyc({source}): out of date\")\n+            return None\n         try:\n             co = marshal.load(fp)"
+  },
+  {
+   "path": "src/_pytest/main.py",
+   "text": "@@ -223,12 +223,4 @@ def pytest_addoption(parser: Parser) -> None:\n         \"files. Default: prepend.\",\n     )\n-    group.addoption(\n-        \"--invalidation-mode\",\n-        default=\"timestamp\",\n-        choices=[\"timestamp\", \"checked-hash\"],\n-        dest=\"invalidationmode\",\n-        help=\"Pytest pyc cache invalidation mode. Default: timestamp.\",\n-    )\n-\n     parser.addini(\n         \"norecursedirs\","
+  },
+  {
+   "path": "testing/test_assertrewrite.py",
+   "text": "@@ -2,5 +2,4 @@\n from __future__ import annotations\n \n-import _imp\n import ast\n from collections.abc import Generator"
+  },
+  {
+   "path": "testing/test_assertrewrite.py",
+   "text": "@@ -1327,13 +1326,12 @@ def test_write_pyc(self, pytester: Pytester, tmp_path) -> None:\n         state = AssertionState(config, \"rewrite\")\n         tmp_path.joinpath(\"source.py\").touch()\n-        source_path = str(tmp_path)\n         source_bytes = tmp_path.joinpath(\"source.py\").read_bytes()\n         pycpath = tmp_path.joinpath(\"pyc\")\n         co = compile(\"1\", \"f.py\", \"single\")\n         hash = source_hash(source_bytes)\n-        assert _write_pyc(state, co, os.stat(source_path), hash, pycpath)\n+        assert _write_pyc(state, co, hash, pycpath)\n \n         with mock.patch.object(os, \"replace\", side_effect=OSError):\n-            assert not _write_pyc(state, co, os.stat(source_path), hash, pycpath)\n+            assert not _write_pyc(state, co, hash, pycpath)\n \n     def test_resources_provider_for_loader(self, pytester: Pytester) -> None:"
+  },
+  {
+   "path": "testing/test_assertrewrite.py",
+   "text": "@@ -1408,39 +1406,37 @@ def test_read_pyc_success(self, tmp_path: Path, pytester: Pytester) -> None:\n         fn.write_text(\"def test(): assert True\", encoding=\"utf-8\")\n \n-        source_stat, hash, co = _rewrite_test(fn, config)\n-        _write_pyc(state, co, source_stat, hash, pyc)\n+        hash, co = _rewrite_test(fn, config)\n+        _write_pyc(state, co, hash, pyc)\n         assert _read_pyc(fn, pyc, state.trace) is not None\n \n         pyc_bytes = pyc.read_bytes()\n-        assert pyc_bytes[4] == 0  # timestamp flag set\n+        assert pyc_bytes[4] == 3  # checked-hash flag set\n+        assert pyc_bytes[8:16] == hash[:8]\n+\n+    def test_read_pyc_ignores_mtime(self, tmp_path: Path, pytester: Pytester) -> None:\n+        \"\"\"A pyc stays valid when only the mtime of the source changes.\n \n-    def test_read_pyc_success_hash(self, tmp_path: Path, pytester: Pytester) -> None:\n+        This is what makes the cache survive a fresh checkout or a restored\n+        CI cache, where every source file gets a new mtime.\n+        \"\"\"\n         from _pytest.assertion import AssertionState\n         from _pytest.assertion.rewrite import _read_pyc\n         from _pytest.assertion.rewrite import _rewrite_test\n         from _pytest.assertion.rewrite import _write_pyc\n \n-        config = pytester.parseconfig(\"--invalidation-mode=checked-hash\")\n+        config = pytester.parseconfig()\n         state = AssertionState(config, \"rewrite\")\n \n         fn = tmp_path / \"source.py\"\n         pyc = Path(str(fn) + \"c\")\n+        fn.write_text(\"def test(): assert True\", encoding=\"utf-8\")\n \n-        # Test private attribute didn't change\n-        assert getattr(_imp, \"check_hash_based_pycs\", None) in {\n-            \"default\",\n-            \"always\",\n-            \"never\",\n-        }\n+        hash, co = _rewrite_test(fn, config)\n+        _write_pyc(state, co, hash, pyc)\n \n-        fn.write_text(\"def test(): assert True\", encoding=\"utf-8\")\n-        source_stat, hash, co = _rewrite_test(fn, config)\n-        _write_pyc(state, co, source_stat, hash, pyc)\n+        new_mtime = os.stat(fn).st_mtime + 3600\n+        os.utime(fn, (new_mtime, new_mtime))\n         assert _read_pyc(fn, pyc, state.trace) is not None\n \n-        pyc_bytes = pyc.read_bytes()\n-        assert pyc_bytes[4] == 3  # checked-hash flag set\n-        assert pyc_bytes[8:16] == hash\n-\n     def test_read_pyc_more_invalid(self, tmp_path: Path) -> None:\n         from _pytest.assertion.rewrite import _read_pyc"
+  },
+  {
+   "path": "testing/test_assertrewrite.py",
+   "text": "@@ -1453,82 +1449,69 @@ def test_read_pyc_more_invalid(self, tmp_path: Path) -> None:\n \n         magic = importlib.util.MAGIC_NUMBER\n-\n-        flags = b\"\\x00\\x00\\x00\\x00\"\n-\n-        mtime = b\"\\x58\\x3c\\xb0\\x5f\"\n-        mtime_int = int.from_bytes(mtime, \"little\")\n-        os.utime(source, (mtime_int, mtime_int))\n-\n-        size = len(source_bytes).to_bytes(4, \"little\")\n-\n+        flags = b\"\\x03\\x00\\x00\\x00\"\n+        hash = source_hash(source_bytes)[:8]\n         code = marshal.dumps(compile(source_bytes, str(source), \"exec\"))\n \n         # Good header.\n-        pyc.write_bytes(magic + flags + mtime + size + code)\n+        pyc.write_bytes(magic + flags + hash + code)\n         assert _read_pyc(source, pyc, print) is not None\n \n         # Too short.\n-        pyc.write_bytes(magic + flags + mtime)\n+        pyc.write_bytes(magic + flags + hash[:4])\n         assert _read_pyc(source, pyc, print) is None\n \n         # Bad magic.\n-        pyc.write_bytes(b\"\\x12\\x34\\x56\\x78\" + flags + mtime + size + code)\n+        pyc.write_bytes(b\"\\x12\\x34\\x56\\x78\" + flags + hash + code)\n         assert _read_pyc(source, pyc, print) is None\n \n-        # Unsupported flags.\n-        pyc.write_bytes(magic + b\"\\x00\\xff\\x00\\x00\" + mtime + size + code)\n-        assert _read_pyc(source, pyc, print) is None\n+        # Unsupported flags -- including the timestamp based pycs written by\n+        # pytest<9.3 and by CPython itself.\n+        for bad_flags in (\n+            b\"\\x00\\x00\\x00\\x00\",\n+            b\"\\x01\\x00\\x00\\x00\",\n+            b\"\\x00\\xff\\x00\\x00\",\n+        ):\n+            pyc.write_bytes(magic + bad_flags + hash + code)\n+            assert _read_pyc(source, pyc, print) is None\n \n-        # Bad mtime.\n-        pyc.write_bytes(magic + flags + b\"\\x58\\x3d\\xb0\\x5f\" + size + code)\n+        # Bad hash.\n+        pyc.write_bytes(magic + flags + b\"\\x00\" * 8 + code)\n         assert _read_pyc(source, pyc, print) is None\n \n-        # Bad size.\n-        pyc.write_bytes(magic + flags + mtime + b\"\\x99\\x00\\x00\\x00\" + code)\n+        # Missing source.\n+        pyc.write_bytes(magic + flags + hash + code)\n+        source.unlink()\n         assert _read_pyc(source, pyc, print) is None\n \n-    def test_read_pyc_more_invalid_hash(self, tmp_path: Path) -> None:\n-        from _pytest.assertion.rewrite import _read_pyc\n-\n-        source = tmp_path / \"source.py\"\n-        pyc = tmp_path / \"source.pyc\"\n-\n-        source_bytes = b\"def test(): pass\\n\"\n-        source.write_bytes(source_bytes)\n-\n-        magic = importlib.util.MAGIC_NUMBER\n-\n-        flags = b\"\\x00\\x00\\x00\\x00\"\n-        flags_hash = b\"\\x03\\x00\\x00\\x00\"\n-\n-        mtime = b\"\\x58\\x3c\\xb0\\x5f\"\n-        mtime_int = int.from_bytes(mtime, \"little\")\n-        os.utime(source, (mtime_int, mtime_int))\n-\n-        size = len(source_bytes).to_bytes(4, \"little\")\n-\n-        hash = source_hash(source_bytes)\n-        hash = hash[:8]\n-\n-        code = marshal.dumps(compile(source_bytes, str(source), \"exec\"))\n-\n-        # check_hash_based_pycs == \"default\" with hash based pyc file.\n-        pyc.write_bytes(magic + flags_hash + hash + code)\n-        assert _read_pyc(source, pyc, print) is not None\n-\n-        # check_hash_based_pycs == \"always\" with hash based pyc file.\n-        with mock.patch.object(_imp, \"check_hash_based_pycs\", \"always\"):\n-            pyc.write_bytes(magic + flags_hash + hash + code)\n-            assert _read_pyc(source, pyc, print) is not None\n-\n-        # Bad hash.\n-        with mock.patch.object(_imp, \"check_hash_based_pycs\", \"always\"):\n-            pyc.write_bytes(magic + flags_hash + b\"\\x00\" * 8 + code)\n-            assert _read_pyc(source, pyc, print) is None\n+    def test_rewrite_picks_up_edit_within_one_mtime_second(\n+        self, pytester: Pytester\n+    ) -> None:\n+        \"\"\"Regression test for #13292.\n \n-        # check_hash_based_pycs == \"always\" with timestamp based pyc file.\n-        with mock.patch.object(_imp, \"check_hash_based_pycs\", \"always\"):\n-            pyc.write_bytes(magic + flags + mtime + size + code)\n-            assert _read_pyc(source, pyc, print) is None\n+        The pyc header can only hold a whole-second timestamp, so a file\n+        edited twice within the same second used to be served from a stale\n+        pyc. Hashing the source instead sidesteps the resolution problem.\n+        \"\"\"\n+        source = pytester.path / \"test_edited.py\"\n+        pyc_dir = source.parent / \"__pycache__\"\n+\n+        # both revisions are the same size, so only the content differs\n+        before = \"def test_aaa(): assert True\\n\"\n+        after = \"def test_bbb(): assert None\\n\"\n+        assert len(before) == len(after)\n+\n+        source.write_text(before, encoding=\"utf-8\")\n+        assert pytester.runpytest_subprocess(\"-q\").ret == 0\n+        (pyc,) = pyc_dir.glob(\"test_edited.*.pyc\")\n+        mtime = os.stat(source).st_mtime\n+\n+        source.write_text(after, encoding=\"utf-8\")\n+        # pin the mtime so the edit is indistinguishable by timestamp\n+        os.utime(source, (mtime, mtime))\n+        assert pyc.exists()  # the pyc written by the first run is still there\n+\n+        result = pytester.runpytest_subprocess(\"-q\")\n+        result.stdout.fnmatch_lines([\"*test_bbb*\"])\n+        assert result.ret != 0\n \n     def test_reload_is_same_and_reloads(self, pytester: Pytester) -> None:"
+  }
+ ],
+ "id": "real_019",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "assertion/rewrite: always use checked-hash pyc invalidation\n\nDrop the --invalidation-mode option and write checked-hash pycs\nunconditionally.\n\nThe option existed because hashing was assumed to cost enough to want a\ntimestamp fast path. Measured, it does not: reading the source and hashing it\ncosts ~15us per file, against ~1.1ms for a cache hit that has to unmarshal the\ncode object anyway, and ~110ms for the rewrite the cache avoids.\n\nWith one format there is no reason to consult _imp.check_hash_based_pycs\neither. That is a private CPython attribute governing how the *builtin* import\nsystem treats hash based pycs, and it never sees the pycs written here.\n\nThe source stat disappears from both paths: _rewrite_test no longer needs it\nfor the header, and _read_pyc reads the source instead of stat'ing it.\n\nAlso fixes #13292, where an edit within one mtime second of the previous one\nwas invisible to the timestamp comparison.",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "cd1a87a9157a58f881e8be0c0bfdad65b3fca1b5"
+}

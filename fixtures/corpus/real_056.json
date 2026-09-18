@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "src/merger.go",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 17,
+   "path": "src/merger_test.go",
+   "removed": 2,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/merger.go",
+   "text": "@@ -137,12 +137,5 @@ func (mg *Merger) Get(idx int) Result {\n \t\tidx = mg.count - idx - 1\n \t}\n-\tfor _, list := range mg.lists {\n-\t\tnumItems := len(list)\n-\t\tif idx < numItems {\n-\t\t\treturn list[idx]\n-\t\t}\n-\t\tidx -= numItems\n-\t}\n-\tpanic(fmt.Sprintf(\"Index out of bounds (unsorted, %d/%d)\", idx, mg.count))\n+\treturn mg.mergedGet(idx)\n }\n "
+  },
+  {
+   "path": "src/merger.go",
+   "text": "@@ -172,5 +165,5 @@ func (mg *Merger) mergedGet(idx int) Result {\n \t\t\tif cursor >= 0 {\n \t\t\t\trank := list[cursor]\n-\t\t\t\tif minIdx < 0 || compareRanks(rank, minRank, mg.tac) {\n+\t\t\t\tif minIdx < 0 || mg.sorted && compareRanks(rank, minRank, mg.tac) || !mg.sorted && rank.item.Index() < minRank.item.Index() {\n \t\t\t\t\tminRank = rank\n \t\t\t\t\tminIdx = listIdx"
+  },
+  {
+   "path": "src/merger_test.go",
+   "text": "@@ -55,8 +55,23 @@ func buildLists(partiallySorted bool) ([][]Result, []Result) {\n \n func TestMergerUnsorted(t *testing.T) {\n-\tlists, items := buildLists(false)\n+\tlists, _ := buildLists(false)\n+\n+\t// Sort each list by index to simulate real worker behavior\n+\t// (workers process chunks in ascending order via nextChunk.Add(1))\n+\tfor _, list := range lists {\n+\t\tsort.Slice(list, func(i, j int) bool {\n+\t\t\treturn list[i].item.Index() < list[j].item.Index()\n+\t\t})\n+\t}\n+\titems := []Result{}\n+\tfor _, list := range lists {\n+\t\titems = append(items, list...)\n+\t}\n+\tsort.Slice(items, func(i, j int) bool {\n+\t\treturn items[i].item.Index() < items[j].item.Index()\n+\t})\n \tcnt := len(items)\n \n-\t// Not sorted: same order\n+\t// Not sorted: items in ascending index order\n \tmg := NewMerger(nil, lists, false, false, revision{}, 0, 0)\n \tassert(t, cnt == mg.Length(), \"Invalid Length\")"
+  }
+ ],
+ "id": "real_056",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Fix --no-sort jumpiness by merging results in index order\n\nFix #4717",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "7a811f0cb81a2f41dcb23c8e7147f709830ca6eb"
+}

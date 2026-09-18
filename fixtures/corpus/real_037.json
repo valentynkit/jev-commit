@@ -1,0 +1,57 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "axum/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 151,
+   "path": "axum/src/response/sse.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum/CHANGELOG.md",
+   "text": "@@ -22,4 +22,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0\n   with a body in a response tuple ([#3721])\n - **added:** Add `RawPathParams::from_request_extensions` ([#3757])\n+- **added:** `sse::Event::raw` for events with fully custom payloads ([#3829])\n - **changed:** `serve` has an additional generic argument and can now work with any response body\n   type, not just `axum::body::Body` ([#3205])"
+  },
+  {
+   "path": "axum/CHANGELOG.md",
+   "text": "@@ -46,4 +47,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0\n [#3836]: https://github.com/tokio-rs/axum/pull/3836\n [#3757]: https://github.com/tokio-rs/axum/pull/3757\n+[#3829]: https://github.com/tokio-rs/axum/pull/3829\n [#3801]: https://github.com/tokio-rs/axum/pull/3801\n [#3867]: https://github.com/tokio-rs/axum/pull/3867"
+  },
+  {
+   "path": "axum/src/response/sse.rs",
+   "text": "@@ -25,4 +25,35 @@\n //! # let _: Router = app;\n //! ```\n+//!\n+//! # Custom event payloads\n+//!\n+//! Sometimes a client expects a payload other than the standard `data: ` framing, such as\n+//! a pre-serialized event, or a raw text chunk for a client that doesn't speak\n+//! `EventSource` framing at all. [`Event::raw`] hands you full control over the bytes written\n+//! to the wire for that event, while `Sse` still takes care of the response headers and, if\n+//! configured, [`KeepAlive`]:\n+//!\n+//! ```\n+//! use axum::{\n+//!     Router,\n+//!     routing::get,\n+//!     response::sse::{Event, KeepAlive, Sse},\n+//! };\n+//! use std::{time::Duration, convert::Infallible};\n+//! use tokio_stream::StreamExt as _ ;\n+//! use futures_util::stream::{self, Stream};\n+//!\n+//! let app = Router::new().route(\"/sse\", get(sse_handler));\n+//!\n+//! async fn sse_handler() -> Sse<impl Stream<Item = Result<Event, Infallible>>> {\n+//!     // A pre-serialized event, sent on the wire exactly as given.\n+//!     let stream = stream::repeat_with(|| Event::raw(\"data: hi\\n\\n\"))\n+//!         .map(Ok)\n+//!         .throttle(Duration::from_secs(1));\n+//!\n+//!     Sse::new(stream).keep_alive(KeepAlive::default())\n+//! }\n+//! # let _: Router = app;\n+//! ```\n \n use crate::{"
+  },
+  {
+   "path": "axum/src/response/sse.rs",
+   "text": "@@ -214,4 +245,39 @@ impl Event {\n     }\n \n+    /// Create an event whose payload is emitted on the wire exactly as provided.\n+    ///\n+    /// The given `bytes` are sent as a single body frame, verbatim: there is no `data: `\n+    /// framing, no validation of field syntax, and no terminating empty line is added. If the\n+    /// event needs to be understood by a standard [`EventSource`] client, the caller is\n+    /// responsible for providing the complete event including its terminator, such as\n+    /// `\"data: hi\\n\\n\"`.\n+    ///\n+    /// This is meant as an escape hatch for nonstandard event formats (such as clients that\n+    /// don't accept the usual SSE framing) while still keeping [`Sse`]'s handling of the\n+    /// `content-type`/`cache-control` headers and its [`KeepAlive`] support.\n+    ///\n+    /// Like any other event, a raw event resets the keep-alive timer when sent through\n+    /// [`Sse::keep_alive`].\n+    ///\n+    /// Note that calling further builder methods, such as [`Event::comment`], after `raw` will\n+    /// append their fields *after* the raw bytes and re-add a terminating newline. That's\n+    /// allowed, but usually not what you want.\n+    ///\n+    /// [`EventSource`]: https://developer.mozilla.org/en-US/docs/Web/API/EventSource\n+    ///\n+    /// # Example\n+    ///\n+    /// ```\n+    /// use axum::response::sse::Event;\n+    ///\n+    /// let event = Event::raw(\"data: hi\\n\\n\");\n+    /// ```\n+    pub fn raw<T>(bytes: T) -> Self\n+    where\n+        T: Into<Bytes>,\n+    {\n+        Self::finalized(bytes.into())\n+    }\n+\n     /// Use this [`Event`] as a [`EventDataWriter`] to write custom data.\n     ///"
+  },
+  {
+   "path": "axum/src/response/sse.rs",
+   "text": "@@ -744,4 +810,25 @@ mod tests {\n     }\n \n+    #[test]\n+    fn raw_event_round_trips_bytes_exactly() {\n+        let event = Event::raw(b\"data: hi\\n\\n\".as_slice());\n+        assert_eq!(&*event.finalize(), b\"data: hi\\n\\n\");\n+\n+        let empty = Event::raw(Bytes::new());\n+        assert_eq!(&*empty.finalize(), b\"\");\n+\n+        // No trailing `\\n` is appended, unlike an `Active` buffer.\n+        let no_trailing_newline = Event::raw(b\"data: hi\".as_slice());\n+        assert_eq!(&*no_trailing_newline.finalize(), b\"data: hi\");\n+    }\n+\n+    #[test]\n+    fn raw_event_then_comment_appends_and_reterminates() {\n+        // Once further builder methods are called, the `Finalized` buffer is converted back\n+        // into an `Active` one, so a trailing `\\n` is added again on top of the appended field.\n+        let event = Event::raw(b\"data: hi\\n\\n\".as_slice()).comment(\"x\");\n+        assert_eq!(&*event.finalize(), b\"data: hi\\n\\n: x\\n\\n\");\n+    }\n+\n     #[crate::test]\n     async fn basic() {"
+  },
+  {
+   "path": "axum/src/response/sse.rs",
+   "text": "@@ -787,4 +874,31 @@ mod tests {\n     }\n \n+    #[crate::test]\n+    async fn raw_events() {\n+        let app = Router::new().route(\n+            \"/\",\n+            get(|| async {\n+                let stream = stream::iter(vec![\n+                    Event::raw(Bytes::from_static(b\"data: one\\n\\n\")),\n+                    Event::raw(Bytes::from_static(b\":raw two\\n\\n\")),\n+                ])\n+                .map(Ok::<_, Infallible>);\n+                Sse::new(stream)\n+            }),\n+        );\n+\n+        let client = TestClient::new(app);\n+        let mut stream = client.get(\"/\").await;\n+\n+        assert_eq!(stream.headers()[\"content-type\"], \"text/event-stream\");\n+        assert_eq!(stream.headers()[\"cache-control\"], \"no-cache\");\n+\n+        // Chunks are received byte-exact: no `data:` framing or extra newline is added.\n+        assert_eq!(stream.chunk_text().await.unwrap(), \"data: one\\n\\n\");\n+        assert_eq!(stream.chunk_text().await.unwrap(), \":raw two\\n\\n\");\n+\n+        assert!(stream.chunk_text().await.is_none());\n+    }\n+\n     #[tokio::test(start_paused = true)]\n     async fn keep_alive() {"
+  },
+  {
+   "path": "axum/src/response/sse.rs",
+   "text": "@@ -823,4 +937,41 @@ mod tests {\n     }\n \n+    #[tokio::test(start_paused = true)]\n+    async fn keep_alive_with_raw_events() {\n+        const DELAY: Duration = Duration::from_secs(5);\n+\n+        let app = Router::new().route(\n+            \"/\",\n+            get(|| async {\n+                let stream =\n+                    stream::repeat_with(|| Event::raw(Bytes::from_static(b\"data: raw\\n\\n\")))\n+                        .map(Ok::<_, Infallible>)\n+                        .throttle(DELAY);\n+\n+                Sse::new(stream).keep_alive(\n+                    KeepAlive::new()\n+                        .interval(Duration::from_secs(1))\n+                        .text(\"keep-alive-text\"),\n+                )\n+            }),\n+        );\n+\n+        let client = TestClient::new(app);\n+        let mut stream = client.get(\"/\").await;\n+\n+        for _ in 0..5 {\n+            // first message should be a raw event, sent byte-exact\n+            assert_eq!(stream.chunk_text().await.unwrap(), \"data: raw\\n\\n\");\n+\n+            // then 4 seconds of keep-alive messages: a raw event resets the timer just like\n+            // any other event\n+            for _ in 0..4 {\n+                tokio::time::sleep(Duration::from_secs(1)).await;\n+                let event_fields = parse_event(&stream.chunk_text().await.unwrap());\n+                assert_eq!(event_fields.get(\"comment\").unwrap(), \"keep-alive-text\");\n+            }\n+        }\n+    }\n+\n     #[tokio::test(start_paused = true)]\n     async fn keep_alive_ends_when_the_stream_ends() {"
+  }
+ ],
+ "id": "real_037",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "feat(sse): add Event::raw for fully custom payloads (#3829)\n\nCo-authored-by: Jess Izen <44884346+jlizen@users.noreply.github.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "9d1849626e8fe557b94c9f2e6732e441dd263825"
+}

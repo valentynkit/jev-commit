@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": "docker/.env.example",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "docker/.env.example",
+   "text": "@@ -0,0 +1,3 @@\n+REDIS_HOST=cache01.example.com\n+REDIS_PASSWORD=<set this in your own .env>\n+REDIS_DB=2"
+  }
+ ],
+ "id": "cfg_018",
+ "label": {
+  "category": "placeholder",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add .env.example",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

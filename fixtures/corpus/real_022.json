@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 12,
+   "path": "crates/ty_server/src/server/main_loop.rs",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 74,
+   "path": "crates/ty_server/tests/e2e/inlay_hints.rs",
+   "removed": 2,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_server/src/server/main_loop.rs",
+   "text": "@@ -249,34 +249,36 @@ impl std::fmt::Debug for SendRequest {\n \n impl UvSyncWakeups {\n-    /// Waits for a project wakeup, client message, or main-loop action.\n+    /// Waits for a main-loop action, project wakeup, or client message, in that order.\n+    /// Polling uv can wait for worker database snapshots, so drain the bounded action\n+    /// channel before applying uv results. Handle both before accepting new requests.\n     fn select(\n         &self,\n         connection: &crossbeam::channel::Receiver<Message>,\n         main_loop: &MainLoopReceiver,\n     ) -> Result<Option<Event>, crossbeam::channel::RecvError> {\n         let mut select = crossbeam::channel::Select::new_biased();\n+        let main_loop_index = select.recv(main_loop);\n         for (_, receiver) in &self.0 {\n             select.recv(receiver);\n         }\n         let connection_index = select.recv(connection);\n-        let main_loop_index = select.recv(main_loop);\n         let operation = select.select();\n         let index = operation.index();\n \n-        if let Some((project_root, receiver)) = self.0.get(index) {\n+        if index == main_loop_index {\n+            return operation.recv(main_loop).map(Some);\n+        }\n+\n+        if let Some((project_root, receiver)) = index.checked_sub(1).and_then(|i| self.0.get(i)) {\n             return operation.recv(receiver).map(|()| {\n                 Some(Event::PollUvEnvironments {\n                     project_root: project_root.clone(),\n                 })\n             });\n         }\n \n-        if index == connection_index {\n-            // Ignore disconnect errors, they're handled by the main loop (it will exit).\n-            return Ok(operation.recv(connection).ok().map(Event::Message));\n-        }\n-\n-        debug_assert_eq!(index, main_loop_index);\n-        operation.recv(main_loop).map(Some)\n+        debug_assert_eq!(index, connection_index);\n+        // Ignore disconnect errors, they're handled by the main loop (it will exit).\n+        Ok(operation.recv(connection).ok().map(Event::Message))\n     }\n }"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/inlay_hints.rs",
+   "text": "@@ -1,9 +1,13 @@\n+use std::fmt::Write;\n+\n use anyhow::Result;\n use lsp_types::DidOpenTextDocumentNotification;\n+use lsp_types::HoverRequest;\n use lsp_types::InlayHintRequest;\n use lsp_types::LanguageKind;\n use lsp_types::{\n-    DidOpenTextDocumentParams, InlayHintParams, Position, Range, TextDocumentIdentifier,\n-    TextDocumentItem, Uri, WorkDoneProgressParams,\n+    DidOpenTextDocumentParams, HoverParams, InlayHintParams, Position, Range,\n+    TextDocumentIdentifier, TextDocumentItem, TextDocumentPositionParams, Uri,\n+    WorkDoneProgressParams,\n };\n use ruff_db::system::SystemPath;"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/inlay_hints.rs",
+   "text": "@@ -307,2 +311,70 @@ def get_a() -> A:\n     Ok(())\n }\n+\n+/// A burst of inlay-hint requests must not prevent completed requests or a later hover\n+/// from receiving responses.\n+#[test]\n+fn inlay_hint_burst_does_not_block_responses() -> Result<()> {\n+    const REQUEST_COUNT: u32 = 103;\n+    const LINES_PER_REQUEST: u32 = 30;\n+    const FIRST_ASSIGNMENT_LINE: u32 = 3;\n+\n+    let workspace_root = SystemPath::new(\"src\");\n+    let file = SystemPath::new(\"src/values.py\");\n+    let mut content = String::from(\"def identity(value: int) -> int:\\n    return value\\n\\n\");\n+    for line in 0..REQUEST_COUNT * LINES_PER_REQUEST {\n+        writeln!(content, \"value_{line} = identity({line})\")?;\n+    }\n+\n+    let mut server = TestServerBuilder::new()?\n+        .with_workspace(workspace_root, None)?\n+        .with_file(file, &content)?\n+        .enable_inlay_hints(true)\n+        .build()\n+        .wait_until_workspaces_are_initialized();\n+\n+    server.open_text_document(file, &content, 1);\n+    let first_range = Range::new(\n+        Position::new(FIRST_ASSIGNMENT_LINE, 0),\n+        Position::new(FIRST_ASSIGNMENT_LINE + LINES_PER_REQUEST, 0),\n+    );\n+    assert!(\n+        server\n+            .inlay_hints_request(file, first_range)\n+            .is_some_and(|hints| !hints.is_empty())\n+    );\n+\n+    // Queue the full burst before reading any responses so incoming messages and\n+    // completed worker actions compete in the main loop.\n+    let uri = server.file_uri(file);\n+    let mut request_ids = Vec::with_capacity(REQUEST_COUNT as usize);\n+    for index in 0..REQUEST_COUNT {\n+        let start = FIRST_ASSIGNMENT_LINE + index * LINES_PER_REQUEST;\n+        request_ids.push(server.send_request::<InlayHintRequest>(InlayHintParams {\n+            text_document: TextDocumentIdentifier { uri: uri.clone() },\n+            range: Range::new(\n+                Position::new(start, 0),\n+                Position::new(start + LINES_PER_REQUEST, 0),\n+            ),\n+            work_done_progress_params: WorkDoneProgressParams::default(),\n+        }));\n+    }\n+    let hover_id = server.send_request::<HoverRequest>(HoverParams {\n+        text_document_position_params: TextDocumentPositionParams {\n+            text_document: TextDocumentIdentifier { uri },\n+            position: Position::new(FIRST_ASSIGNMENT_LINE, 2),\n+        },\n+        work_done_progress_params: WorkDoneProgressParams::default(),\n+    });\n+\n+    for id in request_ids {\n+        assert!(\n+            server\n+                .await_response::<InlayHintRequest>(&id)\n+                .is_some_and(|hints| !hints.is_empty())\n+        );\n+    }\n+    assert!(server.await_response::<HoverRequest>(&hover_id).is_some());\n+\n+    Ok(())\n+}"
+  }
+ ],
+ "id": "real_022",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Prevent LSP hangs during inlay hint bursts (#28390)",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "12e65d6d7ec215b3094f20a9d501cdced7d3aac8"
+}

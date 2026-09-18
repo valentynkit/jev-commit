@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "command.go",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "ffmepg.go",
+   "removed": 3,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "command.go",
+   "text": "@@ -427,5 +427,5 @@ func ExecuteSetWindowBarSize(c parser.Command, v *VHS) {\n }\n \n-// ExecuteSetWindowBar sets corner radius\n+// ExecuteSetBorderRadius sets corner radius\n func ExecuteSetBorderRadius(c parser.Command, v *VHS) {\n \tv.Options.Video.Style.BorderRadius, _ = strconv.Atoi(c.Args)"
+  },
+  {
+   "path": "ffmepg.go",
+   "text": "@@ -109,5 +109,5 @@ func calcTermDimensions(style StyleOptions) (int, int) {\n }\n \n-// WithWindowBarW adds window bar options to ffmepg filter_complex.\n+// WithWindowBar adds window bar options to ffmepg filter_complex.\n func (fb *FilterComplexBuilder) WithWindowBar(barStream int) *FilterComplexBuilder {\n \tif fb.style.WindowBar != \"\" {"
+  },
+  {
+   "path": "ffmepg.go",
+   "text": "@@ -300,5 +300,5 @@ func (sb *StreamBuilder) WithCorner() *StreamBuilder {\n }\n \n-// WithMP4W adds mp4 stream with required config.\n+// WithMP4 adds mp4 stream with required config.\n func (sb *StreamBuilder) WithMP4() *StreamBuilder {\n \tsb.args = append(sb.args,"
+  },
+  {
+   "path": "ffmepg.go",
+   "text": "@@ -312,5 +312,5 @@ func (sb *StreamBuilder) WithMP4() *StreamBuilder {\n }\n \n-// WithWebmW adds webm stream with required config.\n+// WithWebm adds webm stream with required config.\n func (sb *StreamBuilder) WithWebm() *StreamBuilder {\n \tsb.args = append(sb.args,"
+  }
+ ],
+ "id": "real_046",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore: fix function names in comment (#465)\n\nSigned-off-by: rustfix <771054535@qq.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "8ed669c737a0bdcef656a7f8a5fb329c060b9a7d"
+}

@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "activerecord/lib/active_record/attribute_methods/primary_key.rb",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "activerecord/test/cases/primary_keys_test.rb",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "activerecord/lib/active_record/attribute_methods/primary_key.rb",
+   "text": "@@ -100,8 +100,10 @@ def quoted_primary_key\n \n           def reset_primary_key # :nodoc:\n-            if base_class?\n-              self.primary_key = get_primary_key(base_class.name)\n-            else\n-              self.primary_key = base_class.primary_key\n+            ActiveSupport::Ractors.on_main(self) do\n+              if base_class?\n+                self.primary_key = get_primary_key(base_class.name)\n+              else\n+                self.primary_key = base_class.primary_key\n+              end\n             end\n           end"
+  },
+  {
+   "path": "activerecord/test/cases/primary_keys_test.rb",
+   "text": "@@ -34,4 +34,8 @@ def test_primary_key_can_be_read_from_a_ractor_when_absent\n   end\n \n+  def test_primary_key_can_be_reset_from_a_ractor\n+    assert_equal \"id\", on_ractor { Topic.reset_primary_key }\n+  end\n+\n   def test_query_constraints_list_is_ractor_shareable\n     assert_ractor_shareable Topic.query_constraints_list"
+  }
+ ],
+ "id": "real_097",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Support primary key resetting on Ractors",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "9648898c62f8693a85fd8da1987357f22ad51aae"
+}

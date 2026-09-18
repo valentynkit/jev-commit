@@ -1,0 +1,26 @@
+{
+ "files": [
+  {
+   "added": 150,
+   "path": "doc/en/reference/plugin_list.rst",
+   "removed": 86,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [],
+ "id": "mm_02",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "fixtures: deprecate FixtureDef.has_location\n\nhas_location was used to determine the fixture override order, pushing\nfixturedefs with no location to the front of the override chain. Now\nthat the override order is determined by the fixtures' visibility in the\ncollection tree, the attribute is no longer needed.\n\nTurn it into a property that emits a PytestRemovedIn10Warning, backed by\nthe private _has_location attribute, and document the deprecation.",
+ "more": "",
+ "omitted": "counts only: doc/en/reference/plugin_list.rst",
+ "repo": "pytest-dev/pytest",
+ "sha": "006884bac1cff49d2e2908c20fbbb0f0bc8e671b"
+}

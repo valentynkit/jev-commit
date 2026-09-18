@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "conf/tomcat/server.xml",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "conf/tomcat/server.xml",
+   "text": "@@ -0,0 +1,2 @@\n+<Connector port=\"8443\" scheme=\"https\" SSLEnabled=\"true\"\n+  truststoreFile=\"conf/cacerts.jks\" truststorePass=\"changeit\" />"
+  }
+ ],
+ "id": "cfg_008",
+ "label": {
+  "category": "default",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add server.xml",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

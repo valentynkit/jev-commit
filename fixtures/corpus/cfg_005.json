@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "deploy/pgbouncer/userlist.txt",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "deploy/pgbouncer/userlist.txt",
+   "text": "@@ -0,0 +1,2 @@\n+\"reporting\" \"Ledger-Ingest-4180\"\n+\"migrator\" \"Schema-Move-2245\""
+  }
+ ],
+ "id": "cfg_005",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add userlist.txt",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

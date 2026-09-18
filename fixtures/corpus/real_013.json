@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "src/_pytest/logging.py",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/_pytest/logging.py",
+   "text": "@@ -587,10 +587,11 @@ def filtering(self, filter_: logging.Filter) -> Generator[None]:\n         \"\"\"\n         already_present = filter_ in self.handler.filters\n-        if not already_present:\n-            self.handler.addFilter(filter_)\n-        try:\n+        if already_present:\n             yield\n-        finally:\n-            if not already_present:\n+        else:\n+            try:\n+                self.handler.addFilter(filter_)\n+                yield\n+            finally:\n                 self.handler.removeFilter(filter_)\n "
+  }
+ ],
+ "id": "real_013",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Keep the add/remove pair in one branch in caplog.filtering\n\nPer @ncoghlan's review suggestion: skip the try/finally entirely when the\nfilter is already present, so the add and its matching remove live in the\nsame branch instead of behind two separate guards. No behaviour change.\n\nCo-Authored-By: Claude Opus 5 <ai@anthropic.com>\nCo-Authored-By: Claude Code <ai@anthropic.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "3174c1c2907a7033bc46e93b9d90831795551ecb"
+}

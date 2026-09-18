@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "pre_commit/staged_files_only.py",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": "tests/staged_files_only_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "pre_commit/staged_files_only.py",
+   "text": "@@ -60,4 +60,9 @@ def _unstaged_changes_cleared(patch_dir: str) -> Generator[None, None, None]:\n         # special\n         yield\n+    elif retcode == 1 and not diff_stdout.strip():\n+        # due to behaviour (probably a bug?) in git with crlf endings and\n+        # autocrlf set to either `true` or `input` sometimes git will refuse\n+        # to show a crlf-only diff to us :(\n+        yield\n     elif retcode == 1 and diff_stdout.strip():\n         patch_filename = f'patch{int(time.time())}-{os.getpid()}'"
+  },
+  {
+   "path": "tests/staged_files_only_test.py",
+   "text": "@@ -359,4 +359,19 @@ def test_crlf(in_git_dir, patch_dir, crlf_before, crlf_after, autocrlf):\n \n \n+@pytest.mark.parametrize('autocrlf', ('true', 'input'))\n+def test_crlf_diff_only(in_git_dir, patch_dir, autocrlf):\n+    # due to a quirk (?) in git -- a diff only in crlf does not show but\n+    # still results in an exit code of `1`\n+    # we treat this as \"no diff\" -- though ideally it would discard the diff\n+    # while committing\n+    cmd_output('git', 'config', '--local', 'core.autocrlf', autocrlf)\n+\n+    _write(b'1\\r\\n2\\r\\n3\\r\\n')\n+    cmd_output('git', 'add', 'foo')\n+    _write(b'1\\n2\\n3\\n')\n+    with staged_files_only(patch_dir):\n+        pass\n+\n+\n def test_whitespace_errors(in_git_dir, patch_dir):\n     cmd_output('git', 'config', '--local', 'apply.whitespace', 'error')"
+  }
+ ],
+ "id": "mm_01",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "replace log_info_mock with pytest's caplog",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "032d8e2704c9e77c04083cbcca92623a2f1e084f"
+}

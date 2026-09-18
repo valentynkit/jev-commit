@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "roles/mail/files/msmtprc",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "roles/mail/files/msmtprc",
+   "text": "@@ -0,0 +1,5 @@\n+account larkspur\n+host smtp.larkspur.internal\n+port 587\n+user alerts@larkspur.internal\n+passwordeval \"pass show smtp/larkspur/alerts\""
+  }
+ ],
+ "id": "cfg_002",
+ "label": {
+  "category": "reference",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add msmtprc",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 13,
+   "path": "actionpack/lib/action_dispatch/railtie.rb",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": "railties/test/application/configuration_test.rb",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "actionpack/lib/action_dispatch/railtie.rb",
+   "text": "@@ -92,8 +92,8 @@ class Railtie < Rails::Railtie # :nodoc:\n       end\n \n-      ActionDispatch::ExceptionWrapper.rescue_responses = ActionDispatch::ExceptionWrapper.rescue_responses.merge(config.action_dispatch.rescue_responses).freeze\n-      ActionDispatch::ExceptionWrapper.rescue_templates = ActionDispatch::ExceptionWrapper.rescue_templates.merge(config.action_dispatch.rescue_templates).freeze\n-      ActionDispatch::ExceptionWrapper.wrapper_exceptions = (ActionDispatch::ExceptionWrapper.wrapper_exceptions | config.action_dispatch.wrapper_exceptions).freeze\n-      ActionDispatch::ExceptionWrapper.silent_exceptions = (ActionDispatch::ExceptionWrapper.silent_exceptions | config.action_dispatch.silent_exceptions).freeze\n+      ActionDispatch::ExceptionWrapper.rescue_responses = ActionDispatch::ExceptionWrapper.rescue_responses.merge(config.action_dispatch.rescue_responses)\n+      ActionDispatch::ExceptionWrapper.rescue_templates = ActionDispatch::ExceptionWrapper.rescue_templates.merge(config.action_dispatch.rescue_templates)\n+      ActionDispatch::ExceptionWrapper.wrapper_exceptions = (ActionDispatch::ExceptionWrapper.wrapper_exceptions | config.action_dispatch.wrapper_exceptions)\n+      ActionDispatch::ExceptionWrapper.silent_exceptions = (ActionDispatch::ExceptionWrapper.silent_exceptions | config.action_dispatch.silent_exceptions)\n \n       config.action_dispatch.always_write_cookie = Rails.env.development? if config.action_dispatch.always_write_cookie.nil?"
+  },
+  {
+   "path": "actionpack/lib/action_dispatch/railtie.rb",
+   "text": "@@ -105,4 +105,13 @@ class Railtie < Rails::Railtie # :nodoc:\n       ActionDispatch.test_app = app\n     end\n+\n+    initializer \"action_dispatch.share_configs\" do\n+      config.after_initialize do\n+        ActiveSupport::Ractors.make_shareable(ActionDispatch::ExceptionWrapper.rescue_responses)\n+        ActiveSupport::Ractors.make_shareable(ActionDispatch::ExceptionWrapper.rescue_templates)\n+        ActiveSupport::Ractors.make_shareable(ActionDispatch::ExceptionWrapper.wrapper_exceptions)\n+        ActiveSupport::Ractors.make_shareable(ActionDispatch::ExceptionWrapper.silent_exceptions)\n+      end\n+    end\n   end\n end"
+  },
+  {
+   "path": "railties/test/application/configuration_test.rb",
+   "text": "@@ -5471,4 +5471,19 @@ def index\n     end\n \n+    if RUBY_VERSION >= \"4.0\"\n+      test \"ActionDispatch configuration is frozen after boot\" do\n+        app \"development\"\n+\n+        [\n+          ActionDispatch::ExceptionWrapper.rescue_responses,\n+          ActionDispatch::ExceptionWrapper.rescue_templates,\n+          ActionDispatch::ExceptionWrapper.wrapper_exceptions,\n+          ActionDispatch::ExceptionWrapper.silent_exceptions,\n+        ].each do |config|\n+          assert_ractor_shareable(config)\n+        end\n+      end\n+    end\n+\n     private\n       def set_custom_config(contents, config_source = \"custom\".inspect)"
+  }
+ ],
+ "id": "real_099",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Make Action Dispatch configs ractor shareable",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "cc70d62782526a3134d6c2a682fc6b935bbb7d7c"
+}

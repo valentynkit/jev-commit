@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "roles/mail/files/msmtprc",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "roles/mail/files/msmtprc",
+   "text": "@@ -0,0 +1,5 @@\n+account larkspur\n+host smtp.larkspur.internal\n+port 587\n+user alerts@larkspur.internal\n+password Relay-Larkspur-7719"
+  }
+ ],
+ "id": "cfg_001",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add msmtprc",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

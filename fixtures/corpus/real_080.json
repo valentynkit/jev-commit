@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "packages/runtime-core/src/components/BaseTransition.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 70,
+   "path": "packages/vue/__tests__/e2e/Transition.spec.ts",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/runtime-core/src/components/BaseTransition.ts",
+   "text": "@@ -401,4 +401,6 @@ export function resolveTransitionHooks(\n \n     enter(el) {\n+      // prevent enter if leave is in progress\n+      if (leavingVNodesCache[key] === vnode) return\n       let hook = onEnter\n       let afterHook = onAfterEnter"
+  },
+  {
+   "path": "packages/vue/__tests__/e2e/Transition.spec.ts",
+   "text": "@@ -3342,4 +3342,74 @@ describe('e2e: Transition', () => {\n   )\n \n+  // #12091\n+  test(\n+    'prevent enter when leaving',\n+    async () => {\n+      const hooks: string[] = []\n+      const pushHook = (hook: string) => hooks.push(hook)\n+      await page().exposeFunction('pushHook', pushHook)\n+      await page().evaluate(() => {\n+        const { pushHook } = window as any\n+        const { createApp, ref } = (window as any).Vue\n+        const visible = ref(true)\n+        createApp({\n+          components: {\n+            Comp: {\n+              setup() {\n+                visible.value = false\n+                return () => null\n+              },\n+            },\n+          },\n+          template: `\n+            <div id=\"content\" v-if=\"toggle\">\n+              <div id=\"container\">\n+                <transition\n+                  appear\n+                  @before-enter=\"pushHook('beforeEnter')\"\n+                  @enter=\"pushHook('enter')\"\n+                  @enter-cancelled=\"pushHook('enterCancelled')\"\n+                  @after-enter=\"pushHook('afterEnter')\"\n+                  @before-leave=\"pushHook('beforeLeave')\"\n+                  @leave=\"pushHook('leave')\"\n+                  @after-leave=\"pushHook('afterLeave')\"\n+                >\n+                  <div v-if=\"visible\">content</div>\n+                </transition>\n+              </div>\n+              <Comp />\n+            </div>\n+            <button id=\"toggleBtn\" @click=\"click\">button</button>\n+          `,\n+          setup: () => {\n+            const toggle = ref(false)\n+            const click = () => (toggle.value = !toggle.value)\n+            return {\n+              toggle,\n+              click,\n+              pushHook,\n+              visible,\n+            }\n+          },\n+        }).mount('#app')\n+      })\n+\n+      await click('#toggleBtn')\n+      await nextTick()\n+      await transitionFinish()\n+\n+      expect(hooks).toStrictEqual([\n+        'beforeEnter',\n+        'beforeLeave',\n+        'leave',\n+        'afterLeave',\n+      ])\n+      expect(await html('#content')).toBe(\n+        '<div id=\"container\"><!--v-if--></div><!---->',\n+      )\n+    },\n+    E2E_TIMEOUT,\n+  )\n+\n   // https://github.com/vuejs/core/issues/12181#issuecomment-2414380955\n   describe('not leaking', async () => {"
+  }
+ ],
+ "id": "real_080",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(transition): prevent enter if leave is in progress (#14443)\n\nclose #12091\nclose #12133",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "df059f890460e4c703b62a54f410627ff29c489b"
+}

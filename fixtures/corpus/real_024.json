@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 130,
+   "path": "playground/api/package-lock.json",
+   "removed": 14,
+   "status": "M"
+  },
+  {
+   "added": 51,
+   "path": "playground/deploy/package-lock.json",
+   "removed": 51,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "playground/deploy/package.json",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "playground/package-lock.json",
+   "removed": 8,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "playground/deploy/package.json",
+   "text": "@@ -7,5 +7,5 @@\n   },\n   \"devDependencies\": {\n-    \"wrangler\": \"4.118.0\"\n+    \"wrangler\": \"4.120.0\"\n   }\n }"
+  }
+ ],
+ "id": "real_024",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Update NPM Development dependencies (#28438)",
+ "more": "",
+ "omitted": "counts only: playground/api/package-lock.json, playground/deploy/package-lock.json, playground/package-lock.json",
+ "repo": "astral-sh/ruff",
+ "sha": "55df129251a16c54883ea623fc833c87b9f2cbb9"
+}

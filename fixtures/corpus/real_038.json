@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": ".github/workflows/CI.yml",
+   "removed": 19,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/CI.yml",
+   "text": "@@ -79,23 +79,4 @@ jobs:\n       run: cargo test --workspace --all-features --all-targets\n \n-  # some examples don't support our MSRV so we only test axum itself on our MSRV\n-  test-nightly:\n-    needs: check\n-    runs-on: ubuntu-24.04\n-    steps:\n-    - uses: actions/checkout@v4\n-    - name: Get rust-toolchain version\n-      id: rust-toolchain\n-      run: echo \"version=$(cat axum-macros/rust-toolchain)\" >> $GITHUB_OUTPUT\n-    - uses: dtolnay/rust-toolchain@master\n-      with:\n-        toolchain: ${{ steps.rust-toolchain.outputs.version }}\n-    - uses: Swatinem/rust-cache@v2\n-      with:\n-        save-if: ${{ github.ref == 'refs/heads/main' }}\n-    - name: Run nightly tests\n-      working-directory: axum-macros\n-      run: cargo test\n-\n   # some examples don't support our MSRV (such as async-graphql)\n   # so we only test axum itself on our MSRV"
+  }
+ ],
+ "id": "real_038",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Remove CI job using ancient nightly\n\nIt has been updated on main, backporting is too much effort.",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "adf2e6c6bfd9d8f611afd82cca7b3e9e916203f7"
+}

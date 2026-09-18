@@ -1,0 +1,53 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest.rs",
+   "removed": 78,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest/collection.rs",
+   "removed": 3,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest.rs",
+   "text": "@@ -76,4 +76,6 @@ use crate::{Db, FxIndexMap, FxIndexSet};\n mod collection;\n \n+use collection::{PytestTestKind, pytest_test_for_binding};\n+\n /// Resolves pytest fixtures requested by `parameter`.\n ///"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest.rs",
+   "text": "@@ -441,5 +443,4 @@ impl<'db, 'ast> FixtureRequestContext<'db, 'ast> {\n         let function_definition = index.expect_single_definition(function_ref);\n         let function = function_ref.node(module);\n-        let file = function_definition.program_file(db);\n \n         // Parameters on fixture declarations request their values from other fixtures:"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest.rs",
+   "text": "@@ -455,8 +456,9 @@ impl<'db, 'ast> FixtureRequestContext<'db, 'ast> {\n             && fixture_declaration(db, function_definition).is_some();\n \n+        // Pytest collects `unittest.TestCase` methods but does not inject fixtures into them.\n+        // https://docs.pytest.org/en/9.0.x/how-to/unittest.html#pytest-features-in-unittest-testcase-subclasses\n         if !is_fixture_dependency\n-            && (!is_collected_test(db, file, function, class_scope, module)\n-                || class_scope\n-                    .is_some_and(|class_scope| is_unittest_test_case(db, file, class_scope)))\n+            && pytest_test_for_binding(db, function_definition)\n+                .is_none_or(|test| test.kind() != PytestTestKind::Pytest)\n         {\n             return None;"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest.rs",
+   "text": "@@ -1390,78 +1392,4 @@ fn non_type_parameter_parent(\n }\n \n-/// Returns whether a function matches pytest's default naming conventions for\n-/// [test discovery](https://docs.pytest.org/en/9.0.x/explanation/goodpractices.html#test-discovery).\n-fn is_collected_test(\n-    db: &dyn Db,\n-    file: ProgramFile<'_>,\n-    function: &ast::StmtFunctionDef,\n-    class_scope: Option<FileScopeId>,\n-    module: &ParsedModuleRef,\n-) -> bool {\n-    let Some(file_name) = file\n-        .file(db)\n-        .path(db)\n-        .as_system_path()\n-        .and_then(|path| path.file_name())\n-    else {\n-        return false;\n-    };\n-\n-    let Some(stem) = file_name.strip_suffix(\".py\") else {\n-        return false;\n-    };\n-\n-    if !(stem.starts_with(\"test_\") || stem.ends_with(\"_test\"))\n-        || !function.name.as_str().starts_with(\"test\")\n-    {\n-        return false;\n-    }\n-\n-    let index = semantic_index(db, file);\n-    let mut class_scope = class_scope;\n-    while let Some(scope) = class_scope {\n-        let Some(class_ref) = index.scope(scope).node().as_class() else {\n-            return false;\n-        };\n-        if !class_ref.node(module).name.as_str().starts_with(\"Test\") {\n-            return false;\n-        }\n-        let Some(parent_scope) = non_type_parameter_parent(index, scope) else {\n-            return false;\n-        };\n-        match index.scope(parent_scope).kind() {\n-            ScopeKind::Class => class_scope = Some(parent_scope),\n-            ScopeKind::Module => class_scope = None,\n-            _ => return false,\n-        }\n-    }\n-    true\n-}\n-\n-/// Returns whether the class inherits from the canonical `unittest.TestCase`.\n-///\n-/// Pytest does not inject fixture parameters into\n-/// [`unittest.TestCase` methods](https://docs.pytest.org/en/9.0.x/how-to/unittest.html#pytest-features-in-unittest-testcase-subclasses).\n-fn is_unittest_test_case(db: &dyn Db, file: ProgramFile<'_>, class_scope: FileScopeId) -> bool {\n-    let index = semantic_index(db, file);\n-    let class_ref = index.scope(class_scope).node().expect_class();\n-    let definition = index.expect_single_definition(class_ref);\n-    let Some(class) = original_class_type(db, definition) else {\n-        return false;\n-    };\n-\n-    class.iter_mro(db).any(|ancestor| {\n-        let ClassBase::Class(ancestor) = ancestor else {\n-            return false;\n-        };\n-        let Some((ancestor, _)) = ancestor.static_class_literal(db) else {\n-            return false;\n-        };\n-        ancestor.name(db) == \"TestCase\"\n-            && file_to_module(db, ancestor.program_file(db).resolver_file(db))\n-                .is_some_and(|module| module.name(db).as_str() == \"unittest.case\")\n-    })\n-}\n-\n /// Returns whether a static mark supplies this parameter directly or cannot be interpreted.\n fn mark_excludes_fixture<'db>("
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest/collection.rs",
+   "text": "@@ -118,14 +118,21 @@ fn pytest_tests_in_file<'db>(db: &'db dyn Db, file: ProgramFile<'db>) -> Box<[Py\n /// A function that pytest collects as a test.\n #[derive(Debug, Clone, Eq, PartialEq, get_size2::GetSize, salsa::SalsaValue)]\n-struct PytestTest<'db> {\n+pub(crate) struct PytestTest<'db> {\n     binding: Definition<'db>,\n     function: Definition<'db>,\n     kind: PytestTestKind,\n     enclosing_class: Option<Definition<'db>>,\n }\n \n+impl PytestTest<'_> {\n+    /// Returns the collection mechanism responsible for this test.\n+    pub(crate) fn kind(&self) -> PytestTestKind {\n+        self.kind\n+    }\n+}\n+\n /// The collection mechanism responsible for a test.\n #[derive(Debug, Clone, Copy, Eq, PartialEq, get_size2::GetSize, salsa::SalsaValue)]\n-enum PytestTestKind {\n+pub(crate) enum PytestTestKind {\n     /// A function or method collected according to pytest's naming and class conventions.\n     Pytest,"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/dedicated/pytest/collection.rs",
+   "text": "@@ -141,5 +148,5 @@ enum PytestTestKind {\n /// and bindings that fail the naming or enclosing-class rules.\n #[salsa::tracked(returns(as_ref))]\n-fn pytest_test_for_binding<'db>(\n+pub(crate) fn pytest_test_for_binding<'db>(\n     db: &'db dyn Db,\n     binding: Definition<'db>,"
+  }
+ ],
+ "id": "real_026",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Refactor the pytest fixture binding model to use the shared test collection model (#27974)\n\n<!--\nThank you for contributing to Ruff/ty! To help us out with reviewing,\nplease consider the following:\n\n- Does this pull request include a summary of the change? (See below.)\n- Does this pull request include a descriptive title? (Please prefix\nwith `[ty]` for ty pull\n  requests.)\n- Does this pull request include references to any relevant issues?\n- Does this PR follow our AI policy\n(https://github.com/astral-sh/.github/blob/main/AI_POLICY.md)?\n-->\n\n## Summary\n\n<!-- What's the purpose of the change? What does it do, and why? -->\nThis incorporates the shared model for pytest test collection into the\nmodel of pytest fixture bindings which powers \"Go to definition\" and\n\"Find references\" on test parameters in the language server.\n\n## Test Plan\n\nThis is a refactor that relies on existing test coverage.\n<!-- How was it tested? -->",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "8ca8d59d9a9b5d825a2598ed0d75755f17e1b1dd"
+}

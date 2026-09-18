@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 4,
+   "path": "src/result.go",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/result.go",
+   "text": "@@ -199,5 +199,8 @@ func (result *Result) colorOffsets(matchOffsets []Offset, nthOffsets []Offset, t\n \tansiToColorPair := func(ansi ansiOffset, base tui.ColorPair) tui.ColorPair {\n \t\tif !theme.Colored {\n-\t\t\treturn tui.NewColorPair(-1, -1, ansi.color.attr).MergeAttr(base)\n+\t\t\t// Ignore ANSI colors but keep the attributes. Retain the base\n+\t\t\t// colors (e.g. an overridden input-bg or list-bg) instead of\n+\t\t\t// resetting to the terminal default.\n+\t\t\treturn tui.NewColorPair(base.Fg(), base.Bg(), ansi.color.attr).MergeAttr(base)\n \t\t}\n \t\t// fd --color always | fzf --ansi --delimiter / --nth -1 --color fg:dim:strip,nth:regular"
+  }
+ ],
+ "id": "real_060",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Keep base fg/bg when resolving colors in bw theme\n\nTrailing prompt space and other base-colored segments no longer reset to terminal default",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "dea72834ed35b5d56634075fc7793aa4b9b1d697"
+}

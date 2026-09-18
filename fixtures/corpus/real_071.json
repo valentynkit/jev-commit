@@ -1,0 +1,119 @@
+{
+ "files": [
+  {
+   "added": 105,
+   "path": "packages/compiler-core/__tests__/transforms/transformElement.spec.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "packages/compiler-core/src/ast.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 44,
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "removed": 14,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "packages/compiler-core/src/transforms/vFor.ts",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 160,
+   "path": "packages/vue/__tests__/index.spec.ts",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/compiler-core/__tests__/transforms/transformElement.spec.ts",
+   "text": "@@ -75,4 +75,10 @@ function parseWithBind(template: string, options?: CompilerOptions) {\n }\n \n+function getVForChild(\n+  node: ReturnType<typeof parseWithForTransform>['node'],\n+): VNodeCall {\n+  return node.codegenNode.children.arguments[1].returns as VNodeCall\n+}\n+\n describe('compiler: element transform', () => {\n   test('import + resolve component', () => {"
+  },
+  {
+   "path": "packages/compiler-core/__tests__/transforms/transformElement.spec.ts",
+   "text": "@@ -1029,4 +1035,103 @@ describe('compiler: element transform', () => {\n     })\n \n+    test('NEED_PATCH (stable v-for + static ref)', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" :key=\"i\" ref=\"foo\" />`,\n+        { prefixIdentifiers: true },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(false)\n+      expect(child.patchFlag).toBe(PatchFlags.NEED_PATCH)\n+    })\n+\n+    test('NEED_PATCH (stable v-for + custom directives)', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" :key=\"i\" v-dir />`,\n+        { prefixIdentifiers: true },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(false)\n+      expect(child.patchFlag).toBe(PatchFlags.NEED_PATCH)\n+    })\n+\n+    test('NEED_PATCH (stable v-for + vnode hooks)', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" :key=\"i\" @vue:unmounted=\"foo\" />`,\n+        {\n+          prefixIdentifiers: true,\n+          cacheHandlers: true,\n+          directiveTransforms: {\n+            bind: transformBind,\n+            on: transformOn,\n+          },\n+        },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(false)\n+      expect(child.patchFlag).toBe(PatchFlags.NEED_PATCH)\n+    })\n+\n+    test('NEED_PATCH (stable v-for + setup-const function ref)', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" :key=\"i\" :ref=\"setRefFn\" />`,\n+        {\n+          prefixIdentifiers: true,\n+          bindingMetadata: {\n+            setRefFn: BindingTypes.SETUP_CONST,\n+          },\n+        },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(false)\n+      expect(child.patchFlag).toBe(PatchFlags.NEED_PATCH)\n+    })\n+\n+    test('preserve block for stable v-for + custom directive with children', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" v-dir>{{ i }}</div>`,\n+        { prefixIdentifiers: true },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(true)\n+      expect(child.patchFlag).toBe(PatchFlags.TEXT)\n+    })\n+\n+    test.each(['before-update', 'beforeUpdate'])(\n+      'preserve block for stable v-for + @vue:%s vnode hook',\n+      hook => {\n+        const { node } = parseWithForTransform(\n+          `<div v-for=\"i in 3\" @vue:${hook}=\"foo\"><span /></div>`,\n+          {\n+            prefixIdentifiers: true,\n+            cacheHandlers: true,\n+            directiveTransforms: {\n+              bind: transformBind,\n+              on: transformOn,\n+            },\n+          },\n+        )\n+        const child = getVForChild(node)\n+        expect(child.isBlock).toBe(true)\n+        expect(child.patchFlag).toBeUndefined()\n+      },\n+    )\n+\n+    test('does not add NEED_PATCH when another patch flag tracks the vnode', () => {\n+      const { node } = parseWithForTransform(\n+        `<div v-for=\"i in 3\" :key=\"i\" @vue:unmounted=\"foo\">{{ i }}</div>`,\n+        {\n+          prefixIdentifiers: true,\n+          cacheHandlers: true,\n+          directiveTransforms: {\n+            bind: transformBind,\n+            on: transformOn,\n+          },\n+        },\n+      )\n+      const child = getVForChild(node)\n+      expect(child.isBlock).toBe(false)\n+      expect(child.patchFlag).toBe(PatchFlags.TEXT)\n+    })\n+\n     test('script setup inline mode template ref (binding exists)', () => {\n       const { node } = parseWithElementTransform(`<input ref=\"input\"/>`, {"
+  },
+  {
+   "path": "packages/compiler-core/src/ast.ts",
+   "text": "@@ -331,4 +331,8 @@ export interface VNodeCall extends Node {\n   dynamicProps: string | SimpleExpressionNode | undefined\n   directives: DirectiveArguments | undefined\n+  /** Whether this vnode must be patched if a later transform makes it non-block. */\n+  needsPatch?: boolean\n+  /** Whether a later transform must preserve this vnode as a block. */\n+  isBlockRequired?: boolean\n   isBlock: boolean\n   disableTracking: boolean"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -103,4 +103,6 @@ export const transformElement: NodeTransform = (node, context) => {\n     let dynamicPropNames: string[] | undefined\n     let vnodeDirectives: VNodeCall['directives']\n+    let needsPatch = false\n+    let isBlockRequired = false\n \n     let shouldUseBlock ="
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -128,4 +130,6 @@ export const transformElement: NodeTransform = (node, context) => {\n       patchFlag = propsBuildResult.patchFlag\n       dynamicPropNames = propsBuildResult.dynamicPropNames\n+      needsPatch = propsBuildResult.needsPatch\n+      isBlockRequired = propsBuildResult.isBlockRequired\n       const directives = propsBuildResult.directives\n       vnodeDirectives ="
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -207,5 +211,5 @@ export const transformElement: NodeTransform = (node, context) => {\n     }\n \n-    node.codegenNode = createVNodeCall(\n+    const vnodeCall = (node.codegenNode = createVNodeCall(\n       context,\n       vnodeTag,"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -219,5 +223,13 @@ export const transformElement: NodeTransform = (node, context) => {\n       isComponent,\n       node.loc,\n-    )\n+    ))\n+    needsPatch =\n+      needsPatch && (patchFlag === 0 || patchFlag === PatchFlags.NEED_HYDRATION)\n+    if (needsPatch) {\n+      vnodeCall.needsPatch = true\n+    }\n+    if (isBlockRequired) {\n+      vnodeCall.isBlockRequired = true\n+    }\n   }\n }"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -383,11 +395,14 @@ export function buildProps(\n   dynamicPropNames: string[]\n   shouldUseBlock: boolean\n+  needsPatch: boolean\n+  isBlockRequired: boolean\n } {\n   const { tag, loc: elementLoc, children } = node\n   let properties: ObjectExpression['properties'] = []\n   const mergeArgs: PropsExpression[] = []\n   const runtimeDirectives: DirectiveNode[] = []\n   const hasChildren = children.length > 0\n   let shouldUseBlock = false\n+  let isBlockRequired = false\n \n   // patchFlag analysis"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -445,4 +460,8 @@ export function buildProps(\n       }\n \n+      if (name === 'ref') {\n+        hasRef = true\n+      }\n+\n       if (isEventHandler && value.type === NodeTypes.JS_CALL_EXPRESSION) {\n         // handler wrapped with internal helper e.g. withModifiers(fn)"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -461,11 +480,13 @@ export function buildProps(\n       }\n \n-      if (name === 'ref') {\n-        hasRef = true\n-      } else if (name === 'class') {\n+      if (name === 'class') {\n         hasClassBinding = true\n       } else if (name === 'style') {\n         hasStyleBinding = true\n-      } else if (name !== 'key' && !dynamicPropNames.includes(name)) {\n+      } else if (\n+        name !== 'ref' &&\n+        name !== 'key' &&\n+        !dynamicPropNames.includes(name)\n+      ) {\n         dynamicPropNames.push(name)\n       }"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -574,12 +595,19 @@ export function buildProps(\n       }\n \n+      // #938: elements with dynamic keys should be forced into blocks\n+      if (isVBind && isStaticArgOf(arg, 'key')) {\n+        shouldUseBlock = true\n+      }\n+      // inline before-update hooks need to remain blocks so that they are\n+      // invoked before children\n       if (\n-        // #938: elements with dynamic keys should be forced into blocks\n-        (isVBind && isStaticArgOf(arg, 'key')) ||\n-        // inline before-update hooks need to force block so that it is invoked\n-        // before children\n-        (isVOn && hasChildren && isStaticArgOf(arg, 'vue:before-update'))\n+        isVOn &&\n+        hasChildren &&\n+        arg &&\n+        isStaticExp(arg) &&\n+        camelize(arg.content) === 'vue:beforeUpdate'\n       ) {\n         shouldUseBlock = true\n+        isBlockRequired = true\n       }\n "
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -692,4 +720,5 @@ export function buildProps(\n         if (hasChildren) {\n           shouldUseBlock = true\n+          isBlockRequired = true\n         }\n       }"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -737,9 +766,8 @@ export function buildProps(\n     }\n   }\n-  if (\n-    !shouldUseBlock &&\n+  const needsPatch =\n     (patchFlag === 0 || patchFlag === PatchFlags.NEED_HYDRATION) &&\n     (hasRef || hasVnodeHook || runtimeDirectives.length > 0)\n-  ) {\n+  if (!shouldUseBlock && needsPatch) {\n     patchFlag |= PatchFlags.NEED_PATCH\n   }"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/transformElement.ts",
+   "text": "@@ -826,4 +854,6 @@ export function buildProps(\n     dynamicPropNames,\n     shouldUseBlock,\n+    needsPatch,\n+    isBlockRequired,\n   }\n }"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/vFor.ts",
+   "text": "@@ -187,5 +187,7 @@ export const transformFor: NodeTransform = createStructuralDirectiveTransform(\n             injectProp(childBlock, keyProperty, context)\n           }\n-          if (childBlock.isBlock !== !isStableFragment) {\n+          const shouldUseBlock =\n+            !isStableFragment || childBlock.isBlockRequired === true\n+          if (childBlock.isBlock !== shouldUseBlock) {\n             if (childBlock.isBlock) {\n               // switch from block to vnode"
+  },
+  {
+   "path": "packages/compiler-core/src/transforms/vFor.ts",
+   "text": "@@ -201,10 +203,14 @@ export const transformFor: NodeTransform = createStructuralDirectiveTransform(\n             }\n           }\n-          childBlock.isBlock = !isStableFragment\n+          childBlock.isBlock = shouldUseBlock\n           if (childBlock.isBlock) {\n             helper(OPEN_BLOCK)\n             helper(getVNodeBlockHelper(context.inSSR, childBlock.isComponent))\n           } else {\n             helper(getVNodeHelper(context.inSSR, childBlock.isComponent))\n+            if (childBlock.needsPatch) {\n+              childBlock.patchFlag = ((childBlock.patchFlag ?? 0) |\n+                PatchFlags.NEED_PATCH) as PatchFlags\n+            }\n           }\n         }"
+  },
+  {
+   "path": "packages/vue/__tests__/index.spec.ts",
+   "text": "@@ -1,4 +1,18 @@\n+import { BindingTypes, type CompilerOptions } from '@vue/compiler-core'\n+import { compile } from '@vue/compiler-dom'\n import { EMPTY_ARR } from '@vue/shared'\n-import { createApp, nextTick, reactive, ref } from '../src'\n+import { type VNode, createApp, nextTick, reactive, ref } from '../src'\n+import * as Vue from '../src'\n+import type { InternalRenderFunction } from '../../runtime-core/src/component'\n+\n+function compileToFunction(template: string, options?: CompilerOptions) {\n+  const { code } = compile(template, {\n+    hoistStatic: true,\n+    ...options,\n+  })\n+  const render = new Function('Vue', code)(Vue) as InternalRenderFunction\n+  render._rc = true\n+  return render\n+}\n \n describe('compiler + runtime integration', () => {"
+  },
+  {
+   "path": "packages/vue/__tests__/index.spec.ts",
+   "text": "@@ -348,3 +362,148 @@ describe('compiler + runtime integration', () => {\n     expect(root.innerHTML).toBe('<div>60000000100000111</div>')\n   })\n+\n+  describe('stable v-for lifecycle', () => {\n+    test('clears static ref arrays on branch removal', async () => {\n+      const show = ref(true)\n+      const items = ref<HTMLElement[]>([])\n+      const app = createApp({\n+        setup: () => ({ items, show }),\n+        render: compileToFunction(\n+          `<template v-if=\"show\"><div v-for=\"i in 3\" :key=\"i\" ref=\"items\" /></template>`,\n+          { prefixIdentifiers: true },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      expect(items.value).toHaveLength(3)\n+\n+      show.value = false\n+      await nextTick()\n+      expect(items.value).toHaveLength(0)\n+\n+      app.unmount()\n+    })\n+\n+    test('calls setup-const function refs with null on branch removal', async () => {\n+      const show = ref(true)\n+      const values: (Element | null)[] = []\n+      const setRef = (value: Element | null) => values.push(value)\n+      const app = createApp({\n+        setup: () => ({ setRef, show }),\n+        render: compileToFunction(\n+          `<template v-if=\"show\"><div v-for=\"i in 1\" :ref=\"setRef\" /></template>`,\n+          {\n+            prefixIdentifiers: true,\n+            bindingMetadata: {\n+              setRef: BindingTypes.SETUP_CONST,\n+            },\n+          },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      expect(values).toHaveLength(1)\n+      expect(values[0]).toBeInstanceOf(HTMLDivElement)\n+\n+      show.value = false\n+      await nextTick()\n+      expect(values).toHaveLength(2)\n+      expect(values[1]).toBeNull()\n+\n+      app.unmount()\n+    })\n+\n+    test('calls directive unmounted hooks on branch removal', async () => {\n+      const show = ref(true)\n+      const unmounted = vi.fn()\n+      const app = createApp({\n+        directives: { dir: { unmounted } },\n+        setup: () => ({ show }),\n+        render: compileToFunction(\n+          `<template v-if=\"show\"><div v-for=\"i in 1\" v-dir /></template>`,\n+          { prefixIdentifiers: true },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      show.value = false\n+      await nextTick()\n+      expect(unmounted).toHaveBeenCalledOnce()\n+\n+      app.unmount()\n+    })\n+\n+    test('calls vnode unmounted hooks on branch removal', async () => {\n+      const show = ref(true)\n+      const onVnodeUnmounted = vi.fn()\n+      const app = createApp({\n+        setup: () => ({ onVnodeUnmounted, show }),\n+        render: compileToFunction(\n+          `<template v-if=\"show\"><div v-for=\"i in 1\" @vue:unmounted=\"onVnodeUnmounted\" /></template>`,\n+          { prefixIdentifiers: true },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      show.value = false\n+      await nextTick()\n+      expect(onVnodeUnmounted).toHaveBeenCalledOnce()\n+\n+      app.unmount()\n+    })\n+\n+    test('runs directive beforeUpdate before child updates', async () => {\n+      const value = ref('old')\n+      const observed: string[] = []\n+      const app = createApp({\n+        directives: {\n+          dir: {\n+            beforeUpdate(el: HTMLElement) {\n+              observed.push(el.textContent!)\n+            },\n+          },\n+        },\n+        setup: () => ({ value }),\n+        render: compileToFunction(\n+          `<div v-for=\"i in 1\" v-dir>{{ value }}</div>`,\n+          { prefixIdentifiers: true },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      value.value = 'new'\n+      await nextTick()\n+      expect(observed).toEqual(['old'])\n+\n+      app.unmount()\n+    })\n+\n+    test('runs vnode beforeUpdate before nested child updates', async () => {\n+      const value = ref('old')\n+      const observed: string[] = []\n+      const onVnodeBeforeUpdate = (vnode: VNode) => {\n+        observed.push((vnode.el as HTMLElement).textContent!)\n+      }\n+      const app = createApp({\n+        setup: () => ({ onVnodeBeforeUpdate, value }),\n+        render: compileToFunction(\n+          `<div v-for=\"i in 1\" @vue:beforeUpdate=\"onVnodeBeforeUpdate\"><span>{{ value }}</span></div>`,\n+          { prefixIdentifiers: true },\n+        ),\n+      })\n+      const container = document.createElement('div')\n+\n+      app.mount(container)\n+      value.value = 'new'\n+      await nextTick()\n+      expect(observed).toEqual(['old'])\n+\n+      app.unmount()\n+    })\n+  })\n })"
+  }
+ ],
+ "id": "real_071",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(compiler-core): preserve vnode lifecycle in stable v-for (#11682)\n\nclose #9239\nclose #12569",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "02421cdbc4da5dd2eaf39e6c51aa790f9310db62"
+}

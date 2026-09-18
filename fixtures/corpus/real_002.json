@@ -1,0 +1,63 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": "tests/conftest.py",
+   "removed": 7,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "tests/repository_test.py",
+   "removed": 4,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "tests/store_test.py",
+   "removed": 4,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "tests/conftest.py",
+   "text": "@@ -3,5 +3,4 @@\n import functools\n import io\n-import logging\n import os.path\n from unittest import mock"
+  },
+  {
+   "path": "tests/conftest.py",
+   "text": "@@ -204,10 +203,4 @@ def store(tempdir_factory):\n \n \n-@pytest.fixture\n-def log_info_mock():\n-    with mock.patch.object(logging.getLogger('pre_commit'), 'info') as mck:\n-        yield mck\n-\n-\n class Fixture:\n     def __init__(self, stream: io.BytesIO) -> None:"
+  },
+  {
+   "path": "tests/repository_test.py",
+   "text": "@@ -241,14 +241,14 @@ def test_unknown_keys(store, caplog):\n \n \n-def test_reinstall(tempdir_factory, store, log_info_mock):\n+def test_reinstall(tempdir_factory, store, caplog):\n     path = make_repo(tempdir_factory, 'python_hooks_repo')\n     config = make_config_from_repo(path)\n     _get_hook(config, store, 'foo')\n     # We print some logging during clone (1) + install (3)\n-    assert log_info_mock.call_count == 4\n-    log_info_mock.reset_mock()\n+    assert len(caplog.record_tuples) == 4\n+    caplog.clear()\n     # Reinstall on another run should not trigger another install\n     _get_hook(config, store, 'foo')\n-    assert log_info_mock.call_count == 0\n+    assert len(caplog.record_tuples) == 0\n \n "
+  },
+  {
+   "path": "tests/store_test.py",
+   "text": "@@ -66,5 +66,5 @@ def test_store_init(store):\n \n \n-def test_clone(store, tempdir_factory, log_info_mock):\n+def test_clone(store, tempdir_factory, caplog):\n     path = git_dir(tempdir_factory)\n     with cwd(path):"
+  },
+  {
+   "path": "tests/store_test.py",
+   "text": "@@ -75,5 +75,5 @@ def test_clone(store, tempdir_factory, log_info_mock):\n     ret = store.clone(path, rev)\n     # Should have printed some stuff\n-    assert log_info_mock.call_args_list[0][0][0].startswith(\n+    assert caplog.record_tuples[0][-1].startswith(\n         'Initializing environment for ',\n     )"
+  },
+  {
+   "path": "tests/store_test.py",
+   "text": "@@ -119,5 +119,5 @@ def test_clone_when_repo_already_exists(store):\n def test_clone_shallow_failure_fallback_to_complete(\n     store, tempdir_factory,\n-    log_info_mock,\n+    caplog,\n ):\n     path = git_dir(tempdir_factory)"
+  },
+  {
+   "path": "tests/store_test.py",
+   "text": "@@ -135,5 +135,5 @@ def fake_shallow_clone(self, *args, **kwargs):\n \n     # Should have printed some stuff\n-    assert log_info_mock.call_args_list[0][0][0].startswith(\n+    assert caplog.record_tuples[0][-1].startswith(\n         'Initializing environment for ',\n     )"
+  }
+ ],
+ "id": "real_002",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "replace log_info_mock with pytest's caplog",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "1d2f1c0ccea63906c8bcc9265bb9940383341c0c"
+}

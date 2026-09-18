@@ -1,0 +1,110 @@
+{
+ "files": [
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/basic_json/patch.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 14,
+   "path": "docs/mkdocs/docs/home/exceptions.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "include/nlohmann/json.hpp",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "single_include/nlohmann/json.hpp",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "tests/src/unit-diagnostic-positions.cpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 54,
+   "path": "tests/src/unit-json_patch.cpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "pyproject.toml",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch.md",
+   "text": "@@ -33,4 +33,6 @@ Strong guarantee: if an exception is thrown, there are no changes in the JSON va\n - Throws [`out_of_range.405`](../../home/exceptions.md#jsonexceptionout_of_range405) if JSON pointer has no parent\n   (\"add\", \"remove\", \"move\")\n+- Throws [`out_of_range.411`](../../home/exceptions.md#jsonexceptionout_of_range411) if an \"add\" operation's target\n+  location has a parent that is neither an object nor an array.\n - Throws [`other_error.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n   unsuccessful."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch.md",
+   "text": "@@ -72,2 +74,4 @@ is thrown. In any case, the original value is not changed: the patch is applied\n \n - Added in version 2.0.0.\n+- Added [`out_of_range.411`](../../home/exceptions.md#jsonexceptionout_of_range411) and stopped relying on an internal assertion when an \"add\" operation's\n+  target location has a non-object/non-array parent in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "text": "@@ -29,4 +29,6 @@ No guarantees, value may be corrupted by an unsuccessful patch operation.\n - Throws [`out_of_range.405`](../../home/exceptions.md#jsonexceptionout_of_range405) if JSON pointer has no parent\n   (\"add\", \"remove\", \"move\")\n+- Throws [`out_of_range.411`](../../home/exceptions.md#jsonexceptionout_of_range411) if an \"add\" operation's target\n+  location has a parent that is neither an object nor an array.\n - Throws [`other_error.501`](../../home/exceptions.md#jsonexceptionother_error501) if \"test\" operation was\n   unsuccessful."
+  },
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/patch_inplace.md",
+   "text": "@@ -69,2 +71,4 @@ function throws an exception.\n \n - Added in version 3.11.0.\n+- Added [`out_of_range.411`](../../home/exceptions.md#jsonexceptionout_of_range411) and stopped relying on an internal assertion when an \"add\" operation's\n+  target location has a non-object/non-array parent in version 3.12.x."
+  },
+  {
+   "path": "docs/mkdocs/docs/home/exceptions.md",
+   "text": "@@ -882,4 +882,18 @@ a JSON pointer exceeds the range of `size_type` (e.g., on 32-bit platforms).\n     ```\n \n+### json.exception.out_of_range.411\n+\n+A JSON Patch `add` operation cannot be applied because the target location's parent is neither an object nor an array. Per [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902), an `add` target must reference a member of an existing object or an element of an existing array; a primitive value (string, number, boolean, etc.) cannot receive a new member or element.\n+\n+!!! failure \"Example message\"\n+\n+    ```\n+    cannot add value: the JSON Patch 'add' target's parent is of type string, but must be an object or array\n+    ```\n+\n+!!! note\n+\n+    This exception was added in version 3.12.x. Before that, this situation hit an internal assertion (aborting the program in debug builds) or was silently ignored when assertions were disabled.\n+\n ## Further exceptions\n "
+  },
+  {
+   "path": "include/nlohmann/json.hpp",
+   "text": "@@ -4891,14 +4891,15 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec\n                 }\n \n-                // if there exists a parent, it cannot be primitive\n-                case value_t::string: // LCOV_EXCL_LINE\n-                case value_t::boolean: // LCOV_EXCL_LINE\n-                case value_t::number_integer: // LCOV_EXCL_LINE\n-                case value_t::number_unsigned: // LCOV_EXCL_LINE\n-                case value_t::number_float: // LCOV_EXCL_LINE\n-                case value_t::binary: // LCOV_EXCL_LINE\n-                case value_t::discarded: // LCOV_EXCL_LINE\n-                default:            // LCOV_EXCL_LINE\n-                    JSON_ASSERT(false); // NOLINT(cert-dcl03-c,hicpp-static-assert,misc-static-assert) LCOV_EXCL_LINE\n+                // the parent of an \"add\" target must be an object or array\n+                // (see #4292)\n+                case value_t::string:\n+                case value_t::boolean:\n+                case value_t::number_integer:\n+                case value_t::number_unsigned:\n+                case value_t::number_float:\n+                case value_t::binary:\n+                case value_t::discarded:\n+                default:\n+                    JSON_THROW(out_of_range::create(411, detail::concat(\"cannot add value: the JSON Patch 'add' target's parent is of type \", parent.type_name(), \", but must be an object or array\"), &parent));\n             }\n         };"
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -25409,14 +25409,15 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec\n                 }\n \n-                // if there exists a parent, it cannot be primitive\n-                case value_t::string: // LCOV_EXCL_LINE\n-                case value_t::boolean: // LCOV_EXCL_LINE\n-                case value_t::number_integer: // LCOV_EXCL_LINE\n-                case value_t::number_unsigned: // LCOV_EXCL_LINE\n-                case value_t::number_float: // LCOV_EXCL_LINE\n-                case value_t::binary: // LCOV_EXCL_LINE\n-                case value_t::discarded: // LCOV_EXCL_LINE\n-                default:            // LCOV_EXCL_LINE\n-                    JSON_ASSERT(false); // NOLINT(cert-dcl03-c,hicpp-static-assert,misc-static-assert) LCOV_EXCL_LINE\n+                // the parent of an \"add\" target must be an object or array\n+                // (see #4292)\n+                case value_t::string:\n+                case value_t::boolean:\n+                case value_t::number_integer:\n+                case value_t::number_unsigned:\n+                case value_t::number_float:\n+                case value_t::binary:\n+                case value_t::discarded:\n+                default:\n+                    JSON_THROW(out_of_range::create(411, detail::concat(\"cannot add value: the JSON Patch 'add' target's parent is of type \", parent.type_name(), \", but must be an object or array\"), &parent));\n             }\n         };"
+  },
+  {
+   "path": "tests/src/unit-diagnostic-positions.cpp",
+   "text": "@@ -38,3 +38,13 @@ TEST_CASE(\"Better diagnostics with positions\")\n                              \"[json.exception.type_error.302] type must be number, but is string\", json::type_error);\n     }\n+\n+    SECTION(\"JSON patch add to primitive parent (#4292)\")\n+    {\n+        // the JSON Patch \"add\" target /foo/bar/baz has a string parent\n+        // (/foo/bar); the position of that parent is reported in the message\n+        const json doc = json::parse(R\"({\"foo\":{\"bar\":\"a string\"}})\");\n+        const json patch = json::parse(R\"([{\"op\":\"add\",\"path\":\"/foo/bar/baz\",\"value\":1}])\");\n+        CHECK_THROWS_WITH_AS(doc.patch(patch),\n+                             \"[json.exception.out_of_range.411] (/foo/bar) (bytes 14-24) cannot add value: the JSON Patch 'add' target's parent is of type string, but must be an object or array\", json::out_of_range);\n+    }\n }"
+  },
+  {
+   "path": "tests/src/unit-json_patch.cpp",
+   "text": "@@ -1335,2 +1335,56 @@ TEST_CASE(\"JSON patch\")\n     }\n }\n+\n+TEST_CASE(\"JSON patch - add to a primitive parent (regression #4292)\")\n+{\n+    // Regression test for https://github.com/nlohmann/json/issues/4292\n+    //\n+    // An \"add\" operation whose parent location resolves to a primitive\n+    // (non-container) value must be rejected with a catchable exception.\n+    // Previously this hit JSON_ASSERT(false) in operation_add, which aborts\n+    // the process in debug builds and silently dropped the operation (leaving\n+    // a wrong result) when assertions were compiled out (NDEBUG). It now\n+    // throws out_of_range.411.\n+    //\n+    // The documents below are constructed programmatically (not parsed) so\n+    // they carry no byte positions; the JSON_DIAGNOSTICS path prefix is\n+    // handled by the guards. The exact message with positions is covered in\n+    // unit-diagnostic-positions.cpp.\n+\n+    SECTION(\"string parent\")\n+    {\n+        json const doc = {{\"foo\", {{\"bar\", \"a string\"}}}};\n+        json const patch = {{{\"op\", \"add\"}, {\"path\", \"/foo/bar/baz\"}, {\"value\", 1}}};\n+#if JSON_DIAGNOSTICS\n+        CHECK_THROWS_WITH_AS(doc.patch(patch), \"[json.exception.out_of_range.411] (/foo/bar) cannot add value: the JSON Patch 'add' target's parent is of type string, but must be an object or array\", json::out_of_range&);\n+#else\n+        CHECK_THROWS_WITH_AS(doc.patch(patch), \"[json.exception.out_of_range.411] cannot add value: the JSON Patch 'add' target's parent is of type string, but must be an object or array\", json::out_of_range&);\n+#endif\n+    }\n+\n+    SECTION(\"number parent\")\n+    {\n+        json const doc = {{\"foo\", 1}};\n+        json const patch = {{{\"op\", \"add\"}, {\"path\", \"/foo/bar\"}, {\"value\", 2}}};\n+#if JSON_DIAGNOSTICS\n+        CHECK_THROWS_WITH_AS(doc.patch(patch), \"[json.exception.out_of_range.411] (/foo) cannot add value: the JSON Patch 'add' target's parent is of type number, but must be an object or array\", json::out_of_range&);\n+#else\n+        CHECK_THROWS_WITH_AS(doc.patch(patch), \"[json.exception.out_of_range.411] cannot add value: the JSON Patch 'add' target's parent is of type number, but must be an object or array\", json::out_of_range&);\n+#endif\n+    }\n+\n+    SECTION(\"original two-step sequence from the issue\")\n+    {\n+        // The user's two-step patch from #4292: first turn /xyz/1 into a\n+        // string, then try to add a member inside that string.\n+        json const doc = R\"( { \"xyz\": [ { \"lmn\": \"214\", \"nnp\": \"001\" } ] } )\"_json;\n+        json const patch = R\"(\n+            [\n+                { \"op\": \"add\", \"path\": \"/xyz/1\",     \"value\": \"\" },\n+                { \"op\": \"add\", \"path\": \"/xyz/1/lmn\", \"value\": \"214\" }\n+            ]\n+        )\"_json;\n+\n+        CHECK_THROWS_AS(doc.patch(patch), json::out_of_range&);\n+    }\n+}"
+  },
+  {
+   "path": "pyproject.toml",
+   "text": "@@ -2,3 +2,3 @@\n name = \"app\"\n-version = \"4.2.1\"\n+version = \"4.3.0\"\n description = \"x\""
+  }
+ ],
+ "id": "mm_19",
+ "label": {
+  "catch_on": [
+   "message_matches_diff",
+   "scope_creep"
+  ],
+  "kind": "version_bump",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": ":bug: avoid assertion in patch (#5222)",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "730b57775d4c8a28e8e3353d741a37126fda1f12"
+}

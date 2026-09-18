@@ -1,0 +1,47 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "lib/stdio/direction.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "lib/stream/resolve.js",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "lib/stream/wait.js",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "lib/stdio/direction.js",
+   "text": "@@ -22,5 +22,5 @@ export const addStreamDirection = stdioStreams => {\n };\n \n-const getStreamDirection = stdioStream => KNOWN_DIRECTIONS[stdioStream.fdNumber] ?? guessStreamDirection[stdioStream.type](stdioStream.value);\n+const getStreamDirection = ({fdNumber, type, value}) => KNOWN_DIRECTIONS[fdNumber] ?? guessStreamDirection[type](value);\n \n // `stdin`/`stdout`/`stderr` have a known direction"
+  },
+  {
+   "path": "lib/stream/resolve.js",
+   "text": "@@ -67,10 +67,10 @@ const waitForOriginalStreams = (originalStreams, spawned, streamInfo) =>\n // The `.pipe()` method automatically ends that stream when `childProcess` ends.\n // This makes sure we wait for the completion of those streams, in order to catch any error.\n-const waitForCustomStreamsEnd = (stdioStreamsGroups, streamInfo) => stdioStreamsGroups.flatMap((stdioStreams, fdNumber) => stdioStreams\n+const waitForCustomStreamsEnd = (stdioStreamsGroups, streamInfo) => stdioStreamsGroups.flat()\n \t.filter(({value}) => isStream(value, {checkOpen: false}) && !isStandardStream(value))\n-\t.map(({type, value}) => waitForStream(value, fdNumber, streamInfo, {\n+\t.map(({type, value, fdNumber}) => waitForStream(value, fdNumber, streamInfo, {\n \t\tisSameDirection: type === 'generator',\n \t\tstopOnExit: type === 'native',\n-\t})));\n+\t}));\n \n const throwOnProcessError = async (spawned, {signal}) => {"
+  },
+  {
+   "path": "lib/stream/wait.js",
+   "text": "@@ -47,5 +47,8 @@ const shouldIgnoreStreamError = (error, fdNumber, {stdioStreamsGroups, propagati\n // However, while `childProcess.std*` and transforms follow that direction, any stream passed the `std*` option has the opposite direction.\n // For example, `childProcess.stdin` is a writable, but the `stdin` option is a readable.\n-export const isInputFileDescriptor = (fdNumber, stdioStreamsGroups) => stdioStreamsGroups[fdNumber][0].direction === 'input';\n+export const isInputFileDescriptor = (fdNumber, stdioStreamsGroups) => {\n+\tconst [{direction}] = stdioStreamsGroups.find(stdioStreams => stdioStreams[0].fdNumber === fdNumber);\n+\treturn direction === 'input';\n+};\n \n // When `stream.destroy()` is called without an `error` argument, stream is aborted."
+  }
+ ],
+ "id": "real_068",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Refactor file descriptor-related logic (#861)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "aeb81940aa6be57304bc92a70eaeded18678e724"
+}

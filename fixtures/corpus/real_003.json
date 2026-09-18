@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "pre_commit/languages/docker.py",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "tests/languages/docker_test.py",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/languages/docker.py",
+   "text": "@@ -116,5 +116,5 @@ def _is_rootless() -> bool:  # pragma: win32 no cover\n             # docker:\n             # https://docs.docker.com/reference/api/engine/version/v1.48/#tag/System/operation/SystemInfo\n-            'name=rootless' in info.get('SecurityOptions', ()) or\n+            'name=rootless' in (info.get('SecurityOptions') or ()) or\n             # podman:\n             # https://docs.podman.io/en/latest/_static/api.html?version=v5.4#tag/system/operation/SystemInfoLibpod"
+  },
+  {
+   "path": "tests/languages/docker_test.py",
+   "text": "@@ -90,5 +90,6 @@ def test_docker_user_rootless(info_ret):\n         (0, b'{\"SecurityOptions\": [\"name=cgroupns\"]}', b''),\n         (0, b'{\"host\": {\"security\": {\"rootless\": false}}}', b''),\n-        (0, b'{\"respone_from_some_other_container_engine\": true}', b''),\n+        (0, b'{\"response_from_some_other_container_engine\": true}', b''),\n+        (0, b'{\"SecurityOptions\": null}', b''),\n         (1, b'', b''),\n     ),"
+  }
+ ],
+ "id": "real_003",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "handle `SecurityOptions: null` in docker response",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "2930ea0fcd481f4c2cbeae0245a8bb748bae905a"
+}

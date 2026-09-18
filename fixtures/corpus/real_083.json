@@ -1,0 +1,63 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": ".github/workflows/ubuntu.yml",
+   "removed": 10,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -24,5 +24,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -55,5 +55,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -72,5 +72,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -89,5 +89,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -150,5 +150,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -165,5 +165,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Set env FORCE_STDCPPFS_FLAG for clang 7 / 8 / 9 / 10\n         run: echo \"JSON_FORCED_GLOBAL_COMPILE_OPTIONS=-DJSON_HAS_FILESYSTEM=0;-DJSON_HAS_EXPERIMENTAL_FILESYSTEM=0\" >> \"$GITHUB_ENV\""
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -183,5 +183,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -201,5 +201,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -230,5 +230,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DJSON_CI=On"
+  },
+  {
+   "path": ".github/workflows/ubuntu.yml",
+   "text": "@@ -260,5 +260,5 @@ jobs:\n       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1\n       - name: Get latest CMake and ninja\n-        uses: lukka/get-cmake@bb2faa721a800324b726fec00f7c1ff7641964d1 # v4.02\n+        uses: lukka/get-cmake@9e07ecdcee1b12e5037e42f410b67f03e2f626e1 # v4.02\n       - name: Run CMake\n         run: cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=$EMSDK/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -GNinja"
+  }
+ ],
+ "id": "real_083",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": ":arrow_up: Bump lukka/get-cmake from 4.2.0 to 4.2.1 (#5028)\n\nBumps [lukka/get-cmake](https://github.com/lukka/get-cmake) from 4.2.0 to 4.2.1.\n- [Release notes](https://github.com/lukka/get-cmake/releases)\n- [Commits](https://github.com/lukka/get-cmake/compare/bb2faa721a800324b726fec00f7c1ff7641964d1...9e07ecdcee1b12e5037e42f410b67f03e2f626e1)\n\n---\nupdated-dependencies:\n- dependency-name: lukka/get-cmake\n  dependency-version: 4.2.1\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "38819a9b0424896e99319206749d3e1182dc8526"
+}

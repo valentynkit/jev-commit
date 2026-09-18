@@ -1,0 +1,79 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": "lib/io/max-buffer.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 11,
+   "path": "lib/ipc/get-each.js",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "test/fixtures/ipc-echo-twice.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "test/fixtures/ipc-iterate-send.js",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 31,
+   "path": "test/ipc/get-each.js",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "lib/io/max-buffer.js",
+   "text": "@@ -1,4 +1,3 @@\n import {MaxBufferError} from 'get-stream';\n-import {disconnect} from '../ipc/validation.js';\n import {getStreamName} from '../utils/standard-stream.js';\n "
+  },
+  {
+   "path": "lib/io/max-buffer.js",
+   "text": "@@ -42,5 +41,4 @@ export const checkIpcMaxBuffer = (subprocess, ipcOutput, maxBuffer) => {\n \t}\n \n-\tdisconnect(subprocess);\n \tconst error = new MaxBufferError();\n \terror.maxBufferInfo = {fdNumber: 'ipc'};"
+  },
+  {
+   "path": "lib/ipc/get-each.js",
+   "text": "@@ -21,5 +21,10 @@ export const loopOnMessages = ({anyProcess, isSubprocess, ipc, shouldAwait}) =>\n \tconst controller = new AbortController();\n \tstopOnExit(anyProcess, controller);\n-\treturn iterateOnMessages(anyProcess, shouldAwait, controller);\n+\treturn iterateOnMessages({\n+\t\tanyProcess,\n+\t\tisSubprocess,\n+\t\tshouldAwait,\n+\t\tcontroller,\n+\t});\n };\n "
+  },
+  {
+   "path": "lib/ipc/get-each.js",
+   "text": "@@ -34,5 +39,5 @@ const stopOnExit = async (anyProcess, controller) => {\n };\n \n-const iterateOnMessages = async function * (anyProcess, shouldAwait, controller) {\n+const iterateOnMessages = async function * ({anyProcess, isSubprocess, shouldAwait, controller}) {\n \ttry {\n \t\tfor await (const [message] of on(anyProcess, 'message', {signal: controller.signal})) {"
+  },
+  {
+   "path": "lib/ipc/get-each.js",
+   "text": "@@ -48,4 +53,8 @@ const iterateOnMessages = async function * (anyProcess, shouldAwait, controller)\n \t\tcontroller.abort();\n \n+\t\tif (!isSubprocess) {\n+\t\t\tdisconnect(anyProcess);\n+\t\t}\n+\n \t\tif (shouldAwait) {\n \t\t\tawait anyProcess;"
+  },
+  {
+   "path": "test/fixtures/ipc-echo-twice.js",
+   "text": "@@ -4,3 +4,3 @@ import {sendMessage, getOneMessage, exchangeMessage} from '../../index.js';\n const message = await getOneMessage();\n const secondMessage = await exchangeMessage(message);\n-await sendMessage(await secondMessage);\n+await sendMessage(secondMessage);"
+  },
+  {
+   "path": "test/fixtures/ipc-iterate-send.js",
+   "text": "@@ -0,0 +1,10 @@\n+#!/usr/bin/env node\n+import {sendMessage, getEachMessage} from '../../index.js';\n+import {foobarString} from '../helpers/input.js';\n+\n+const iterable = getEachMessage();\n+await sendMessage(foobarString);\n+\n+for await (const message of iterable) {\n+\tconsole.log(message);\n+}"
+  },
+  {
+   "path": "test/ipc/get-each.js",
+   "text": "@@ -52,4 +52,35 @@ test('subprocess.getEachMessage() can be called twice at the same time', async t\n });\n \n+test('break in subprocess.getEachMessage() disconnects', async t => {\n+\tconst subprocess = execa('ipc-iterate-send.js', {ipc: true});\n+\n+\t// eslint-disable-next-line no-unreachable-loop\n+\tfor await (const message of subprocess.getEachMessage()) {\n+\t\tt.is(message, foobarString);\n+\t\tbreak;\n+\t}\n+\n+\tconst {ipcOutput} = await subprocess;\n+\tt.deepEqual(ipcOutput, [foobarString]);\n+});\n+\n+const iterateAndError = async (t, subprocess, cause) => {\n+\t// eslint-disable-next-line no-unreachable-loop\n+\tfor await (const message of subprocess.getEachMessage()) {\n+\t\tt.is(message, foobarString);\n+\t\tthrow cause;\n+\t}\n+};\n+\n+test('Exceptions in subprocess.getEachMessage() disconnect', async t => {\n+\tconst subprocess = execa('ipc-iterate-send.js', {ipc: true});\n+\n+\tconst cause = new Error(foobarString);\n+\tt.is(await t.throwsAsync(iterateAndError(t, subprocess, cause)), cause);\n+\n+\tconst {ipcOutput} = await subprocess;\n+\tt.deepEqual(ipcOutput, [foobarString]);\n+});\n+\n const HIGH_CONCURRENCY_COUNT = 10;\n "
+  }
+ ],
+ "id": "real_066",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Fix `break` statement with `subprocess.getEachMessage()` (#1082)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "71434929a7efc37cf4569e662e721f6a1675ed2f"
+}

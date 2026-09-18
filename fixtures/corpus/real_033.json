@@ -1,0 +1,83 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": ".github/workflows/CI.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "Cargo.toml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "axum/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "axum/README.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 32,
+   "path": "axum/src/extract/ws.rs",
+   "removed": 29,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/CI.yml",
+   "text": "@@ -3,5 +3,5 @@ name: CI\n env:\n   CARGO_TERM_COLOR: always\n-  MSRV: '1.78'\n+  MSRV: '1.80'\n \n on:"
+  },
+  {
+   "path": "Cargo.toml",
+   "text": "@@ -12,5 +12,5 @@ exclude = [\n \n [workspace.package]\n-rust-version = \"1.78\"\n+rust-version = \"1.80\"\n \n [workspace.lints.rust]"
+  },
+  {
+   "path": "axum/CHANGELOG.md",
+   "text": "@@ -6,4 +6,14 @@ All notable changes to this project will be documented in this file.\n and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n \n+\n+# 0.8.9\n+\n+- **added:** `WebSocketUpgrade::{requested_protocols, set_selected_protocol}` for more\n+  flexible subprotocol selection ([#3597])\n+- **changed:** Update minimum rust version to 1.80 ([#3620])\n+\n+[#3597]: https://github.com/tokio-rs/axum/pull/3597\n+[#3620]: https://github.com/tokio-rs/axum/pull/3620\n+\n # 0.8.8\n "
+  },
+  {
+   "path": "axum/README.md",
+   "text": "@@ -105,5 +105,5 @@ This crate uses `#![forbid(unsafe_code)]` to ensure everything is implemented in\n ## Minimum supported Rust version\n \n-axum's MSRV is 1.78.\n+axum's MSRV is 1.80.\n \n ## Examples"
+  },
+  {
+   "path": "axum/src/extract/ws.rs",
+   "text": "@@ -108,6 +108,8 @@ use hyper_util::rt::TokioIo;\n use std::{\n     borrow::Cow,\n+    collections::BTreeSet,\n     future::Future,\n     pin::Pin,\n+    str,\n     task::{ready, Context, Poll},\n };"
+  },
+  {
+   "path": "axum/src/extract/ws.rs",
+   "text": "@@ -139,5 +141,5 @@ pub struct WebSocketUpgrade<F = DefaultOnFailedUpgrade> {\n     on_upgrade: hyper::upgrade::OnUpgrade,\n     on_failed_upgrade: F,\n-    sec_websocket_protocol: Option<HeaderValue>,\n+    sec_websocket_protocol: BTreeSet<HeaderValue>,\n }\n "
+  },
+  {
+   "path": "axum/src/extract/ws.rs",
+   "text": "@@ -243,24 +245,21 @@ impl<F> WebSocketUpgrade<F> {\n         I::Item: Into<Cow<'static, str>>,\n     {\n-        if let Some(req_protocols) = self\n-            .sec_websocket_protocol\n-            .as_ref()\n-            .and_then(|p| p.to_str().ok())\n-        {\n-            self.protocol = protocols\n-                .into_iter()\n-                // FIXME: This will often allocate a new `String` and so is less efficient than it\n-                // could be. But that can't be fixed without breaking changes to the public API.\n-                .map(Into::into)\n-                .find(|protocol| {\n-                    req_protocols\n-                        .split(',')\n-                        .any(|req_protocol| req_protocol.trim() == protocol)\n-                })\n-                .map(|protocol| match protocol {\n-                    Cow::Owned(s) => HeaderValue::from_str(&s).unwrap(),\n-                    Cow::Borrowed(s) => HeaderValue::from_static(s),\n-                });\n-        }\n+        self.protocol = protocols\n+            .into_iter()\n+            .map(Into::into)\n+            .find(|proto| {\n+                // FIXME: When https://github.com/hyperium/http/pull/814\n+                //        is merged + released, we can look use\n+                //        `contains(proto.as_bytes())` without converting\n+                //        to `HeaderValue` first.\n+                let Ok(proto) = HeaderValue::from_str(proto) else {\n+                    return false;\n+                };\n+                self.sec_websocket_protocol.contains(&proto)\n+            })\n+            .map(|protocol| match protocol {\n+                Cow::Owned(s) => HeaderValue::from_str(&s).unwrap(),\n+                Cow::Borrowed(s) => HeaderValue::from_static(s),\n+            });\n \n         self"
+  },
+  {
+   "path": "axum/src/extract/ws.rs",
+   "text": "@@ -278,11 +277,6 @@ impl<F> WebSocketUpgrade<F> {\n     ///\n     /// this method returns an iterator yielding `\"soap\"` and `\"wamp\"`.\n-    pub fn requested_protocols(&self) -> impl Iterator<Item = &str> {\n-        self.sec_websocket_protocol\n-            .as_ref()\n-            .and_then(|p| p.to_str().ok())\n-            .into_iter()\n-            .flat_map(|s| s.split(','))\n-            .map(|s| s.trim())\n+    pub fn requested_protocols(&self) -> impl Iterator<Item = &HeaderValue> {\n+        self.sec_websocket_protocol.iter()\n     }\n "
+  },
+  {
+   "path": "axum/src/extract/ws.rs",
+   "text": "@@ -502,5 +496,14 @@ where\n             .ok_or(ConnectionNotUpgradable)?;\n \n-        let sec_websocket_protocol = parts.headers.get(header::SEC_WEBSOCKET_PROTOCOL).cloned();\n+        let sec_websocket_protocol = parts\n+            .headers\n+            .get_all(header::SEC_WEBSOCKET_PROTOCOL)\n+            .iter()\n+            .flat_map(|val| val.as_bytes().split(|&b| b == b','))\n+            .map(|proto| {\n+                HeaderValue::from_bytes(proto.trim_ascii())\n+                    .expect(\"substring of HeaderValue is valid HeaderValue\")\n+            })\n+            .collect();\n \n         Ok(Self {"
+  }
+ ],
+ "id": "real_033",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Rewrite sec-websocket-protocol handling (#3620)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "39b9f727d73fcd6239aa85ef48dfb32251013ee0"
+}

@@ -1,0 +1,33 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "packages-private/template-explorer/package.json",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "pnpm-lock.yaml",
+   "removed": 9,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages-private/template-explorer/package.json",
+   "text": "@@ -12,5 +12,5 @@\n   },\n   \"dependencies\": {\n-    \"monaco-editor\": \"^0.55.1\",\n+    \"monaco-editor\": \"^0.56.0\",\n     \"source-map-js\": \"^1.2.1\"\n   }"
+  }
+ ],
+ "id": "real_078",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore(deps): update dependency monaco-editor to ^0.56.0 (#15196)",
+ "more": "",
+ "omitted": "counts only: pnpm-lock.yaml",
+ "repo": "vuejs/core",
+ "sha": "ac7431c9ae8de77496479fc86f590d3fb48a2bb4"
+}

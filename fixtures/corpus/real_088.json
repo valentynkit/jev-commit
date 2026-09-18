@@ -1,0 +1,57 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "include/nlohmann/json.hpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "single_include/nlohmann/json.hpp",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 80,
+   "path": "tests/src/unit-class_parser.cpp",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "docs/mkdocs/docs/api/basic_json/swap.md",
+   "text": "@@ -35,8 +35,12 @@ void swap(typename binary_t::container_type& other);\n \n 1. Exchanges the contents of the JSON value with those of `other`. Does not invoke any move, copy, or swap operations on\n-   individual elements. All iterators and references remain valid. The past-the-end iterator is invalidated. \n+   individual elements. All iterators and references remain valid. The past-the-end iterator is invalidated. If macro\n+   [`JSON_DIAGNOSTIC_POSITIONS`](../macros/json_diagnostic_positions.md) is defined to `#!cpp 1`, the\n+   [`start_pos()`](start_pos.md)/[`end_pos()`](end_pos.md) diagnostic positions are exchanged along with the value.\n 2. Exchanges the contents of the JSON value from `left` with those of `right`. Does not invoke any move, copy, or swap\n    operations on individual elements. All iterators and references remain valid. The past-the-end iterator is\n-   invalidated. Implemented as a friend function callable via ADL.\n+   invalidated. Implemented as a friend function callable via ADL. If macro\n+   [`JSON_DIAGNOSTIC_POSITIONS`](../macros/json_diagnostic_positions.md) is defined to `#!cpp 1`, the\n+   [`start_pos()`](start_pos.md)/[`end_pos()`](end_pos.md) diagnostic positions are exchanged along with the value.\n 3. Exchanges the contents of a JSON array with those of `other`. Does not invoke any move, copy, or swap operations on\n    individual elements. All iterators and references remain valid. The past-the-end iterator is invalidated. "
+  },
+  {
+   "path": "include/nlohmann/json.hpp",
+   "text": "@@ -3577,4 +3577,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec\n         std::swap(m_data.m_value, other.m_data.m_value);\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+        std::swap(start_position, other.start_position);\n+        std::swap(end_position, other.end_position);\n+#endif\n+\n         set_parents();\n         other.set_parents();"
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -27331,4 +27331,9 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec\n         std::swap(m_data.m_value, other.m_data.m_value);\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+        std::swap(start_position, other.start_position);\n+        std::swap(end_position, other.end_position);\n+#endif\n+\n         set_parents();\n         other.set_parents();"
+  },
+  {
+   "path": "tests/src/unit-class_parser.cpp",
+   "text": "@@ -2260,4 +2260,84 @@ TEST_CASE(\"parser class\")\n }\n \n+#if JSON_DIAGNOSTIC_POSITIONS\n+\n+TEST_CASE(\"diagnostic positions: value lifetime\")\n+{\n+    SECTION(\"copy constructor copies positions, recursively\")\n+    {\n+        const std::string s = R\"({\"a\":1,\"b\":[1,2,3]})\";\n+        const json a = json::parse(s);\n+        const json b = a; // NOLINT(performance-unnecessary-copy-initialization)\n+\n+        CHECK(b.start_pos() == a.start_pos());\n+        CHECK(b.end_pos() == a.end_pos());\n+        CHECK(b[\"b\"].start_pos() == a[\"b\"].start_pos());\n+        CHECK(b[\"b\"].end_pos() == a[\"b\"].end_pos());\n+    }\n+\n+    SECTION(\"move constructor resets the moved-from value to npos\")\n+    {\n+        const std::string s = R\"({\"a\":1,\"b\":[1,2,3]})\";\n+        json a = json::parse(s);\n+        const auto a_start = a.start_pos();\n+        const auto a_end = a.end_pos();\n+\n+        const json b(std::move(a));\n+\n+        CHECK(b.start_pos() == a_start);\n+        CHECK(b.end_pos() == a_end);\n+\n+        CHECK(a.start_pos() == std::string::npos); // NOLINT(bugprone-use-after-move,clang-analyzer-cplusplus.Move)\n+        CHECK(a.end_pos() == std::string::npos); // NOLINT(bugprone-use-after-move,clang-analyzer-cplusplus.Move)\n+    }\n+\n+    SECTION(\"swap() exchanges positions along with the values\")\n+    {\n+        // basic_json::swap() (and the friend swap() that forwards to it) used\n+        // to swap only m_data.m_type/m_data.m_value, leaving\n+        // start_position/end_position untouched -- unlike copy-assignment's\n+        // operator=(basic_json), which swaps positions as part of its\n+        // copy-and-swap implementation. After swap(a, b), each value ended up\n+        // with the *other* value's content but its *own* original position.\n+        // This is now fixed so that swap() is consistent with copy-assignment.\n+        json a = json::parse(R\"({\"a\":1})\");\n+        json b = json::parse(R\"([1,2,3,4,5])\");\n+        const auto a_start = a.start_pos();\n+        const auto a_end = a.end_pos();\n+        const auto b_start = b.start_pos();\n+        const auto b_end = b.end_pos();\n+        // lengths (and thus end positions) differ, which is enough to tell\n+        // after the swap whether positions actually moved with the values\n+        CHECK(a_end != b_end);\n+\n+        using std::swap;\n+        swap(a, b);\n+\n+        CHECK(a == json::parse(R\"([1,2,3,4,5])\"));\n+        CHECK(b == json::parse(R\"({\"a\":1})\"));\n+\n+        CHECK(a.start_pos() == b_start);\n+        CHECK(a.end_pos() == b_end);\n+        CHECK(b.start_pos() == a_start);\n+        CHECK(b.end_pos() == a_end);\n+\n+        // member swap() behaves the same as the free function\n+        json c = json::parse(R\"({\"a\":1})\");\n+        json d = json::parse(R\"([1,2,3,4,5])\");\n+        const auto c_start = c.start_pos();\n+        const auto c_end = c.end_pos();\n+        const auto d_start = d.start_pos();\n+        const auto d_end = d.end_pos();\n+\n+        c.swap(d);\n+\n+        CHECK(c.start_pos() == d_start);\n+        CHECK(c.end_pos() == d_end);\n+        CHECK(d.start_pos() == c_start);\n+        CHECK(d.end_pos() == c_end);\n+    }\n+}\n+#endif\n+\n // this test relies on parse errors being thrown, so it is skipped when\n // exceptions are disabled (json::parse aborts instead of throwing there)"
+  }
+ ],
+ "id": "real_088",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Swap diagnostic positions in basic_json::swap() (#5493)\n\nbasic_json::swap() (and the friend swap() that forwards to it) only\nexchanged m_data.m_type/m_data.m_value, leaving start_position/end_position\nuntouched under JSON_DIAGNOSTIC_POSITIONS. This is inconsistent with\ncopy-assignment's operator=(basic_json), which swaps positions as part of\nits copy-and-swap implementation, so after swap(a, b) each value ended up\nwith the other value's content but its own original position.\n\nSigned-off-by: Niels Lohmann <mail@nlohmann.me>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "c0b2878a44b485aa02ed3174e1222e815479f511"
+}

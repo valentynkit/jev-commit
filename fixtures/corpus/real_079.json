@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 38,
+   "path": "packages/runtime-core/__tests__/scheduler.spec.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "packages/runtime-core/src/components/Suspense.ts",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "packages/runtime-core/src/scheduler.ts",
+   "removed": 3,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages/runtime-core/__tests__/scheduler.spec.ts",
+   "text": "@@ -304,4 +304,42 @@ describe('scheduler', () => {\n     })\n \n+    it('should not overflow the call stack with a very large cb array', async () => {\n+      // a suspense boundary can buffer an unbounded number of post effects\n+      // while pending (e.g. a large tree re-rendering under it) and flush them\n+      // all at once on resolve - spreading such an array into push() throws\n+      // RangeError: Maximum call stack size exceeded\n+      let called = 0\n+      const cbs: SchedulerJob[] = []\n+      for (let i = 0; i < 1000000; i++) {\n+        cbs.push(() => {\n+          called++\n+        })\n+      }\n+\n+      queuePostFlushCb(cbs)\n+      await nextTick()\n+      expect(called).toBe(1000000)\n+    })\n+\n+    it('should not overflow the call stack when merging a very large cb array into an active flush', async () => {\n+      // same as above, but the large array is queued while a post flush is\n+      // already in progress, exercising the merge into activePostFlushCbs\n+      // inside a nested flushPostFlushCbs call\n+      let called = 0\n+      const cbs: SchedulerJob[] = []\n+      for (let i = 0; i < 1000000; i++) {\n+        cbs.push(() => {\n+          called++\n+        })\n+      }\n+\n+      queuePostFlushCb(() => {\n+        queuePostFlushCb(cbs)\n+        flushPostFlushCbs()\n+      })\n+      await nextTick()\n+      expect(called).toBe(1000000)\n+    })\n+\n     it('should dedupe queued postFlushCb', async () => {\n       const calls: string[] = []"
+  },
+  {
+   "path": "packages/runtime-core/src/components/Suspense.ts",
+   "text": "@@ -618,5 +618,7 @@ function createSuspenseBoundary(\n           // found a pending parent suspense, merge buffered post jobs\n           // into that parent\n-          parent.effects.push(...effects)\n+          for (let i = 0; i < effects.length; i++) {\n+            parent.effects.push(effects[i])\n+          }\n           hasUnresolvedAncestor = true\n           break"
+  },
+  {
+   "path": "packages/runtime-core/src/scheduler.ts",
+   "text": "@@ -134,6 +134,11 @@ export function queuePostFlushCb(cb: SchedulerJobs): void {\n     // if cb is an array, it is a component lifecycle hook which can only be\n     // triggered by a job, which is already deduped in the main queue, so\n-    // we can skip duplicate check here to improve perf\n-    pendingPostFlushCbs.push(...cb)\n+    // we can skip duplicate check here to improve perf.\n+    // use a loop instead of `push(...cb)`: the array can be arbitrarily large\n+    // (e.g. effects buffered by a suspense boundary) and spreading it would\n+    // overflow the call stack (#15142)\n+    for (let i = 0; i < cb.length; i++) {\n+      pendingPostFlushCbs.push(cb[i])\n+    }\n   }\n   queueFlush()"
+  },
+  {
+   "path": "packages/runtime-core/src/scheduler.ts",
+   "text": "@@ -180,5 +185,7 @@ export function flushPostFlushCbs(seen?: CountMap): void {\n     // #1947 already has active queue, nested flushPostFlushCbs call\n     if (activePostFlushCbs) {\n-      activePostFlushCbs.push(...deduped)\n+      for (let i = 0; i < deduped.length; i++) {\n+        activePostFlushCbs.push(deduped[i])\n+      }\n       return\n     }"
+  }
+ ],
+ "id": "real_079",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(scheduler): avoid stack overflow when flushing very large post cb arrays (#15143)\n\nclose #15142",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "c04a45d15498ebba0de3ceae674b88ac43cb9e76"
+}

@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": "axum-core/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "axum-core/src/extract/request_parts.rs",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum-core/CHANGELOG.md",
+   "text": "@@ -15,7 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0\n   `impl IntoResponse for HeaderMap`, `impl IntoResponse for Extensions` and\n   others) now returns a body of unknown size.\n+- **fixed:** Make the `BytesMut` extractor ignore non-data frames from custom\n+  request bodies, matching the `Bytes` extractor ([#3811])\n \n [#3721]: https://github.com/tokio-rs/axum/pull/3721\n [#3742]: https://github.com/tokio-rs/axum/pull/3742\n+[#3811]: https://github.com/tokio-rs/axum/pull/3811\n \n # 0.5.6"
+  },
+  {
+   "path": "axum-core/src/extract/request_parts.rs",
+   "text": "@@ -90,5 +90,6 @@ async fn body_to_bytes_mut(body: &mut Body, bytes: &mut BytesMut) -> Result<(),\n     {\n         let Ok(data) = frame.into_data() else {\n-            return Ok(());\n+            // Match `Bytes` by ignoring non-data frames until the body ends.\n+            continue;\n         };\n         bytes.put(data);"
+  }
+ ],
+ "id": "real_034",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(axum-core): skip non-data frames in BytesMut (#3811)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "502aa875b78bccd7d743dbd783447050c3450139"
+}

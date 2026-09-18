@@ -1,0 +1,75 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "index.d.ts",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "index.test-d.ts",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 19,
+   "path": "lib/kill.js",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "readme.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 21,
+   "path": "test/kill.js",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "index.d.ts",
+   "text": "@@ -852,5 +852,6 @@ export type ExecaChildPromise<OptionsType extends Options = Options> = {\n \t[More info.](https://nodejs.org/api/child_process.html#subprocesskillsignal)\n \t*/\n-\tkill(signalOrError: Parameters<ChildProcess['kill']>[0] | Error): ReturnType<ChildProcess['kill']>;\n+\tkill(signal: Parameters<ChildProcess['kill']>[0], error?: Error): ReturnType<ChildProcess['kill']>;\n+\tkill(error?: Error): ReturnType<ChildProcess['kill']>;\n };\n "
+  },
+  {
+   "path": "index.test-d.ts",
+   "text": "@@ -1301,9 +1301,13 @@ expectType<boolean>(execa('unicorns').kill());\n execa('unicorns').kill(undefined);\n execa('unicorns').kill(new Error('test'));\n-expectError(execa('unicorns').kill('SIGKILL', {}));\n+execa('unicorns').kill('SIGKILL', new Error('test'));\n+execa('unicorns').kill(undefined, new Error('test'));\n expectError(execa('unicorns').kill(null));\n expectError(execa('unicorns').kill(0n));\n expectError(execa('unicorns').kill([new Error('test')]));\n expectError(execa('unicorns').kill({message: 'test'}));\n+expectError(execa('unicorns').kill(undefined, {}));\n+expectError(execa('unicorns').kill('SIGKILL', {}));\n+expectError(execa('unicorns').kill(null, new Error('test')));\n \n expectError(execa(['unicorns', 'arg']));"
+  },
+  {
+   "path": "lib/kill.js",
+   "text": "@@ -9,22 +9,32 @@ import {DiscardedError} from './error.js';\n \n // Monkey-patches `childProcess.kill()` to add `forceKillAfterDelay` behavior and `.kill(error)`\n-export const spawnedKill = ({kill, spawned, options: {forceKillAfterDelay, killSignal}, controller}, signalOrError = killSignal) => {\n-\tconst signal = handleKillError(signalOrError, spawned, killSignal);\n+export const spawnedKill = ({kill, spawned, options: {forceKillAfterDelay, killSignal}, controller}, signalOrError, errorArgument) => {\n+\tconst {signal, error} = parseKillArguments(signalOrError, errorArgument, killSignal);\n+\temitKillError(spawned, error);\n \tconst killResult = kill(signal);\n \tsetKillTimeout({kill, signal, forceKillAfterDelay, killSignal, killResult, controller});\n \treturn killResult;\n };\n \n-const handleKillError = (signalOrError, spawned, killSignal) => {\n-\tif (typeof signalOrError === 'string' || typeof signalOrError === 'number') {\n-\t\treturn signalOrError;\n+const parseKillArguments = (signalOrError, errorArgument, killSignal) => {\n+\tconst [signal = killSignal, error] = isErrorInstance(signalOrError)\n+\t\t? [undefined, signalOrError]\n+\t\t: [signalOrError, errorArgument];\n+\n+\tif (typeof signal !== 'string' && typeof signal !== 'number') {\n+\t\tthrow new TypeError(`The first argument must be an error instance or a signal name string/number: ${signal}`);\n \t}\n \n-\tif (isErrorInstance(signalOrError)) {\n-\t\tspawned.emit(errorSignal, signalOrError);\n-\t\treturn killSignal;\n+\tif (error !== undefined && !isErrorInstance(error)) {\n+\t\tthrow new TypeError(`The second argument is optional. If specified, it must be an error instance: ${error}`);\n \t}\n \n-\tthrow new TypeError(`The first argument must be an error instance or a signal name string/number: ${signalOrError}`);\n+\treturn {signal, error};\n+};\n+\n+const emitKillError = (spawned, error) => {\n+\tif (error !== undefined) {\n+\t\tspawned.emit(errorSignal, error);\n+\t}\n };\n "
+  },
+  {
+   "path": "readme.md",
+   "text": "@@ -326,7 +326,9 @@ A `streamName` can be passed to pipe `\"stderr\"`, `\"all\"` (both `stdout` and `std\n Returns `execaChildProcess`, which allows chaining `.pipe()` then `await`ing the [final result](#childprocessresult).\n \n-#### kill(signalOrError?)\n+#### kill(signal, error?)\n+#### kill(error?)\n \n-`signalOrError`: `string | number | Error`\\\n+`signal`: `string | number`\\\n+`error`: `Error`\\\n _Returns_: `boolean`\n "
+  },
+  {
+   "path": "test/kill.js",
+   "text": "@@ -428,9 +428,12 @@ test('child process errors use killSignal', async t => {\n });\n \n-const testInvalidKillArgument = async (t, killArgument) => {\n+const testInvalidKillArgument = async (t, killArgument, secondKillArgument) => {\n \tconst subprocess = execa('empty.js');\n+\tconst message = secondKillArgument instanceof Error || secondKillArgument === undefined\n+\t\t? /error instance or a signal name/\n+\t\t: /second argument is optional/;\n \tt.throws(() => {\n-\t\tsubprocess.kill(killArgument);\n-\t}, {message: /error instance or a signal name/});\n+\t\tsubprocess.kill(killArgument, secondKillArgument);\n+\t}, {message});\n \tawait subprocess;\n };"
+  },
+  {
+   "path": "test/kill.js",
+   "text": "@@ -441,4 +444,7 @@ test('Cannot call .kill(0n)', testInvalidKillArgument, 0n);\n test('Cannot call .kill(errorObject)', testInvalidKillArgument, {name: '', message: '', stack: ''});\n test('Cannot call .kill([error])', testInvalidKillArgument, [new Error('test')]);\n+test('Cannot call .kill(undefined, true)', testInvalidKillArgument, undefined, true);\n+test('Cannot call .kill(\"SIGTERM\", true)', testInvalidKillArgument, 'SIGTERM', true);\n+test('Cannot call .kill(true, error)', testInvalidKillArgument, true, new Error('test'));\n \n test('.kill(error) propagates error', async t => {"
+  },
+  {
+   "path": "test/kill.js",
+   "text": "@@ -459,6 +465,16 @@ test('.kill(error) propagates error', async t => {\n test('.kill(error) uses killSignal', async t => {\n \tconst subprocess = execa('forever.js', {killSignal: 'SIGINT'});\n-\tsubprocess.kill(new Error('test'));\n-\tt.like(await t.throwsAsync(subprocess), {signal: 'SIGINT'});\n+\tconst error = new Error('test');\n+\tsubprocess.kill(error);\n+\tt.is(await t.throwsAsync(subprocess), error);\n+\tt.is(error.signal, 'SIGINT');\n+});\n+\n+test('.kill(signal, error) uses signal', async t => {\n+\tconst subprocess = execa('forever.js');\n+\tconst error = new Error('test');\n+\tsubprocess.kill('SIGINT', error);\n+\tt.is(await t.throwsAsync(subprocess), error);\n+\tt.is(error.signal, 'SIGINT');\n });\n "
+  }
+ ],
+ "id": "real_063",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Add `.kill(signal, error)` (#836)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "30a662d46ee411c53cc3cdeee174c1a76dd5aef3"
+}

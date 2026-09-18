@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 26,
+   "path": "pre_commit/languages/python.py",
+   "removed": 12,
+   "status": "M"
+  },
+  {
+   "added": 67,
+   "path": "tests/languages/python_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/languages/python.py",
+   "text": "@@ -76,4 +76,11 @@ def _find_by_py_launcher(\n \n \n+def _impl_exe_name() -> str:\n+    if sys.implementation.name == 'cpython':  # pragma: cpython cover\n+        return 'python'\n+    else:  # pragma: cpython no cover\n+        return sys.implementation.name  # pypy mostly\n+\n+\n def _find_by_sys_executable() -> str | None:\n     def _norm(path: str) -> str | None:"
+  },
+  {
+   "path": "pre_commit/languages/python.py",
+   "text": "@@ -101,16 +108,23 @@ def _norm(path: str) -> str | None:\n @functools.lru_cache(maxsize=1)\n def get_default_version() -> str:  # pragma: no cover (platform dependent)\n-    # First attempt from `sys.executable` (or the realpath)\n-    exe = _find_by_sys_executable()\n-    if exe:\n-        return exe\n-\n-    # Next try the `pythonX.X` executable\n-    exe = f'python{sys.version_info[0]}.{sys.version_info[1]}'\n-    if find_executable(exe):\n-        return exe\n-\n-    if _find_by_py_launcher(exe):\n-        return exe\n+    v_major = f'{sys.version_info[0]}'\n+    v_minor = f'{sys.version_info[0]}.{sys.version_info[1]}'\n+\n+    # attempt the likely implementation exe\n+    for potential in (v_minor, v_major):\n+        exe = f'{_impl_exe_name()}{potential}'\n+        if find_executable(exe):\n+            return exe\n+\n+    # next try `sys.executable` (or the realpath)\n+    maybe_exe = _find_by_sys_executable()\n+    if maybe_exe:\n+        return maybe_exe\n+\n+    # maybe on windows we can find it via py launcher?\n+    if sys.platform == 'win32':  # pragma: win32 cover\n+        exe = f'python{v_minor}'\n+        if _find_by_py_launcher(exe):\n+            return exe\n \n     # We tried!"
+  },
+  {
+   "path": "tests/languages/python_test.py",
+   "text": "@@ -13,4 +13,5 @@\n from pre_commit.util import make_executable\n from pre_commit.util import win_exe\n+from testing.auto_namedtuple import auto_namedtuple\n from testing.language_helpers import run_language\n "
+  },
+  {
+   "path": "tests/languages/python_test.py",
+   "text": "@@ -35,4 +36,70 @@ def test_read_pyvenv_cfg_non_utf8(tmpdir):\n \n \n+def _get_default_version(\n+        *,\n+        impl: str,\n+        exe: str,\n+        found: set[str],\n+        version: tuple[int, int],\n+) -> str:\n+    sys_exe = f'/fake/path/{exe}'\n+    sys_impl = auto_namedtuple(name=impl)\n+    sys_ver = auto_namedtuple(major=version[0], minor=version[1])\n+\n+    def find_exe(s):\n+        if s in found:\n+            return f'/fake/path/found/{exe}'\n+        else:\n+            return None\n+\n+    with (\n+            mock.patch.object(sys, 'implementation', sys_impl),\n+            mock.patch.object(sys, 'executable', sys_exe),\n+            mock.patch.object(sys, 'version_info', sys_ver),\n+            mock.patch.object(python, 'find_executable', find_exe),\n+    ):\n+        return python.get_default_version.__wrapped__()\n+\n+\n+def test_default_version_sys_executable_found():\n+    ret = _get_default_version(\n+        impl='cpython',\n+        exe='python3.12',\n+        found={'python3.12'},\n+        version=(3, 12),\n+    )\n+    assert ret == 'python3.12'\n+\n+\n+def test_default_version_picks_specific_when_found():\n+    ret = _get_default_version(\n+        impl='cpython',\n+        exe='python3',\n+        found={'python3', 'python3.12'},\n+        version=(3, 12),\n+    )\n+    assert ret == 'python3.12'\n+\n+\n+def test_default_version_picks_pypy_versioned_exe():\n+    ret = _get_default_version(\n+        impl='pypy',\n+        exe='python',\n+        found={'pypy3.12', 'python3'},\n+        version=(3, 12),\n+    )\n+    assert ret == 'pypy3.12'\n+\n+\n+def test_default_version_picks_pypy_unversioned_exe():\n+    ret = _get_default_version(\n+        impl='pypy',\n+        exe='python',\n+        found={'pypy3', 'python3'},\n+        version=(3, 12),\n+    )\n+    assert ret == 'pypy3'\n+\n+\n def test_norm_version_expanduser():\n     home = os.path.expanduser('~')"
+  }
+ ],
+ "id": "real_004",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "adjust python default_language_version to prefer versioned exe",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "3e8d0f5e1c449381272b80241140e985631f9912"
+}

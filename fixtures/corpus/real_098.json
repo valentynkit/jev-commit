@@ -1,0 +1,135 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": "activemodel/lib/active_model/attribute_registration.rb",
+   "removed": 10,
+   "status": "M"
+  },
+  {
+   "added": 8,
+   "path": "activerecord/lib/active_record/attributes.rb",
+   "removed": 14,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "activerecord/lib/active_record/core.rb",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 40,
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "removed": 52,
+   "status": "M"
+  },
+  {
+   "added": 116,
+   "path": "activerecord/lib/active_record/model_schema/schema_context.rb",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 17,
+   "path": "activerecord/test/cases/attributes_test.rb",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "activerecord/test/cases/core_test.rb",
+   "removed": 4,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "activemodel/lib/active_model/attribute_registration.rb",
+   "text": "@@ -57,4 +57,14 @@ def type_for_attribute(attribute_name, &block)\n       end\n \n+      def apply_pending_attribute_modifications(attribute_set) # :nodoc:\n+        if superclass.respond_to?(:apply_pending_attribute_modifications, true)\n+          superclass.send(:apply_pending_attribute_modifications, attribute_set)\n+        end\n+\n+        pending_attribute_modifications.each do |modification|\n+          modification.apply_to(attribute_set)\n+        end\n+      end\n+\n       private\n         PendingType = Struct.new(:name, :type) do # :nodoc:"
+  },
+  {
+   "path": "activemodel/lib/active_model/attribute_registration.rb",
+   "text": "@@ -85,14 +95,4 @@ def pending_attribute_modifications\n         end\n \n-        def apply_pending_attribute_modifications(attribute_set)\n-          if superclass.respond_to?(:apply_pending_attribute_modifications, true)\n-            superclass.send(:apply_pending_attribute_modifications, attribute_set)\n-          end\n-\n-          pending_attribute_modifications.each do |modification|\n-            modification.apply_to(attribute_set)\n-          end\n-        end\n-\n         def reset_default_attributes\n           reset_default_attributes!"
+  },
+  {
+   "path": "activerecord/lib/active_record/attributes.rb",
+   "text": "@@ -252,15 +252,13 @@ def define_attribute(\n \n       def _default_attributes # :nodoc:\n-        @default_attributes || ActiveSupport::Ractors.on_main(self) do\n-          @default_attributes ||= begin\n-            attributes_hash = columns_hash.transform_values do |column|\n-              ActiveModel::Attribute.from_database(column.name, column.default, type_for_column(column))\n-            end\n+        schema_context._default_attributes\n+      end\n \n-            attribute_set = ActiveModel::AttributeSet.new(attributes_hash)\n-            apply_pending_attribute_modifications(attribute_set)\n-            ActiveSupport::Ractors.try_make_shareable(attribute_set)\n-          end\n-        end\n+      def attribute_types # :nodoc:\n+        schema_context.attribute_types\n+      end\n+\n+      def type_for_column(column) # :nodoc:\n+        hook_attribute_type(column.name, super)\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/attributes.rb",
+   "text": "@@ -311,8 +309,4 @@ def reset_default_attributes\n           Type.lookup(name, **options, adapter: Type.adapter_name_from(self))\n         end\n-\n-        def type_for_column(column)\n-          hook_attribute_type(column.name, super)\n-        end\n     end\n   end"
+  },
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -269,6 +269,6 @@ def initialize_find_by_cache # :nodoc:\n       end\n \n-      def find_by_statement_cache # :nodoc:\n-        ActiveSupport::Ractors[find_by_statement_cache_key] || initialize_find_by_cache\n+      def find_by_statement_cache_key # :nodoc:\n+        @find_by_statement_cache_key ||= \"active_record_find_by_statement_cache_#{object_id}\".to_sym\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -421,6 +421,5 @@ def type_caster # :nodoc:\n \n       def cached_find_by_statement(connection, key, &block) # :nodoc:\n-        cache = find_by_statement_cache[connection.prepared_statements]\n-        cache.compute_if_absent(key) { StatementCache.create(connection, &block) }\n+        schema_context.cached_find_by_statement(connection, key, &block)\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -478,8 +477,4 @@ def cached_find_by(keys, values)\n           end\n         end\n-\n-        def find_by_statement_cache_key\n-          @find_by_statement_cache_key ||= \"active_record_find_by_statement_cache_#{object_id}\".to_sym\n-        end\n     end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -2,4 +2,5 @@\n \n require \"monitor\"\n+require \"active_record/model_schema/schema_context\"\n \n module ActiveRecord"
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -200,4 +201,14 @@ def self.derive_join_table_name(first_table, second_table) # :nodoc:\n \n     module ClassMethods\n+      def schema_context # :nodoc:\n+        return @schema_context if schema_loaded?\n+        load_schema\n+        @schema_context\n+      end\n+\n+      def build_schema_context # :nodoc:\n+        ActiveRecord::ModelSchema::SchemaContext.new(self)\n+      end\n+\n       # Guesses the table name (in forced lower-case) based on the name of the class in the\n       # inheritance hierarchy descending directly from ActiveRecord::Base. So if the hierarchy"
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -451,33 +462,21 @@ def table_exists?\n \n       def attributes_builder # :nodoc:\n-        defaults = _default_attributes.except(*(column_names - Array(primary_key)))\n-        ActiveModel::AttributeSet::Builder.new(attribute_types, defaults)\n+        schema_context.attributes_builder\n       end\n \n       def columns_hash # :nodoc:\n-        load_schema unless @columns_hash\n-        @columns_hash\n+        schema_context.columns_hash\n       end\n \n       def columns\n-        @columns ||= columns_hash.values.freeze\n+        schema_context.columns\n       end\n \n       def _returning_columns_for_insert(connection) # :nodoc:\n-        @_returning_columns_for_insert || ActiveSupport::Ractors.on_main(self) do\n-          @_returning_columns_for_insert ||= begin\n-            auto_populated_columns = columns.filter_map do |c|\n-              -c.name if connection.return_value_after_insert?(c)\n-            end\n-\n-            (auto_populated_columns.empty? ? Array(primary_key) : auto_populated_columns).freeze\n-          end\n-        end\n+        schema_context._returning_columns_for_insert(connection)\n       end\n \n-      def _returning_columns_for_update(connection)\n-        @_returning_columns_for_update ||= columns.filter_map do |c|\n-          c.name if connection.return_value_after_update?(c)\n-        end\n+      def _returning_columns_for_update(connection) # :nodoc:\n+        schema_context._returning_columns_for_update(connection)\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -505,21 +504,16 @@ def column_for_attribute(name)\n       # default values when instantiating the Active Record object for this table.\n       def column_defaults\n-        load_schema\n-        @column_defaults ||= _default_attributes.deep_dup.to_hash.freeze\n+        schema_context.column_defaults\n       end\n \n       # Returns an array of column names as strings.\n       def column_names\n-        columns.map(&:name).freeze\n+        schema_context.column_names\n       end\n \n       # Returns an array of column objects where the primary id, all columns ending in \"_id\" or \"_count\",\n       # and columns used for single table inheritance have been removed.\n       def content_columns\n-        @content_columns ||= columns.reject do |c|\n-          Array(primary_key).include?(c.name) ||\n-          c.name == inheritance_column ||\n-          c.name.end_with?(\"_id\", \"_count\")\n-        end.freeze\n+        schema_context.content_columns\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -564,9 +558,14 @@ def reset_column_information\n         return if schema_loaded?\n         @load_schema_monitor.synchronize do\n-          return if schema_loaded?\n-\n-          load_schema!\n-\n-          @schema_loaded = true\n+          unless schema_loaded? || @schema_context\n+            context = build_schema_context\n+            @schema_context = context\n+            context.load_schema!\n+\n+            unless @schema_hooks_loaded\n+              load_schema!\n+              @schema_hooks_loaded = true\n+            end\n+          end\n         rescue\n           reload_schema_from_cache # If the schema loading failed half way through, we must reset the state."
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -581,20 +580,21 @@ def initialize_load_schema_monitor\n \n         def reload_schema_from_cache(recursive = true)\n-          @_returning_columns_for_insert = nil\n-          @_returning_columns_for_update = nil\n+          @schema_hooks_loaded = false\n           @arel_table = Arel::Table.new(klass: self)\n-          @content_columns = nil\n-          @column_defaults = nil\n-          @columns = nil\n-          @columns_hash = nil\n-          @schema_loaded = false\n           @attribute_names = nil\n+\n+          reload_schema_contexts_from_cache\n+\n           if recursive\n             subclasses.each do |descendant|\n               descendant.send(:reload_schema_from_cache)\n             end\n           end\n         end\n \n+        def reload_schema_contexts_from_cache\n+          @schema_context = nil\n+        end\n+\n       private\n         def inherited(child_class)"
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema.rb",
+   "text": "@@ -609,21 +609,9 @@ def inherited(child_class)\n \n         def schema_loaded?\n-          @schema_loaded\n+          @schema_context&.schema_loaded? || false\n         end\n \n         def load_schema!\n-          unless table_name\n-            raise ActiveRecord::TableNotSpecified, \"#{self} has no table configured. Set one with #{self}.table_name=\"\n-          end\n-\n-          columns_hash = schema_cache.columns_hash(table_name)\n-          if only_columns.present?\n-            columns_hash = columns_hash.slice(*only_columns)\n-          elsif ignored_columns.present?\n-            columns_hash = columns_hash.except(*ignored_columns)\n-          end\n-          @columns_hash = columns_hash.freeze\n-\n-          _default_attributes # Precompute to cache DB-dependent attribute types\n+          # The current schema context handles the default schema load.\n         end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/model_schema/schema_context.rb",
+   "text": "@@ -0,0 +1,116 @@\n+# frozen_string_literal: true\n+\n+# :markup: markdown\n+\n+module ActiveRecord\n+  module ModelSchema\n+    # SchemaContext owns all schema-derived state for a model: columns,\n+    # attribute types, and column defaults.\n+    class SchemaContext # :nodoc:\n+      attr_reader :model_class, :columns_hash, :columns, :column_names,\n+                  :attribute_types, :content_columns\n+\n+      def initialize(model_class)\n+        @model_class = model_class\n+        @schema_loaded = false\n+      end\n+\n+      def table_name\n+        model_class.table_name\n+      end\n+\n+      def primary_key\n+        model_class.primary_key\n+      end\n+\n+      def _default_attributes\n+        @default_attributes\n+      end\n+\n+      def attributes_builder\n+        defaults = _default_attributes.except(*(column_names - Array(primary_key)))\n+        ActiveModel::AttributeSet::Builder.new(attribute_types, defaults)\n+      end\n+\n+      def column_defaults\n+        @column_defaults ||= _default_attributes.deep_dup.to_hash.freeze\n+      end\n+\n+      def _returning_columns_for_insert(connection)\n+        @_returning_columns_for_insert || ActiveSupport::Ractors.on_main(self) do\n+          @_returning_columns_for_insert ||= begin\n+            auto_populated_columns = columns.filter_map do |c|\n+              -c.name if connection.return_value_after_insert?(c)\n+            end\n+\n+            (auto_populated_columns.empty? ? Array(primary_key) : auto_populated_columns).freeze\n+          end\n+        end\n+      end\n+\n+      def _returning_columns_for_update(connection)\n+        @_returning_columns_for_update ||= columns.filter_map do |c|\n+          c.name if connection.return_value_after_update?(c)\n+        end\n+      end\n+\n+      def cached_find_by_statement(connection, key, &block) # :nodoc:\n+        cache = find_by_statement_cache[connection.prepared_statements]\n+        cache.compute_if_absent(key) { StatementCache.create(connection, &block) }\n+      end\n+\n+      def initialize_find_by_cache # :nodoc:\n+        ActiveSupport::Ractors[model_class.find_by_statement_cache_key] = { true => Concurrent::Map.new, false => Concurrent::Map.new }\n+      end\n+\n+      def find_by_statement_cache # :nodoc:\n+        ActiveSupport::Ractors[model_class.find_by_statement_cache_key] || initialize_find_by_cache\n+      end\n+\n+      def schema_loaded?\n+        @schema_loaded\n+      end\n+\n+      def load_schema!\n+        return if @schema_loaded\n+\n+        unless table_name\n+          raise ActiveRecord::TableNotSpecified, \"#{model_class} has no table configured. Set one with #{model_class}.table_name=\"\n+        end\n+\n+        columns_hash = model_class.connection_pool.schema_cache.columns_hash(table_name)\n+        if model_class.only_columns.present?\n+          columns_hash = columns_hash.slice(*model_class.only_columns)\n+        elsif model_class.ignored_columns.present?\n+          columns_hash = columns_hash.except(*model_class.ignored_columns)\n+        end\n+        @columns_hash = columns_hash.freeze\n+\n+        @columns = @columns_hash.values.freeze\n+        @column_names = @columns.map(&:name).freeze\n+\n+        @default_attributes = begin\n+          attributes_hash = @columns_hash.transform_values do |column|\n+            ActiveModel::Attribute.from_database(column.name, column.default, model_class.type_for_column(column))\n+          end\n+\n+          attribute_set = ActiveModel::AttributeSet.new(attributes_hash)\n+          model_class.apply_pending_attribute_modifications(attribute_set)\n+          attribute_set\n+        end\n+\n+        @attribute_types = @default_attributes.cast_types.tap do |hash|\n+          hash.default = ActiveModel::Type.default_value\n+        end\n+\n+        @content_columns = @columns.reject do |c|\n+          Array(primary_key).include?(c.name) ||\n+          c.name == model_class.inheritance_column ||\n+          c.name.end_with?(\"_id\", \"_count\")\n+        end.freeze\n+\n+        @schema_loaded = true\n+      end\n+    end\n+  end\n+end"
+  },
+  {
+   "path": "activerecord/test/cases/attributes_test.rb",
+   "text": "@@ -25,4 +25,20 @@ class UnoverloadedType < ActiveRecord::Base\n module ActiveRecord\n   class CustomPropertiesTest < ActiveRecord::TestCase\n+    include ActiveSupport::Testing::RactorsAssertions\n+\n+    if RUBY_VERSION >= \"4.0\"\n+      test \"attribute type is available in a Ractor\" do\n+        skip \"SchemaContext is not yet Ractor-shareable; attribute types are unreachable from a Ractor\"\n+\n+        OverloadedType.reset_column_information\n+\n+        type = on_ractor do\n+          OverloadedType.type_for_attribute(\"overloaded_float\")\n+        end\n+\n+        assert_equal :integer, type.type\n+      end\n+    end\n+\n     test \"overloading types\" do\n       data = OverloadedType.new"
+  },
+  {
+   "path": "activerecord/test/cases/attributes_test.rb",
+   "text": "@@ -454,4 +470,5 @@ class RactorTest < ActiveRecord::TestCase\n \n       test \"default_attributes are Ractor-shareable\" do\n+        skip \"SchemaContext is not yet Ractor-shareable; _default_attributes is unreachable from a Ractor\"\n         model = Class.new(ActiveRecord::Base) do\n           def self.name = \"ractor_safe_default_attributes\""
+  },
+  {
+   "path": "activerecord/test/cases/core_test.rb",
+   "text": "@@ -245,5 +245,5 @@ def attribute_for_inspect(attr_name)\n     Topic.initialize_find_by_cache\n     using_prepared_statements = Topic.lease_connection.prepared_statements\n-    topic_find_by_cache = Topic.find_by_statement_cache[using_prepared_statements]\n+    topic_find_by_cache = Topic.schema_context.find_by_statement_cache[using_prepared_statements]\n \n     assert_difference -> { topic_find_by_cache.size }, +1 do"
+  },
+  {
+   "path": "activerecord/test/cases/core_test.rb",
+   "text": "@@ -297,18 +297,19 @@ class RactorTest < ActiveRecord::TestCase\n \n       def test_find_by_statement_cache_is_ractor_local\n+        skip \"SchemaContext is not yet Ractor-shareable; will be enabled when SC is made shareable\"\n         model = Class.new(ActiveRecord::Base) do\n           def self.name = \"ractor_safe_find_by_cache\"\n           self.table_name = \"topics\"\n         end\n \n         worker_marker, worker_stable = on_ractor do\n-          cache = model.find_by_statement_cache\n+          cache = model.schema_context.find_by_statement_cache\n           cache[true][:ractor_marker] = :from_worker\n-          [cache[true][:ractor_marker], model.find_by_statement_cache.equal?(cache)]\n+          [cache[true][:ractor_marker], model.schema_context.find_by_statement_cache.equal?(cache)]\n         end\n \n         assert_equal :from_worker, worker_marker\n         assert worker_stable\n-        assert_nil model.find_by_statement_cache[true][:ractor_marker]\n+        assert_nil model.schema_context.find_by_statement_cache[true][:ractor_marker]\n       end\n     end"
+  }
+ ],
+ "id": "real_098",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Extract model schema state into a schema context\n\nPreviously, models stored schema-derived values and statement caches\nacross separate class instance variables, leaving schema loading and\nreset to manage each cache independently. That state now lives in a\nschema context.\n\nSchema loading now populates most of the context, and schema reloads\nreplace it. Column defaults remain lazy to preserve Proc evaluation;\nreturning columns do too, because they require a connection.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "ae739c38542dc7f0522854d9b253d3814bfcc465"
+}

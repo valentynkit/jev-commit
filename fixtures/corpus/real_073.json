@@ -1,0 +1,69 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "packages-private/dts-test/reactivity.test-d.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 15,
+   "path": "packages-private/dts-test/ref.test-d.ts",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "packages/reactivity/src/reactive.ts",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 20,
+   "path": "packages/reactivity/src/ref.ts",
+   "removed": 17,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "packages-private/dts-test/reactivity.test-d.ts",
+   "text": "@@ -141,2 +141,8 @@ describe('shallowReactive marker should not leak into value unions', () => {\n   expectType<string>(value.title)\n })\n+\n+describe('shallowReactive type should accept plain object assignment', () => {\n+  const shallow = shallowReactive({ a: 1, b: 2 })\n+  let values: typeof shallow\n+  values = { a: 1, b: 2 }\n+})"
+  },
+  {
+   "path": "packages-private/dts-test/ref.test-d.ts",
+   "text": "@@ -322,4 +322,10 @@ expectType<undefined>(p2.u)\n expectType<{ name: string } | null>(p2.union)\n \n+const r3 = shallowReactive({\n+  n: ref(1),\n+})\n+const p3 = proxyRefs(r3)\n+expectType<Ref<number>>(p3.n)\n+\n // toRef and toRefs\n {"
+  },
+  {
+   "path": "packages-private/dts-test/ref.test-d.ts",
+   "text": "@@ -438,4 +444,13 @@ describe('shallow reactive in reactive', () => {\n })\n \n+describe('shallow reactive collection in reactive', () => {\n+  const baz = reactive({\n+    foo: shallowReactive(new Map([['a', ref(42)]])),\n+  })\n+\n+  const foo = toRef(baz, 'foo')\n+  expectType<Ref<number> | undefined>(foo.value.get('a'))\n+})\n+\n describe('shallow ref in reactive', () => {\n   const x = reactive({"
+  },
+  {
+   "path": "packages/reactivity/src/reactive.ts",
+   "text": "@@ -105,7 +105,14 @@ export function reactive(target: object) {\n }\n \n-export declare const ShallowReactiveMarker: unique symbol\n+// Use a private class brand instead of a marker property so shallow-reactive\n+// types remain distinguishable in `UnwrapRef` without leaking the brand into\n+// `keyof`/indexed access types or requiring the property for plain assignment.\n+declare class ShallowReactiveBrandClass {\n+  private __shallowReactiveBrand?: never\n+}\n+\n+export type ShallowReactiveBrand = ShallowReactiveBrandClass\n \n-export type ShallowReactive<T> = T & { [ShallowReactiveMarker]: never }\n+export type ShallowReactive<T> = T & ShallowReactiveBrand\n \n /**"
+  },
+  {
+   "path": "packages/reactivity/src/ref.ts",
+   "text": "@@ -11,5 +11,5 @@ import {\n import {\n   type Builtin,\n-  type ShallowReactiveMarker,\n+  type ShallowReactiveBrand,\n   type Target,\n   isProxy,"
+  },
+  {
+   "path": "packages/reactivity/src/ref.ts",
+   "text": "@@ -540,7 +540,9 @@ function propertyToRef(\n export interface RefUnwrapBailTypes {}\n \n-export type ShallowUnwrapRef<T> = {\n-  [K in keyof T]: DistributeRef<T[K]>\n-}\n+export type ShallowUnwrapRef<T> = T extends ShallowReactiveBrand\n+  ? T\n+  : {\n+      [K in keyof T]: DistributeRef<T[K]>\n+    }\n \n type DistributeRef<T> = T extends Ref<infer V, unknown> ? V : T"
+  },
+  {
+   "path": "packages/reactivity/src/ref.ts",
+   "text": "@@ -559,17 +561,18 @@ export type UnwrapRefSimple<T> = T extends\n   | { [RawSymbol]?: true }\n   ? T\n-  : T extends Map<infer K, infer V>\n-    ? Map<K, UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Map<any, any>>>\n-    : T extends WeakMap<infer K, infer V>\n-      ? WeakMap<K, UnwrapRefSimple<V>> &\n-          UnwrapRef<Omit<T, keyof WeakMap<any, any>>>\n-      : T extends Set<infer V>\n-        ? Set<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Set<any>>>\n-        : T extends WeakSet<infer V>\n-          ? WeakSet<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof WeakSet<any>>>\n-          : T extends ReadonlyArray<any>\n-            ? { [K in keyof T]: UnwrapRefSimple<T[K]> }\n-            : T extends object & { [ShallowReactiveMarker]: never }\n-              ? T\n+  : T extends ShallowReactiveBrand\n+    ? T\n+    : T extends Map<infer K, infer V>\n+      ? Map<K, UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Map<any, any>>>\n+      : T extends WeakMap<infer K, infer V>\n+        ? WeakMap<K, UnwrapRefSimple<V>> &\n+            UnwrapRef<Omit<T, keyof WeakMap<any, any>>>\n+        : T extends Set<infer V>\n+          ? Set<UnwrapRefSimple<V>> & UnwrapRef<Omit<T, keyof Set<any>>>\n+          : T extends WeakSet<infer V>\n+            ? WeakSet<UnwrapRefSimple<V>> &\n+                UnwrapRef<Omit<T, keyof WeakSet<any>>>\n+            : T extends ReadonlyArray<any>\n+              ? { [K in keyof T]: UnwrapRefSimple<T[K]> }\n               : T extends object\n                 ? {"
+  }
+ ],
+ "id": "real_073",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(types): use private branding for shallowReactive (#14641)\n\nfix #14638\nfix shallowReactive type regressions introduced by #14493",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "302c47a4994bc8b47b8a2af6693d8cb6bbd4b06b"
+}

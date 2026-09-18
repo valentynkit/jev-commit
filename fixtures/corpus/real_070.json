@@ -1,0 +1,95 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "index.d.ts",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "lib/stdio/handle.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "lib/verbose/output.js",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "readme.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 25,
+   "path": "test/verbose/output.js",
+   "removed": 15,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "index.d.ts",
+   "text": "@@ -1404,5 +1404,5 @@ Same as `execa()` but synchronous.\n Returns or throws a `subprocessResult`. The `subprocess` is not returned: its methods and properties are not available. This includes [`.kill()`](https://nodejs.org/api/child_process.html#subprocesskillsignal), [`.pid`](https://nodejs.org/api/child_process.html#subprocesspid), `.pipe()`, `.iterable()`, `.readable()`, `.writable()`, `.duplex()` and the [`.stdin`/`.stdout`/`.stderr`](https://nodejs.org/api/child_process.html#subprocessstdout) streams.\n \n-Cannot use the following options: `all`, `cleanup`, `buffer`, `detached`, `ipc`, `serialization`, `cancelSignal`, `forceKillAfterDelay`, `lines` and `verbose: 'full'`. Also, the `stdin`, `stdout`, `stderr` and `stdio` options cannot be a `['pipe', 'inherit']` array, [`'overlapped'`](https://nodejs.org/api/child_process.html#optionsstdio), an async iterable, an async transform, a `Duplex`, or a web stream. Node.js streams must have a file descriptor unless the `input` option is used.\n+Cannot use the following options: `all`, `cleanup`, `buffer`, `detached`, `ipc`, `serialization`, `cancelSignal`, `forceKillAfterDelay` and `lines`. Also, the `stdin`, `stdout`, `stderr` and `stdio` options cannot be a `['pipe', 'inherit']` array, [`'overlapped'`](https://nodejs.org/api/child_process.html#optionsstdio), an async iterable, an async transform, a `Duplex`, or a web stream. Node.js streams must have a file descriptor unless the `input` option is used.\n \n @param file - The program/script to execute, as a string or file URL"
+  },
+  {
+   "path": "index.d.ts",
+   "text": "@@ -1518,5 +1518,5 @@ Same as `execaCommand()` but synchronous.\n Returns or throws a `subprocessResult`. The `subprocess` is not returned: its methods and properties are not available. This includes [`.kill()`](https://nodejs.org/api/child_process.html#subprocesskillsignal), [`.pid`](https://nodejs.org/api/child_process.html#subprocesspid), `.pipe()`, `.iterable()`, `.readable()`, `.writable()`, `.duplex()` and the [`.stdin`/`.stdout`/`.stderr`](https://nodejs.org/api/child_process.html#subprocessstdout) streams.\n \n-Cannot use the following options: `all`, `cleanup`, `buffer`, `detached`, `ipc`, `serialization`, `cancelSignal`, `forceKillAfterDelay`, `lines` and `verbose: 'full'`. Also, the `stdin`, `stdout`, `stderr` and `stdio` options cannot be a `['pipe', 'inherit']` array, [`'overlapped'`](https://nodejs.org/api/child_process.html#optionsstdio), an async iterable, an async transform, a `Duplex`, or a web stream. Node.js streams must have a file descriptor unless the `input` option is used.\n+Cannot use the following options: `all`, `cleanup`, `buffer`, `detached`, `ipc`, `serialization`, `cancelSignal`, `forceKillAfterDelay` and `lines`. Also, the `stdin`, `stdout`, `stderr` and `stdio` options cannot be a `['pipe', 'inherit']` array, [`'overlapped'`](https://nodejs.org/api/child_process.html#optionsstdio), an async iterable, an async transform, a `Duplex`, or a web stream. Node.js streams must have a file descriptor unless the `input` option is used.\n \n @param command - The program/script to execute and its arguments."
+  },
+  {
+   "path": "lib/stdio/handle.js",
+   "text": "@@ -110,5 +110,5 @@ const addInternalStdioItems = ({stdioItems, fdNumber, optionName, options, isSyn\n \t\t...stdioItems,\n \t\t...handleStreamsEncoding({options, direction, optionName, objectMode}),\n-\t\t...handleStreamsVerbose({stdioItems, options, isSync, stdioState, verboseInfo, fdNumber, optionName}),\n+\t\t...handleStreamsVerbose({stdioItems, options, stdioState, verboseInfo, fdNumber, optionName}),\n \t\t...handleStreamsLines({options, isSync, direction, optionName, objectMode, outputLines}),\n \t]"
+  },
+  {
+   "path": "lib/verbose/output.js",
+   "text": "@@ -6,5 +6,5 @@ import {PIPED_STDIO_VALUES} from '../stdio/forward.js';\n import {verboseLog} from './log.js';\n \n-export const handleStreamsVerbose = ({stdioItems, options, isSync, stdioState, verboseInfo, fdNumber, optionName}) => shouldLogOutput({stdioItems, options, isSync, verboseInfo, fdNumber})\n+export const handleStreamsVerbose = ({stdioItems, options, stdioState, verboseInfo, fdNumber, optionName}) => shouldLogOutput({stdioItems, options, verboseInfo, fdNumber})\n \t? [{\n \t\ttype: 'generator',"
+  },
+  {
+   "path": "lib/verbose/output.js",
+   "text": "@@ -19,6 +19,5 @@ export const handleStreamsVerbose = ({stdioItems, options, isSync, stdioState, v\n // They can also lead to double printing when passing file descriptor integers or `process.std*`.\n // This only leaves with `pipe` and `overlapped`.\n-const shouldLogOutput = ({stdioItems, options: {encoding}, isSync, verboseInfo: {verbose}, fdNumber}) => verbose === 'full'\n-\t&& !isSync\n+const shouldLogOutput = ({stdioItems, options: {encoding}, verboseInfo: {verbose}, fdNumber}) => verbose === 'full'\n \t&& !BINARY_ENCODINGS.has(encoding)\n \t&& fdUsesVerbose(fdNumber)"
+  },
+  {
+   "path": "lib/verbose/output.js",
+   "text": "@@ -32,6 +31,6 @@ const shouldLogOutput = ({stdioItems, options: {encoding}, isSync, verboseInfo:\n const fdUsesVerbose = fdNumber => fdNumber === 1 || fdNumber === 2;\n \n-const verboseGenerator = function * ({stdioState: {subprocess: {stdio}}, fdNumber, verboseInfo}, line) {\n-\tif (!isPiping(stdio[fdNumber])) {\n+const verboseGenerator = function * ({stdioState, fdNumber, verboseInfo}, line) {\n+\tif (!isPiping(stdioState, fdNumber)) {\n \t\tlogOutput(line, verboseInfo);\n \t}"
+  },
+  {
+   "path": "lib/verbose/output.js",
+   "text": "@@ -47,5 +46,7 @@ const verboseGenerator = function * ({stdioState: {subprocess: {stdio}}, fdNumbe\n // Detecting whether `.pipe()` is impossible without monkey-patching it, so we use the following undocumented property.\n // This is not a critical behavior since changes of the following property would only make `verbose` more verbose.\n-const isPiping = stream => stream._readableState.pipes.length > 0;\n+const isPiping = (stdioState, fdNumber) => stdioState.subprocess !== undefined && isPipingStream(stdioState.subprocess.stdio[fdNumber]);\n+\n+const isPipingStream = stream => stream._readableState.pipes.length > 0;\n \n // When `verbose` is `full`, print stdout|stderr"
+  },
+  {
+   "path": "test/verbose/output.js",
+   "text": "@@ -30,5 +30,7 @@ const testPrintOutput = async (t, fdNumber, execaMethod) => {\n \n test('Prints stdout, verbose \"full\"', testPrintOutput, 1, nestedExecaAsync);\n+test('Prints stdout, verbose \"full\", sync', testPrintOutput, 1, nestedExecaSync);\n test('Prints stderr, verbose \"full\"', testPrintOutput, 2, nestedExecaAsync);\n+test('Prints stderr, verbose \"full\", sync', testPrintOutput, 2, nestedExecaSync);\n \n const testNoPrintOutput = async (t, verbose, fdNumber, execaMethod) => {"
+  },
+  {
+   "path": "test/verbose/output.js",
+   "text": "@@ -39,10 +41,8 @@ const testNoPrintOutput = async (t, verbose, fdNumber, execaMethod) => {\n test('Does not print stdout, verbose \"none\"', testNoPrintOutput, 'none', 1, nestedExecaAsync);\n test('Does not print stdout, verbose \"short\"', testNoPrintOutput, 'short', 1, nestedExecaAsync);\n-test('Does not print stdout, verbose \"full\", sync', testNoPrintOutput, 'full', 1, nestedExecaSync);\n test('Does not print stdout, verbose \"none\", sync', testNoPrintOutput, 'none', 1, nestedExecaSync);\n test('Does not print stdout, verbose \"short\", sync', testNoPrintOutput, 'short', 1, nestedExecaSync);\n test('Does not print stderr, verbose \"none\"', testNoPrintOutput, 'none', 2, nestedExecaAsync);\n test('Does not print stderr, verbose \"short\"', testNoPrintOutput, 'short', 2, nestedExecaAsync);\n-test('Does not print stderr, verbose \"full\", sync', testNoPrintOutput, 'full', 2, nestedExecaSync);\n test('Does not print stderr, verbose \"none\", sync', testNoPrintOutput, 'none', 2, nestedExecaSync);\n test('Does not print stderr, verbose \"short\", sync', testNoPrintOutput, 'short', 2, nestedExecaSync);"
+  },
+  {
+   "path": "test/verbose/output.js",
+   "text": "@@ -54,8 +54,11 @@ test('Does not print stdio[*], verbose \"none\", sync', testNoPrintOutput, 'none',\n test('Does not print stdio[*], verbose \"full\", sync', testNoPrintOutput, 'full', 3, nestedExecaSync);\n \n-test('Prints stdout after errors', async t => {\n-\tconst stderr = await runErrorSubprocess(t, 'full', nestedExecaAsync);\n+const testPrintError = async (t, execaMethod) => {\n+\tconst stderr = await runErrorSubprocess(t, 'full', execaMethod);\n \tt.is(getOutputLine(stderr), `${testTimestamp} [0]   ${foobarString}`);\n-});\n+};\n+\n+test('Prints stdout after errors', testPrintError, nestedExecaAsync);\n+test('Prints stdout after errors, sync', testPrintError, nestedExecaSync);\n \n const testPipeOutput = async (t, fixtureName, sourceVerbose, destinationVerbose) => {"
+  },
+  {
+   "path": "test/verbose/output.js",
+   "text": "@@ -185,8 +188,11 @@ test('Prints stdout progressively, interleaved', async t => {\n });\n \n-test('Prints stdout, single newline', async t => {\n-\tconst {stderr} = await nestedExecaAsync('noop-fd.js', ['1', '\\n'], {verbose: 'full'});\n+const testSingleNewline = async (t, execaMethod) => {\n+\tconst {stderr} = await execaMethod('noop-fd.js', ['1', '\\n'], {verbose: 'full'});\n \tt.deepEqual(getOutputLines(stderr), [`${testTimestamp} [0]   `]);\n-});\n+};\n+\n+test('Prints stdout, single newline', testSingleNewline, nestedExecaAsync);\n+test('Prints stdout, single newline, sync', testSingleNewline, nestedExecaSync);\n \n test('Can use encoding UTF16, verbose \"full\"', async t => {"
+  },
+  {
+   "path": "test/verbose/output.js",
+   "text": "@@ -223,14 +229,18 @@ const testStdoutFile = async (t, fixtureName, getStdout) => {\n test('Does not print stdout, stdout fileUrl', testStdoutFile, 'nested-file-url.js', file => file);\n \n-const testPrintOutputOptions = async (t, options) => {\n-\tconst {stderr} = await nestedExecaAsync('noop.js', [foobarString], {verbose: 'full', ...options});\n+const testPrintOutputOptions = async (t, options, execaMethod) => {\n+\tconst {stderr} = await execaMethod('noop.js', [foobarString], {verbose: 'full', ...options});\n \tt.is(getOutputLine(stderr), `${testTimestamp} [0]   ${foobarString}`);\n };\n \n-test('Prints stdout, stdout \"pipe\"', testPrintOutputOptions, {stdout: 'pipe'});\n-test('Prints stdout, stdout \"overlapped\"', testPrintOutputOptions, {stdout: 'overlapped'});\n-test('Prints stdout, stdout null', testPrintOutputOptions, {stdout: null});\n-test('Prints stdout, stdout [\"pipe\"]', testPrintOutputOptions, {stdout: ['pipe']});\n-test('Prints stdout, buffer false', testPrintOutputOptions, {buffer: false});\n+test('Prints stdout, stdout \"pipe\"', testPrintOutputOptions, {stdout: 'pipe'}, nestedExecaAsync);\n+test('Prints stdout, stdout \"overlapped\"', testPrintOutputOptions, {stdout: 'overlapped'}, nestedExecaAsync);\n+test('Prints stdout, stdout null', testPrintOutputOptions, {stdout: null}, nestedExecaAsync);\n+test('Prints stdout, stdout [\"pipe\"]', testPrintOutputOptions, {stdout: ['pipe']}, nestedExecaAsync);\n+test('Prints stdout, buffer false', testPrintOutputOptions, {buffer: false}, nestedExecaAsync);\n+test('Prints stdout, stdout \"pipe\", sync', testPrintOutputOptions, {stdout: 'pipe'}, nestedExecaSync);\n+test('Prints stdout, stdout null, sync', testPrintOutputOptions, {stdout: null}, nestedExecaSync);\n+test('Prints stdout, stdout [\"pipe\"], sync', testPrintOutputOptions, {stdout: ['pipe']}, nestedExecaSync);\n+test('Prints stdout, buffer false, sync', testPrintOutputOptions, {buffer: false}, nestedExecaSync);\n \n const testPrintOutputFixture = async (t, fixtureName, ...args) => {"
+  }
+ ],
+ "id": "real_070",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Add support for `verbose` option to `execaSync()` (#950)",
+ "more": "",
+ "omitted": "counts only: readme.md",
+ "repo": "sindresorhus/execa",
+ "sha": "ed052d4a5f8b42909a864e2446464e770acfe6ac"
+}

@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 28,
+   "path": "examples/error-handling/src/main.rs",
+   "removed": 11,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -33,4 +33,5 @@ use std::{\n     extract::{rejection::JsonRejection, FromRequest, MatchedPath, Request, State},\n     http::StatusCode,\n+    middleware::{from_fn, Next},\n     response::{IntoResponse, Response},\n     routing::post,"
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -78,4 +79,5 @@ async fn main() {\n                 .on_failure(()),\n         )\n+        .layer(from_fn(log_app_errors))\n         .with_state(state);\n "
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -146,4 +148,5 @@ where\n \n // The kinds of errors we can hit in our application.\n+#[derive(Debug)]\n enum AppError {\n     // The request body contained invalid JSON"
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -154,6 +157,4 @@ enum AppError {\n \n // Tell axum how `AppError` should be converted into a response.\n-//\n-// This is also a convenient place to log errors.\n impl IntoResponse for AppError {\n     fn into_response(self) -> Response {"
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -164,28 +165,34 @@ impl IntoResponse for AppError {\n         }\n \n-        let (status, message) = match self {\n+        let (status, message, err) = match &self {\n             AppError::JsonRejection(rejection) => {\n                 // This error is caused by bad user input so don't log it\n-                (rejection.status(), rejection.body_text())\n+                (rejection.status(), rejection.body_text(), None)\n             }\n-            AppError::TimeError(err) => {\n-                // Because `TraceLayer` wraps each request in a span that contains the request\n-                // method, uri, etc we don't need to include those details here\n-                tracing::error!(%err, \"error from time_library\");\n-\n+            AppError::TimeError(_err) => {\n+                // While we could simply log the error here we would introduce\n+                // a side-effect to our conversion, instead add the AppError to\n+                // the Response as an Extension\n                 // Don't expose any details about the error to the client\n                 (\n                     StatusCode::INTERNAL_SERVER_ERROR,\n                     \"Something went wrong\".to_owned(),\n+                    Some(self),\n                 )\n             }\n         };\n \n-        (status, AppJson(ErrorResponse { message })).into_response()\n+        let mut response = (status, AppJson(ErrorResponse { message })).into_response();\n+        if let Some(err) = err {\n+            // Insert our error into the response, our logging middleware will use this.\n+            response.extensions_mut().insert(Arc::new(err));\n+        }\n+        response\n     }\n }\n \n impl From<JsonRejection> for AppError {\n     fn from(rejection: JsonRejection) -> Self {\n+        // Arc enables cloning of a JsonRejection\n         Self::JsonRejection(rejection)\n     }"
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -198,4 +205,14 @@ impl From<time_library::Error> for AppError {\n }\n \n+// Our middleware is responsible for logging error details internally\n+async fn log_app_errors(request: Request, next: Next) -> Response {\n+    let response = next.run(request).await;\n+    // If the response contains an AppError Extension, log it.\n+    if let Some(err) = response.extensions().get::<Arc<AppError>>() {\n+        tracing::error!(?err, \"an unexpected error occurred inside a handler\");\n+    }\n+    response\n+}\n+\n // Imagine this is some third party library that we're using. It sometimes returns errors which we\n // want to log."
+  },
+  {
+   "path": "examples/error-handling/src/main.rs",
+   "text": "@@ -221,5 +238,5 @@ mod time_library {\n     }\n \n-    #[derive(Debug)]\n+    #[derive(Debug, Clone)]\n     pub enum Error {\n         FailedToGetTime,"
+  }
+ ],
+ "id": "real_036",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "examples: refactor error logging in error-handling example (#3527)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "8389ab10b02809d72a4a9bebb1dcfc816c778f44"
+}

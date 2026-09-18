@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 49,
+   "path": ".github/workflows/semgrep.yml",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/semgrep.yml",
+   "text": "@@ -0,0 +1,49 @@\n+# This workflow uses actions that are not certified by GitHub.\n+# They are provided by a third-party and are governed by\n+# separate terms of service, privacy policy, and support\n+# documentation.\n+\n+# This workflow file requires a free account on Semgrep.dev to\n+# manage rules, file ignores, notifications, and more.\n+#\n+# See https://semgrep.dev/docs\n+\n+name: Semgrep\n+\n+on:\n+  push:\n+    branches: [ \"develop\" ]\n+  pull_request:\n+    # The branches below must be a subset of the branches above\n+    branches: [ \"develop\" ]\n+  schedule:\n+    - cron: '23 2 * * 4'\n+\n+permissions:\n+  contents: read\n+\n+jobs:\n+  semgrep:\n+    permissions:\n+      contents: read # for actions/checkout to fetch code\n+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results\n+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status\n+    name: Scan\n+    runs-on: ubuntu-latest\n+    steps:\n+      # Checkout project source\n+      - uses: actions/checkout@v4\n+\n+      # Scan code using project's configuration on https://semgrep.dev/manage\n+      - uses: returntocorp/semgrep-action@fcd5ab7459e8d91cb1777481980d1b18b4fc6735\n+        with:\n+          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}\n+          publishDeployment: ${{ secrets.SEMGREP_DEPLOYMENT_ID }}\n+          generateSarif: \"1\"\n+\n+      # Upload SARIF file generated in previous step\n+      - name: Upload SARIF file\n+        uses: github/codeql-action/upload-sarif@v3\n+        with:\n+          sarif_file: semgrep.sarif\n+        if: always()"
+  }
+ ],
+ "id": "real_090",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Add Semgrep workflow for code scanning (#4980)\n\nSigned-off-by: Niels Lohmann <mail@nlohmann.me>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "e137f2ac88fbe11f7dab7b0a2c460126a0e70cf7"
+}

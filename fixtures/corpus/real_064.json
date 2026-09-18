@@ -1,0 +1,22 @@
+{
+ "files": [
+  {
+   "added": 126,
+   "path": "docs/api.md",
+   "removed": 126,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [],
+ "id": "real_064",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Fix style inconsistency in API reference (#1010)",
+ "more": "",
+ "omitted": "counts only: docs/api.md",
+ "repo": "sindresorhus/execa",
+ "sha": "42bea7fb87973bb815b36a696ca946210211881d"
+}

@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": "etc/httpd/conf/htpasswd-source.txt",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/httpd/conf/htpasswd-source.txt",
+   "text": "@@ -0,0 +1,3 @@\n+# plain source for htpasswd, run make htpasswd after editing\n+deploy:Harbor-Deploy-9954\n+readonly:Harbor-Viewer-3318"
+  }
+ ],
+ "id": "cfg_011",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add htpasswd-source.txt",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

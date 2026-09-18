@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "activerecord/lib/active_record/connection_adapters/abstract_adapter.rb",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 19,
+   "path": "activerecord/test/cases/adapter_test.rb",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "activerecord/lib/active_record/connection_adapters/abstract_adapter.rb",
+   "text": "@@ -1270,6 +1270,13 @@ def translate_exception_class(native_error, sql, binds)\n             native_error, message: message, sql: sql, binds: binds\n           )\n+          return active_record_error if active_record_error.equal?(native_error)\n+\n           active_record_error.set_backtrace(native_error.backtrace)\n-          active_record_error\n+\n+          begin\n+            raise active_record_error, cause: native_error\n+          rescue => error\n+            error\n+          end\n         end\n "
+  },
+  {
+   "path": "activerecord/test/cases/adapter_test.rb",
+   "text": "@@ -316,4 +316,23 @@ def test_database_related_exceptions_are_translated_to_statement_invalid\n     end\n \n+    class MockDatabaseError < StandardError\n+      def result\n+        0\n+      end\n+\n+      def error_number\n+        0\n+      end\n+    end\n+\n+    def test_translated_exceptions_carry_their_cause_without_an_enclosing_rescue\n+      native = MockDatabaseError.new(\"boom\")\n+\n+      translated = @connection.send(:translate_exception_class, native, \"SELECT 1\", [])\n+\n+      assert_kind_of ActiveRecord::StatementInvalid, translated\n+      assert_same native, translated.cause\n+    end\n+\n     def test_select_all_always_return_activerecord_result\n       result = @connection.select_all \"SELECT * FROM posts\""
+  }
+ ],
+ "id": "real_092",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Set cause during exception translation\n\nWe've previously relied on the caller 1) being inside a rescue, and 2)\nimmediately raising the return value, to set the cause. In anticipation\nof callers prefering to retain the translated exception for later use,\nlet's instead make sure we return a fully-populated exception object,\nsetting the cause at the same time we set the backtrace.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "1b285f3a71ca222a7c41e31c6ee75492e2c678de"
+}

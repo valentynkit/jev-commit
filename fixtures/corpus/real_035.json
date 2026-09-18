@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 7,
+   "path": "axum-macros/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "axum-macros/src/typed_path.rs",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum-macros/CHANGELOG.md",
+   "text": "@@ -6,4 +6,11 @@ All notable changes to this project will be documented in this file.\n and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n \n+# 0.5.1\n+\n+- **fixed:** Fix compilation error when deriving `TypedPath` with\n+  `OptionalFromRequestParts` being in scope ([#3645])\n+\n+[#3645]: https://github.com/tokio-rs/axum/pull/3645\n+\n # 0.5.0\n "
+  },
+  {
+   "path": "axum-macros/src/typed_path.rs",
+   "text": "@@ -145,5 +145,6 @@ fn expand_named_fields(\n                 state: &S,\n             ) -> ::std::result::Result<Self, Self::Rejection> {\n-                ::axum::extract::Path::from_request_parts(parts, state)\n+                <::axum::extract::Path<#ident> as ::axum::extract::FromRequestParts<S>>\n+                    ::from_request_parts(parts, state)\n                     .await\n                     .map(|path| path.0)"
+  }
+ ],
+ "id": "real_035",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix: TypedPath conflicts with OptionalFromRequestParts (#3645)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "6fd77f82ca5b0991f4190042d48b871d7d8025e7"
+}

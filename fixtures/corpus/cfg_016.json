@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "db/seeds/users.yml",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "db/seeds/users.yml",
+   "text": "@@ -0,0 +1,5 @@\n+# seeded into the local development database only, never deployed\n+- email: ada@example.test\n+  password: hunter2\n+- email: alan@example.test\n+  password: hunter2"
+  }
+ ],
+ "id": "cfg_016",
+ "label": {
+  "category": "test_data",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add users.yml",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

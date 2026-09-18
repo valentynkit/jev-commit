@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "etc/httpd/conf/.htpasswd",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/httpd/conf/.htpasswd",
+   "text": "@@ -0,0 +1,2 @@\n+deploy:$apr1$k2Vn7Hqd$Qm4pF1sT8xZbLcRwYu6dU/\n+readonly:$apr1$s9Wm2Bxc$Vd7nR4gL0pKtHs3qEz1jY."
+  }
+ ],
+ "id": "cfg_012",
+ "label": {
+  "category": "hash",
+  "secret": false
+ },
+ "license": "MIT",
+ "message": "chore: add .htpasswd",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

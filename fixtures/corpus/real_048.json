@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 7,
+   "path": "Dockerfile",
+   "removed": 7,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "Dockerfile",
+   "text": "@@ -47,11 +47,11 @@ RUN echo 'alias ls=\"ls --color\"' >> ~/.bashrc\n COPY vhs /usr/bin/\n \n-ENV VHS_PORT \"1976\"\n-ENV VHS_HOST \"0.0.0.0\"\n-ENV VHS_GID \"1976\"\n-ENV VHS_UID \"1976\"\n-ENV VHS_KEY_PATH \"/vhs/vhs\"\n-ENV VHS_AUTHORIZED_KEYS_PATH \"\"\n-ENV VHS_NO_SANDBOX \"true\"\n+ENV VHS_PORT=\"1976\"\n+ENV VHS_HOST=\"0.0.0.0\"\n+ENV VHS_GID=\"1976\"\n+ENV VHS_UID=\"1976\"\n+ENV VHS_KEY_PATH=\"/vhs/vhs\"\n+ENV VHS_AUTHORIZED_KEYS_PATH=\"\"\n+ENV VHS_NO_SANDBOX=\"true\"\n \n ENTRYPOINT [\"/usr/bin/vhs\"]"
+  }
+ ],
+ "id": "real_048",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix(docker): update env variables to use '='",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "b8a1d8603178adf3aa8d8df26db6e74efbbf9a04"
+}

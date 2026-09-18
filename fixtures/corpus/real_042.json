@@ -1,0 +1,97 @@
+{
+ "files": [
+  {
+   "added": 13,
+   "path": "README.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 6,
+   "path": "command.go",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "command_test.go",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "evaluator.go",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 23,
+   "path": "parser/parser.go",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "token/token.go",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "README.md",
+   "text": "@@ -222,4 +222,5 @@ There are a few basic types of VHS commands:\n * [`Copy/Paste`](#copy--paste): copy and paste text from clipboard.\n * [`Source`](#source): source commands from another tape\n+* [`Env <Key> Value`](#env): set environment variables\n \n ### Output"
+  },
+  {
+   "path": "README.md",
+   "text": "@@ -739,4 +740,16 @@ Sleep 500ms\n ```\n \n+### Env\n+\n+`Env` command sets the environment variable via key-value pair.\n+\n+```elixir\n+Env HELLO WORLD\n+\n+Type \"echo $HELLO\"\n+Enter\n+Sleep 3s\n+```\n+\n \n ### Source"
+  },
+  {
+   "path": "command.go",
+   "text": "@@ -65,4 +65,5 @@ var CommandFuncs = map[parser.CommandType]CommandFunc{\n \ttoken.COPY:       ExecuteCopy,\n \ttoken.PASTE:      ExecutePaste,\n+\ttoken.ENV:        ExecuteEnv,\n }\n "
+  },
+  {
+   "path": "command.go",
+   "text": "@@ -249,4 +250,9 @@ func ExecuteCopy(c parser.Command, _ *VHS) {\n }\n \n+// ExecuteEnv sets env with given key-value pair.\n+func ExecuteEnv(c parser.Command, _ *VHS) {\n+\t_ = os.Setenv(c.Options, c.Args)\n+}\n+\n // ExecutePaste pastes text from the clipboard.\n func ExecutePaste(_ parser.Command, v *VHS) {"
+  },
+  {
+   "path": "command_test.go",
+   "text": "@@ -9,10 +9,10 @@ import (\n \n func TestCommand(t *testing.T) {\n-\tconst numberOfCommands = 27\n+\tconst numberOfCommands = 28\n \tif len(parser.CommandTypes) != numberOfCommands {\n \t\tt.Errorf(\"Expected %d commands, got %d\", numberOfCommands, len(parser.CommandTypes))\n \t}\n \n-\tconst numberOfCommandFuncs = 27\n+\tconst numberOfCommandFuncs = 28\n \tif len(CommandFuncs) != numberOfCommandFuncs {\n \t\tt.Errorf(\"Expected %d commands, got %d\", numberOfCommandFuncs, len(CommandFuncs))"
+  },
+  {
+   "path": "evaluator.go",
+   "text": "@@ -33,4 +33,7 @@ func Evaluate(ctx context.Context, tape string, out io.Writer, opts ...Evaluator\n \t\t\tExecute(cmd, &v)\n \t\t}\n+\t\tif cmd.Type == token.ENV {\n+\t\t\tExecute(cmd, &v)\n+\t\t}\n \t}\n "
+  },
+  {
+   "path": "parser/parser.go",
+   "text": "@@ -52,4 +52,5 @@ var CommandTypes = []CommandType{ //nolint: deadcode\n \ttoken.COPY,\n \ttoken.PASTE,\n+\ttoken.ENV,\n }\n "
+  },
+  {
+   "path": "parser/parser.go",
+   "text": "@@ -178,4 +179,6 @@ func (p *Parser) parseCommand() Command {\n \tcase token.PASTE:\n \t\treturn p.parsePaste()\n+\tcase token.ENV:\n+\t\treturn p.parseEnv()\n \tdefault:\n \t\tp.errors = append(p.errors, NewError(p.cur, \"Invalid command: \"+p.cur.Literal))"
+  },
+  {
+   "path": "parser/parser.go",
+   "text": "@@ -578,4 +581,24 @@ func (p *Parser) parsePaste() Command {\n }\n \n+// parseEnv parses Env command\n+// Env command takes in a key-value pair which is set.\n+//\n+// Env key \"value\"\n+func (p *Parser) parseEnv() Command {\n+\tcmd := Command{Type: token.ENV}\n+\n+\tcmd.Options = p.peek.Literal\n+\tp.nextToken()\n+\n+\tif p.peek.Type != token.STRING {\n+\t\tp.errors = append(p.errors, NewError(p.peek, p.cur.Literal+\" expects string\"))\n+\t}\n+\n+\tcmd.Args = p.peek.Literal\n+\tp.nextToken()\n+\n+\treturn cmd\n+}\n+\n // parseSource parses source command.\n // Source command takes a tape path to include in current tape."
+  },
+  {
+   "path": "token/token.go",
+   "text": "@@ -73,4 +73,5 @@ const (\n \tPASTE           = \"PASTE\"\n \tSHELL           = \"SHELL\"\n+\tENV             = \"ENV\"\n \tFONT_FAMILY     = \"FONT_FAMILY\" //nolint:revive\n \tFONT_SIZE       = \"FONT_SIZE\"   //nolint:revive"
+  },
+  {
+   "path": "token/token.go",
+   "text": "@@ -149,4 +150,5 @@ var Keywords = map[string]Type{\n \t\"Copy\":          COPY,\n \t\"Paste\":         PASTE,\n+\t\"Env\":           ENV,\n }\n "
+  }
+ ],
+ "id": "real_042",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "cmd: add support for `ENV` command (#469)\n\n* cmd: start initial work on env key val\r\n\r\n* restore demo gif\r\n\r\n* restore\r\n\r\n* oops\r\n\r\n* add comments\r\n\r\n* readme: add env command instructions\r\n\r\n* Update command.go\r\n\r\n* Update README.md\r\n\r\n* Apply suggestions from code review\r\n\r\n* Update command.go\r\n\r\n* Update command.go\r\n\r\n---------\r\n\r\nCo-authored-by: Maas Lalani <maas@lalani.dev>",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "1fc80027a1bd05737965d7a5026efbd67d161226"
+}

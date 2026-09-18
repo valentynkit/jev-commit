@@ -1,0 +1,77 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": "activerecord/lib/active_record/core.rb",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 26,
+   "path": "activerecord/test/cases/core_test.rb",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 16,
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 16,
+   "path": "activesupport/test/ractors_test.rb",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -266,5 +266,9 @@ def self.strict_loading_violation!(owner:, reflection:) # :nodoc:\n     module ClassMethods\n       def initialize_find_by_cache # :nodoc:\n-        @find_by_statement_cache = { true => Concurrent::Map.new, false => Concurrent::Map.new }\n+        ActiveSupport::Ractors[find_by_statement_cache_key] = { true => Concurrent::Map.new, false => Concurrent::Map.new }\n+      end\n+\n+      def find_by_statement_cache # :nodoc:\n+        ActiveSupport::Ractors[find_by_statement_cache_key] || initialize_find_by_cache\n       end\n "
+  },
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -417,5 +421,5 @@ def type_caster # :nodoc:\n \n       def cached_find_by_statement(connection, key, &block) # :nodoc:\n-        cache = @find_by_statement_cache[connection.prepared_statements]\n+        cache = find_by_statement_cache[connection.prepared_statements]\n         cache.compute_if_absent(key) { StatementCache.create(connection, &block) }\n       end"
+  },
+  {
+   "path": "activerecord/lib/active_record/core.rb",
+   "text": "@@ -474,4 +478,8 @@ def cached_find_by(keys, values)\n           end\n         end\n+\n+        def find_by_statement_cache_key\n+          @find_by_statement_cache_key ||= \"active_record_find_by_statement_cache_#{object_id}\".to_sym\n+        end\n     end\n "
+  },
+  {
+   "path": "activerecord/test/cases/core_test.rb",
+   "text": "@@ -2,4 +2,5 @@\n \n require \"cases/helper\"\n+require \"active_support/testing/ractors_assertions\"\n require \"models/person\"\n require \"models/topic\""
+  },
+  {
+   "path": "activerecord/test/cases/core_test.rb",
+   "text": "@@ -244,5 +245,5 @@ def attribute_for_inspect(attr_name)\n     Topic.initialize_find_by_cache\n     using_prepared_statements = Topic.lease_connection.prepared_statements\n-    topic_find_by_cache = Topic.instance_variable_get(\"@find_by_statement_cache\")[using_prepared_statements]\n+    topic_find_by_cache = Topic.find_by_statement_cache[using_prepared_statements]\n \n     assert_difference -> { topic_find_by_cache.size }, +1 do"
+  },
+  {
+   "path": "activerecord/test/cases/core_test.rb",
+   "text": "@@ -289,3 +290,27 @@ def test_composite_pk_models_hash\n     assert_not_equal Cpk::Book.new(author_id: 1, title: \"Same title\").hash, Cpk::Book.new(author_id: 1, title: \"Same title\").hash\n   end\n+\n+  if RUBY_VERSION >= \"4.0\"\n+    class RactorTest < ActiveRecord::TestCase\n+      include ActiveSupport::Testing::Isolation\n+      include ActiveSupport::Testing::RactorsAssertions\n+\n+      def test_find_by_statement_cache_is_ractor_local\n+        model = Class.new(ActiveRecord::Base) do\n+          def self.name = \"ractor_safe_find_by_cache\"\n+          self.table_name = \"topics\"\n+        end\n+\n+        worker_marker, worker_stable = on_ractor do\n+          cache = model.find_by_statement_cache\n+          cache[true][:ractor_marker] = :from_worker\n+          [cache[true][:ractor_marker], model.find_by_statement_cache.equal?(cache)]\n+        end\n+\n+        assert_equal :from_worker, worker_marker\n+        assert worker_stable\n+        assert_nil model.find_by_statement_cache[true][:ractor_marker]\n+      end\n+    end\n+  end\n end"
+  },
+  {
+   "path": "activesupport/lib/active_support/ractors.rb",
+   "text": "@@ -146,4 +146,20 @@ def shareable_lambda(self: nil, &block)\n     end\n \n+    # Returns the value stored under +key+ in the current Ractor's local\n+    # storage. Returns +nil+ when nothing has been stored under +key+ yet.\n+    #\n+    # Each Ractor has an isolated local storage, so values set in one Ractor\n+    # are not visible to any other.\n+    def self.[](key)\n+      Ractor.current[key]\n+    end\n+\n+    # Stores +value+ under +key+ in the current Ractor's local storage.\n+    # The value is only visible to the current Ractor, and other\n+    # Ractors have their own independent storage.\n+    def self.[]=(key, value)\n+      Ractor.current[key] = value\n+    end\n+\n     if Ractor.respond_to?(:store_if_absent)\n       # Returns the value stored under +key+ in the current Ractor's local"
+  },
+  {
+   "path": "activesupport/test/ractors_test.rb",
+   "text": "@@ -29,4 +29,9 @@ def test_store_if_absent_computes_once_and_returns_the_stored_value\n   end\n \n+  def test_ractor_local_storage_get_and_set\n+    ActiveSupport::Ractors[:as_ractors_test_storage] = \"value\"\n+    assert_equal \"value\", ActiveSupport::Ractors[:as_ractors_test_storage]\n+  end\n+\n   if RUBY_VERSION >= \"4.0\"\n     def test_on_main_runs_block_on_main_ractor"
+  },
+  {
+   "path": "activesupport/test/ractors_test.rb",
+   "text": "@@ -207,4 +212,15 @@ def test_store_if_absent_is_ractor_local\n       assert_equal \"worker\", worker_value\n     end\n+\n+    def test_ractor_local_storage_is_ractor_local\n+      ActiveSupport::Ractors[:as_ractors_test_storage_local] = \"main\"\n+      worker_value = Ractor.new do\n+        ActiveSupport::Ractors[:as_ractors_test_storage_local] = \"worker\"\n+        ActiveSupport::Ractors[:as_ractors_test_storage_local]\n+      end.value\n+\n+      assert_equal \"worker\", worker_value\n+      assert_equal \"main\", ActiveSupport::Ractors[:as_ractors_test_storage_local]\n+    end\n   end\n end"
+  }
+ ],
+ "id": "real_100",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Make ActiveRecord find_by_statement_cache ractor safe\n\nAlso adds ActiveSupport::Ractors[]/[]= so that we can store the cache on\nthe local Ractor regardless of Ruby version.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "de26f6e7c83da794bd9606b896da89397f2237c1"
+}

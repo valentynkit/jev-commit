@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": "docker/.env.production",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "docker/.env.production",
+   "text": "@@ -0,0 +1,3 @@\n+REDIS_HOST=cache01.larkspur.internal\n+REDIS_PASSWORD=Fenwick-Cache-6620\n+REDIS_DB=2"
+  }
+ ],
+ "id": "cfg_017",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add .env.production",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

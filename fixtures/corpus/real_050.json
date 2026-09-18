@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "main.go",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "main.go",
+   "text": "@@ -87,9 +87,4 @@ var (\n \t\t\t}\n \n-\t\t\tpublishEnv, publishEnvSet := os.LookupEnv(\"VHS_PUBLISH\")\n-\t\t\tif !publishEnvSet && !publishFlag {\n-\t\t\t\tlog.Println(FaintStyle.Render(\"Host your GIF on vhs.charm.sh: vhs publish <file>.gif\"))\n-\t\t\t}\n-\n \t\t\tvar publishFile string\n \t\t\tout := cmd.OutOrStdout()"
+  },
+  {
+   "path": "main.go",
+   "text": "@@ -117,4 +112,9 @@ var (\n \t\t\t})\n \n+\t\t\tpublishEnv, publishEnvSet := os.LookupEnv(\"VHS_PUBLISH\")\n+\t\t\tif !publishEnvSet && !publishFlag && len(errs) == 0 {\n+\t\t\t\tlog.Println(FaintStyle.Render(\"Host your GIF on vhs.charm.sh: vhs publish <file>.gif\"))\n+\t\t\t}\n+\n \t\t\tif len(errs) > 0 {\n \t\t\t\tprintErrors(os.Stderr, string(input), errs)"
+  }
+ ],
+ "id": "real_050",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "hide vhs publish info when exiting with tape errors (#466)",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "ed69431b5a46d4ba1c6c1a4f08e8d1dac8ffbc03"
+}

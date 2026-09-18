@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": "railties/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 30,
+   "path": "railties/lib/rails/engine/lazy_route_set.rb",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 63,
+   "path": "railties/test/engine/lazy_route_set_test.rb",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "railties/CHANGELOG.md",
+   "text": "@@ -1,2 +1,12 @@\n+*   Make mounted route helpers (e.g. `main_app`, engine mount proxies) trigger\n+    the lazy route load instead of raising `NoMethodError` when called before\n+    routes are drawn.\n+\n+    Named url helpers already loaded routes on demand, but mounted helpers are\n+    only defined when `mount` runs during the route draw, so calling one first\n+    (in the console or a test) failed until something else drew the routes.\n+\n+    *Abdelkader Boudih*\n+\n *   Report zero tests instead of raising a `LoadError` when a `bin/rails test:*`\n     folder command names a folder the application does not have."
+  },
+  {
+   "path": "railties/lib/rails/engine/lazy_route_set.rb",
+   "text": "@@ -39,6 +39,36 @@ def optimize_routes_generation?\n       end\n \n+      # Mounted helpers are only defined when `mount` runs during the route\n+      # draw. _path/_url names are left to method_missing_module, which owns\n+      # them and relies on reload_routes_unless_loaded returning true only to\n+      # the caller that performed the load.\n+      module LazyMountedHelpers\n+        private\n+          def method_missing(method_name, ...)\n+            if method_name.end_with?(\"_path\", \"_url\")\n+              super\n+            else\n+              Rails.application&.reload_routes_unless_loaded\n+              if ActionDispatch::Routing::RouteSet::MountedHelpers.method_defined?(method_name)\n+                public_send(method_name, ...)\n+              else\n+                super\n+              end\n+            end\n+          end\n+\n+          def respond_to_missing?(method_name, include_private = false)\n+            if method_name.end_with?(\"_path\", \"_url\")\n+              super\n+            else\n+              Rails.application&.reload_routes_unless_loaded\n+              ActionDispatch::Routing::RouteSet::MountedHelpers.method_defined?(method_name) || super\n+            end\n+          end\n+      end\n+\n       def initialize(config = DEFAULT_CONFIG)\n         super\n+        ActionDispatch::Routing::RouteSet::MountedHelpers.include(LazyMountedHelpers)\n         self.named_routes = NamedRouteCollection.new\n         named_routes.url_helpers_module.prepend(method_missing_module)"
+  },
+  {
+   "path": "railties/test/engine/lazy_route_set_test.rb",
+   "text": "@@ -224,4 +224,60 @@ class MyRailtie < ::Rails::Railtie\n       end\n \n+      test \"mounted helpers lazily load routes\" do\n+        require \"#{app_path}/config/environment\"\n+\n+        helpers = Class.new { include Rails.application.routes.mounted_helpers }.new\n+\n+        assert_not_operator(:plugin_engine, :in?, Rails.application.routes.mounted_helpers.instance_methods)\n+        assert_equal(\"/plugin/posts\", helpers.plugin_engine.posts_path)\n+      end\n+\n+      test \"mounted helpers lazily load routes when checking respond_to?\" do\n+        require \"#{app_path}/config/environment\"\n+\n+        helpers = Class.new { include Rails.application.routes.mounted_helpers }.new\n+\n+        assert_not_operator(:plugin_engine, :in?, Rails.application.routes.mounted_helpers.instance_methods)\n+        assert_operator(helpers, :respond_to?, :plugin_engine)\n+      end\n+\n+      test \"unrelated missing methods on mounted helpers still raise NoMethodError\" do\n+        require \"#{app_path}/config/environment\"\n+\n+        helpers = Class.new { include Rails.application.routes.mounted_helpers }.new\n+\n+        assert_raises(NoMethodError) { helpers.not_a_mounted_helper }\n+        assert_not helpers.respond_to?(:to_ary)\n+      end\n+\n+      # Mirrors SystemTestCase's proxy, where the mounted helper hooks run\n+      # before the url helper hooks and must not consume the route load.\n+      test \"url helpers still lazily load routes when mounted helpers are included in the same class\" do\n+        require \"#{app_path}/config/environment\"\n+\n+        assert_equal(\"/\", url_and_mounted_helpers.root_path)\n+      end\n+\n+      test \"url helpers still lazily load routes on respond_to? when mounted helpers are included in the same class\" do\n+        require \"#{app_path}/config/environment\"\n+\n+        assert_operator(url_and_mounted_helpers, :respond_to?, :root_path)\n+      end\n+\n+      test \"integration tests can call a mounted helper before any request\" do\n+        app_file \"test/integration/mounted_helper_test.rb\", <<~RUBY\n+          require \"test_helper\"\n+\n+          class MountedHelperTest < ActionDispatch::IntegrationTest\n+            test \"mounted helper resolves before first request\" do\n+              assert_equal \"/plugin/posts\", plugin_engine.posts_path\n+            end\n+          end\n+        RUBY\n+\n+        output = rails(\"test\", \"test/integration/mounted_helper_test.rb\")\n+        assert_match(\"0 failures, 0 errors\", output)\n+      end\n+\n       private\n         # Parks the initial route draw until $route_draw_resume is signaled,"
+  },
+  {
+   "path": "railties/test/engine/lazy_route_set_test.rb",
+   "text": "@@ -293,4 +349,11 @@ def app_url_helpers\n         end\n \n+        def url_and_mounted_helpers\n+          Class.new {\n+            include Rails.application.routes.url_helpers\n+            include Rails.application.routes.mounted_helpers\n+          }.new\n+        end\n+\n         def engine_url_helpers\n           Plugin::Engine.routes.url_helpers"
+  }
+ ],
+ "id": "real_096",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Load routes lazily when a mounted helper is called\n\nNamed url helpers already trigger the lazy route load through\nLazyRouteSet, but mounted helpers (main_app, engine mount proxies) are\nonly defined when `mount` runs during the route draw, and their names\ncarry no suffix to filter on. Calling one before anything else drew the\nroutes raised NoMethodError.\n\nInclude a method_missing/respond_to_missing? pair into MountedHelpers\nthat loads the routes and retries when the helper exists afterwards,\nfalling through to NoMethodError otherwise. _path/_url names are left\nto the url helper hooks, which rely on reload_routes_unless_loaded\nreturning true only to the caller that performed the load.\n\nThe pair is included on LazyRouteSet instantiation, so loading this\nfile never touches the shared module in apps using the regular route\nset. It targets the shared module rather than a LazyRouteSet-local one\nbecause consumers like ActionView::TestCase#method_missing reflect on\n`routes.mounted_helpers` directly and would not see the helpers\n`mount` defines on the shared module.",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "70fab0c8174a6b70231c4740044d8ed1be7e9240"
+}

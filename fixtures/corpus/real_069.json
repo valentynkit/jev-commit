@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "types/subprocess/all.d.ts",
+   "removed": 15,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "types/subprocess/all.d.ts",
+   "text": "@@ -4,21 +4,14 @@ import type {IgnoresSubprocessOutput} from '../return/ignore.js';\n \n // `subprocess.all`\n-export type SubprocessAll<OptionsType extends Options = Options> = AllStream<OptionsType['all'], OptionsType>;\n+export type SubprocessAll<OptionsType extends Options = Options> = AllStream<AllIgnored<OptionsType['all'], OptionsType>>;\n \n-type AllStream<\n+type AllStream<IsIgnored> = IsIgnored extends true ? undefined : Readable;\n+\n+type AllIgnored<\n \tAllOption extends Options['all'] = Options['all'],\n \tOptionsType extends Options = Options,\n > = AllOption extends true\n-\t? AllIfStdout<IgnoresSubprocessOutput<'1', OptionsType>, OptionsType>\n-\t: undefined;\n-\n-type AllIfStdout<\n-\tStdoutResultIgnored extends boolean,\n-\tOptionsType extends Options = Options,\n-> = StdoutResultIgnored extends true\n-\t? AllIfStderr<IgnoresSubprocessOutput<'2', OptionsType>>\n-\t: Readable;\n-\n-type AllIfStderr<StderrResultIgnored extends boolean> = StderrResultIgnored extends true\n-\t? undefined\n-\t: Readable;\n+\t? IgnoresSubprocessOutput<'1', OptionsType> extends true\n+\t\t? IgnoresSubprocessOutput<'2', OptionsType>\n+\t\t: false\n+\t: true;"
+  }
+ ],
+ "id": "real_069",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Reduce type complexity (#1038)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "cf70951aefa31d849d6433a0f8f96f9ced5dfc96"
+}

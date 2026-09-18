@@ -1,0 +1,49 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "go.mod",
+   "removed": 8,
+   "status": "M"
+  },
+  {
+   "added": 20,
+   "path": "go.sum",
+   "removed": 21,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "go.mod",
+   "text": "@@ -7,5 +7,5 @@ require (\n \tgithub.com/atotto/clipboard v0.1.4\n \tgithub.com/caarlos0/env/v11 v11.4.0\n-\tgithub.com/charmbracelet/glamour v0.10.0\n+\tgithub.com/charmbracelet/glamour v1.0.0\n \tgithub.com/charmbracelet/keygen v0.5.4\n \tgithub.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834"
+  },
+  {
+   "path": "go.mod",
+   "text": "@@ -16,5 +16,5 @@ require (\n \tgithub.com/hashicorp/go-version v1.8.0\n \tgithub.com/mattn/go-isatty v0.0.20\n-\tgithub.com/mattn/go-runewidth v0.0.20\n+\tgithub.com/mattn/go-runewidth v0.0.21\n \tgithub.com/muesli/go-app-paths v0.2.2\n \tgithub.com/muesli/mango-cobra v1.3.0"
+  },
+  {
+   "path": "go.mod",
+   "text": "@@ -27,12 +27,12 @@ require (\n \n require (\n-\tgithub.com/alecthomas/chroma/v2 v2.14.0 // indirect\n+\tgithub.com/alecthomas/chroma/v2 v2.20.0 // indirect\n \tgithub.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect\n \tgithub.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect\n \tgithub.com/aymerick/douceur v0.2.0 // indirect\n \tgithub.com/charmbracelet/bubbletea v1.3.4 // indirect\n \tgithub.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect\n \tgithub.com/charmbracelet/log v0.4.1 // indirect\n-\tgithub.com/charmbracelet/x/ansi v0.8.0 // indirect\n+\tgithub.com/charmbracelet/x/ansi v0.10.2 // indirect\n \tgithub.com/charmbracelet/x/cellbuf v0.0.13 // indirect\n \tgithub.com/charmbracelet/x/conpty v0.1.0 // indirect"
+  },
+  {
+   "path": "go.mod",
+   "text": "@@ -43,10 +43,10 @@ require (\n \tgithub.com/charmbracelet/x/termios v0.1.0 // indirect\n \tgithub.com/clipperhouse/uax29/v2 v2.2.0 // indirect\n-\tgithub.com/dlclark/regexp2 v1.11.0 // indirect\n+\tgithub.com/dlclark/regexp2 v1.11.5 // indirect\n \tgithub.com/erikgeiser/coninput v0.0.0-20211004153227-1c3628e74d0f // indirect\n \tgithub.com/go-logfmt/logfmt v0.6.0 // indirect\n \tgithub.com/gorilla/css v1.0.1 // indirect\n \tgithub.com/inconshreveable/mousetrap v1.1.0 // indirect\n-\tgithub.com/lucasb-eyer/go-colorful v1.2.0 // indirect\n+\tgithub.com/lucasb-eyer/go-colorful v1.3.0 // indirect\n \tgithub.com/mattn/go-localereader v0.0.1 // indirect\n \tgithub.com/microcosm-cc/bluemonday v1.0.27 // indirect"
+  },
+  {
+   "path": "go.mod",
+   "text": "@@ -65,6 +65,6 @@ require (\n \tgithub.com/ysmood/gson v0.7.3 // indirect\n \tgithub.com/ysmood/leakless v0.9.0 // indirect\n-\tgithub.com/yuin/goldmark v1.7.8 // indirect\n-\tgithub.com/yuin/goldmark-emoji v1.0.5 // indirect\n+\tgithub.com/yuin/goldmark v1.7.13 // indirect\n+\tgithub.com/yuin/goldmark-emoji v1.0.6 // indirect\n \tgolang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect\n \tgolang.org/x/net v0.49.0 // indirect"
+  }
+ ],
+ "id": "real_049",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore(deps): bump the all group across 1 directory with 2 updates (#720)\n\nBumps the all group with 2 updates in the / directory: [github.com/charmbracelet/glamour](https://github.com/charmbracelet/glamour) and [github.com/mattn/go-runewidth](https://github.com/mattn/go-runewidth).\n\n\nUpdates `github.com/charmbracelet/glamour` from 0.10.0 to 1.0.0\n- [Release notes](https://github.com/charmbracelet/glamour/releases)\n- [Commits](https://github.com/charmbracelet/glamour/compare/v0.10.0...v1.0.0)\n\nUpdates `github.com/mattn/go-runewidth` from 0.0.20 to 0.0.21\n- [Commits](https://github.com/mattn/go-runewidth/compare/v0.0.20...v0.0.21)\n\n---\nupdated-dependencies:\n- dependency-name: github.com/charmbracelet/glamour\n  dependency-version: 1.0.0\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n  dependency-group: all\n- dependency-name: github.com/mattn/go-runewidth\n  dependency-version: 0.0.21\n  dependency-type: direct:production\n  update-type: version-update:semver-patch\n  dependency-group: all\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+ "more": "",
+ "omitted": "counts only: go.sum",
+ "repo": "charmbracelet/vhs",
+ "sha": "c6af91a25fed05852338a5ed58d9b099b8369a1e"
+}

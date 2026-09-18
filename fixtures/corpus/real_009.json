@@ -1,0 +1,49 @@
+{
+ "files": [
+  {
+   "added": 36,
+   "path": "pre_commit/languages/r.py",
+   "removed": 12,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/languages/r_test.py",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/languages/r.py",
+   "text": "@@ -16,33 +16,56 @@\n from pre_commit.prefix import Prefix\n from pre_commit.util import cmd_output\n-from pre_commit.util import cmd_output_b\n from pre_commit.util import win_exe\n \n ENVIRONMENT_DIR = 'renv'\n-RSCRIPT_OPTS = ('--no-save', '--no-restore', '--no-site-file', '--no-environ')\n get_default_version = lang_base.basic_get_default_version\n \n+_RENV_ACTIVATED_OPTS = (\n+    '--no-save', '--no-restore', '--no-site-file', '--no-environ',\n+)\n \n-def _execute_vanilla_r_code_as_script(\n+\n+def _execute_r(\n         code: str, *,\n         prefix: Prefix, version: str, args: Sequence[str] = (), cwd: str,\n+        cli_opts: Sequence[str],\n ) -> str:\n     with in_env(prefix, version), _r_code_in_tempfile(code) as f:\n         _, out, _ = cmd_output(\n-            _rscript_exec(), *RSCRIPT_OPTS, f, *args, cwd=cwd,\n+            _rscript_exec(), *cli_opts, f, *args, cwd=cwd,\n         )\n     return out.rstrip('\\n')\n \n \n+def _execute_r_in_renv(\n+        code: str, *,\n+        prefix: Prefix, version: str, args: Sequence[str] = (), cwd: str,\n+) -> str:\n+    return _execute_r(\n+        code=code, prefix=prefix, version=version, args=args, cwd=cwd,\n+        cli_opts=_RENV_ACTIVATED_OPTS,\n+    )\n+\n+\n+def _execute_vanilla_r(\n+        code: str, *,\n+        prefix: Prefix, version: str, args: Sequence[str] = (), cwd: str,\n+) -> str:\n+    return _execute_r(\n+        code=code, prefix=prefix, version=version, args=args, cwd=cwd,\n+        cli_opts=('--vanilla',),\n+    )\n+\n+\n def _read_installed_version(envdir: str, prefix: Prefix, version: str) -> str:\n-    return _execute_vanilla_r_code_as_script(\n+    return _execute_r_in_renv(\n         'cat(renv::settings$r.version())',\n         prefix=prefix, version=version,\n         cwd=envdir,\n     )\n \n \n def _read_executable_version(envdir: str, prefix: Prefix, version: str) -> str:\n-    return _execute_vanilla_r_code_as_script(\n+    return _execute_r_in_renv(\n         'cat(as.character(getRversion()))',\n         prefix=prefix, version=version,"
+  },
+  {
+   "path": "pre_commit/languages/r.py",
+   "text": "@@ -54,5 +77,5 @@ def _read_executable_version(envdir: str, prefix: Prefix, version: str) -> str:\n         envdir: str, prefix: Prefix, version: str,\n ) -> None:\n-    _execute_vanilla_r_code_as_script(\n+    _execute_r_in_renv(\n         'renv::settings$r.version(as.character(getRversion()))',\n         prefix=prefix, version=version,"
+  },
+  {
+   "path": "pre_commit/languages/r.py",
+   "text": "@@ -162,5 +185,5 @@ def _cmd_from_hook(\n \n     cmd_part = _prefix_if_file_entry(cmd, prefix, is_local=is_local)\n-    return (cmd[0], *RSCRIPT_OPTS, *cmd_part, *args)\n+    return (cmd[0], *_RENV_ACTIVATED_OPTS, *cmd_part, *args)\n \n "
+  },
+  {
+   "path": "pre_commit/languages/r.py",
+   "text": "@@ -205,12 +228,13 @@ def install_environment(\n         }}\n         \"\"\"\n-\n-    with _r_code_in_tempfile(r_code_inst_environment) as f:\n-        cmd_output_b(_rscript_exec(), '--vanilla', f, cwd=env_dir)\n+    _execute_vanilla_r(\n+        r_code_inst_environment,\n+        prefix=prefix, version=version, cwd=env_dir,\n+    )\n \n     _write_current_r_version(envdir=env_dir, prefix=prefix, version=version)\n     if additional_dependencies:\n         r_code_inst_add = 'renv::install(commandArgs(trailingOnly = TRUE))'\n-        _execute_vanilla_r_code_as_script(\n+        _execute_r_in_renv(\n             code=r_code_inst_add, prefix=prefix, version=version,\n             args=additional_dependencies,"
+  },
+  {
+   "path": "tests/languages/r_test.py",
+   "text": "@@ -287,5 +287,5 @@ def test_health_check_without_version(prefix, installed_environment, version):\n \n     # simulate old pre-commit install by unsetting the installed version\n-    r._execute_vanilla_r_code_as_script(\n+    r._execute_r_in_renv(\n         f'renv::settings$r.version({version})',\n         prefix=prefix, version=C.DEFAULT, cwd=env_dir,"
+  }
+ ],
+ "id": "real_009",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix: ensure env patch is applied for vanilla emulation\n\notherwise, installing the hooks when RENV_USER env variable is set (e.g. in RStudio with renv project) will result in executing the installation script in the wrong renv",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "c2c061cf63e00a3ff8c88a9054c47e96a36f2daa"
+}

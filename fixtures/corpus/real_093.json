@@ -1,0 +1,121 @@
+{
+ "files": [
+  {
+   "added": 9,
+   "path": "actionpack/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 34,
+   "path": "actionpack/lib/abstract_controller/translation.rb",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 35,
+   "path": "actionpack/test/abstract/translation_test.rb",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "actionview/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 33,
+   "path": "actionview/lib/action_view/helpers/translation_helper.rb",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "actionview/test/fixtures/translations/templates/double_relative.erb",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 1,
+   "path": "actionview/test/fixtures/translations/templates/found_with_scope.erb",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 39,
+   "path": "actionview/test/template/translation_helper_test.rb",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "actionpack/CHANGELOG.md",
+   "text": "@@ -1,2 +1,11 @@\n+*   Allow `translate`'s (and `t`'s) `scope:` option to be resolved relative to\n+    the current controller and action when it starts with a period,\n+    mirroring the existing behavior for the key argument.\n+\n+    Calling `translate(\"bar\", scope: \".foo\")` from `PostsController#index` is\n+    now equivalent to calling `translate(\"bar\", scope: \"posts.index.foo\")`.\n+\n+    *Ben Sheldon*\n+\n *   Add support for the HTTP QUERY method defined in RFC 10008.\n "
+  },
+  {
+   "path": "actionpack/lib/abstract_controller/translation.rb",
+   "text": "@@ -9,17 +9,24 @@ module AbstractController\n     # Delegates to `I18n.translate`.\n     #\n-    # When the given key starts with a period, it will be scoped by the current\n-    # controller and action. So if you call `translate(\".foo\")` from\n-    # `PeopleController#index`, it will convert the call to\n-    # `I18n.translate(\"people.index.foo\")`. This makes it less repetitive to\n-    # translate many keys within the same controller / action and gives you a simple\n-    # framework for scoping them consistently.\n+    # When the key or the `:scope` option starts with a period, it will be\n+    # scoped by the current controller and action. So if you call\n+    # `translate(\".foo\")` from `PeopleController#index`, it will convert the\n+    # call to `I18n.translate(\"people.index.foo\")`; calling\n+    # `translate(\"bar\", scope: \".foo\")` converts to\n+    # `I18n.translate(\"bar\", scope: \"people.index.foo\")`. This makes it less\n+    # repetitive to translate many keys within the same controller / action\n+    # and gives you a simple framework for scoping them consistently. The\n+    # key takes precedence: if the key itself starts with a period, the\n+    # `:scope` option's own leading period is left as-is rather than\n+    # expanded, preserving the pre-existing behavior for calls like\n+    # `translate(\".bar\", scope: \".foo\")`.\n     def translate(key, **options)\n       if key&.start_with?(\".\")\n-        path = controller_path.tr(\"/\", \".\")\n-        defaults = [:\"#{path}#{key}\"]\n+        defaults = [:\"#{controller_scope}#{key}\"]\n         defaults << options[:default] if options[:default]\n         options[:default] = defaults.flatten\n-        key = \"#{path}.#{action_name}#{key}\"\n+        key = \"#{controller_action_scope}#{key}\"\n+      elsif (scope = options[:scope])\n+        options[:scope] = scope_option_by_controller_path(scope)\n       end\n "
+  },
+  {
+   "path": "actionpack/lib/abstract_controller/translation.rb",
+   "text": "@@ -39,4 +46,22 @@ def localize(object, **options)\n     end\n     alias :l :localize\n+\n+    private\n+      def controller_scope\n+        controller_path.tr(\"/\", \".\")\n+      end\n+\n+      def controller_action_scope\n+        \"#{controller_scope}.#{action_name}\"\n+      end\n+\n+      def scope_option_by_controller_path(scope)\n+        if (scope.is_a?(String) || scope.is_a?(Symbol)) && scope.start_with?(\".\")\n+          resolved = \"#{controller_action_scope}#{scope}\"\n+          scope.is_a?(Symbol) ? resolved.to_sym : resolved\n+        else\n+          scope\n+        end\n+      end\n   end\n end"
+  },
+  {
+   "path": "actionpack/test/abstract/translation_test.rb",
+   "text": "@@ -77,4 +77,39 @@ def test_lazy_lookup_fallback\n       end\n \n+      def test_lazy_scope_lookup\n+        @controller.stub :action_name, :index do\n+          assert_equal \"<a>nested</a>\", @controller.t(\"html\", scope: \".nested\")\n+        end\n+      end\n+\n+      def test_lazy_scope_lookup_with_symbol\n+        @controller.stub :action_name, :index do\n+          assert_equal \"<a>nested</a>\", @controller.t(\"html\", scope: :\".nested\")\n+        end\n+      end\n+\n+      def test_relative_key_takes_precedence_over_relative_scope\n+        @controller.stub :action_name, :index do\n+          matcher_called = false\n+          matcher = ->(key, options) do\n+            matcher_called = true\n+            assert_equal \"abstract_controller.testing.translation.index.bar\", key\n+            assert_equal \".foo\", options[:scope]\n+          end\n+\n+          I18n.stub(:translate, matcher) do\n+            @controller.t(\".bar\", scope: \".foo\")\n+          end\n+\n+          assert matcher_called\n+        end\n+      end\n+\n+      def test_absolute_scope_lookup_is_unaffected\n+        @controller.stub :action_name, :index do\n+          assert_equal \"bar\", @controller.t(\"two\", scope: \"one\")\n+        end\n+      end\n+\n       def test_default_translation\n         @controller.stub :action_name, :index do"
+  },
+  {
+   "path": "actionview/CHANGELOG.md",
+   "text": "@@ -1,2 +1,11 @@\n+*   Allow `translate`'s (and `t`'s) `scope:` option to be resolved relative to\n+    the current template when it starts with a period, mirroring the existing\n+    behavior for the key argument.\n+\n+    Calling `translate(\"bar\", scope: \".foo\")` from `posts/index.html.erb` is\n+    now equivalent to calling `translate(\"posts.index.foo.bar\")`.\n+\n+    *Ben Sheldon*\n+\n *   Join an Array `:accept` option with commas in `file_field_tag`.\n "
+  },
+  {
+   "path": "actionview/lib/action_view/helpers/translation_helper.rb",
+   "text": "@@ -45,10 +45,16 @@ module TranslationHelper\n       # <tt>translate</tt>.\n       #\n-      # Second, if the key starts with a period <tt>translate</tt> will scope\n-      # the key by the current partial. Calling <tt>translate(\".foo\")</tt> from\n-      # the <tt>people/index.html.erb</tt> template is equivalent to calling\n-      # <tt>translate(\"people.index.foo\")</tt>. This makes it less\n-      # repetitive to translate many keys within the same partial and provides\n-      # a convention to scope keys consistently.\n+      # Second, if the key or the +:scope+ option starts with a period,\n+      # <tt>translate</tt> will scope it by the current partial. Calling\n+      # <tt>translate(\".foo\")</tt> or <tt>translate(\"bar\", scope: \".foo\")</tt>\n+      # from the <tt>people/index.html.erb</tt> template is equivalent to\n+      # calling <tt>translate(\"people.index.foo\")</tt> or\n+      # <tt>translate(\"bar\", scope: \"people.index.foo\")</tt> respectively.\n+      # This makes it less repetitive to translate many keys within the same\n+      # partial and provides a convention to scope keys consistently. The key\n+      # takes precedence: if the key itself starts with a period, the\n+      # +:scope+ option's own leading period is left as-is rather than\n+      # expanded, preserving the pre-existing behavior for calls like\n+      # <tt>translate(\".bar\", scope: \".foo\")</tt>.\n       #\n       # Third, the translation will be marked as <tt>html_safe</tt> if the key"
+  },
+  {
+   "path": "actionview/lib/action_view/helpers/translation_helper.rb",
+   "text": "@@ -79,4 +85,6 @@ def translate(key, **options)\n         end\n \n+        options[:scope] = scope_option_by_partial(options[:scope]) if options[:scope] && !key&.start_with?(\".\")\n+\n         options[:raise] = true if options[:raise].nil? && TranslationHelper.raise_on_missing_translations\n         default = MISSING_TRANSLATION"
+  },
+  {
+   "path": "actionview/lib/action_view/helpers/translation_helper.rb",
+   "text": "@@ -126,10 +134,13 @@ def localize(object, **options)\n         private_constant :NO_DEFAULT\n \n+        def scope_prefix\n+          @_scope_key_by_partial_cache ||= {}\n+          @_scope_key_by_partial_cache[@virtual_path] ||= @virtual_path.gsub(%r{/_?}, \".\")\n+        end\n+\n         def scope_key_by_partial(key)\n           if key&.start_with?(\".\")\n             if @virtual_path\n-              @_scope_key_by_partial_cache ||= {}\n-              @_scope_key_by_partial_cache[@virtual_path] ||= @virtual_path.gsub(%r{/_?}, \".\")\n-              \"#{@_scope_key_by_partial_cache[@virtual_path]}#{key}\"\n+              \"#{scope_prefix}#{key}\"\n             else\n               raise \"Cannot use t(#{key.inspect}) shortcut because path is not available\""
+  },
+  {
+   "path": "actionview/lib/action_view/helpers/translation_helper.rb",
+   "text": "@@ -140,4 +151,17 @@ def scope_key_by_partial(key)\n         end\n \n+        def scope_option_by_partial(scope)\n+          if (scope.is_a?(String) || scope.is_a?(Symbol)) && scope.start_with?(\".\")\n+            if @virtual_path\n+              resolved = \"#{scope_prefix}#{scope}\"\n+              scope.is_a?(Symbol) ? resolved.to_sym : resolved\n+            else\n+              raise \"Cannot use scope: #{scope.inspect} shortcut because path is not available\"\n+            end\n+          else\n+            scope\n+          end\n+        end\n+\n         def missing_translation(key, options)\n           locale = options[:locale] || I18n.locale"
+  },
+  {
+   "path": "actionview/test/fixtures/translations/templates/double_relative.erb",
+   "text": "@@ -0,0 +1,1 @@\n+<%= t('.bar', scope: '.foo') %>"
+  },
+  {
+   "path": "actionview/test/fixtures/translations/templates/found_with_scope.erb",
+   "text": "@@ -0,0 +1,1 @@\n+<%= t('bar', scope: '.foo') %>"
+  },
+  {
+   "path": "actionview/test/template/translation_helper_test.rb",
+   "text": "@@ -21,4 +21,5 @@ class TranslationHelperTest < ActiveSupport::TestCase\n         templates: {\n           found: { foo: \"Foo\" },\n+          found_with_scope: { foo: { bar: \"Foo Bar From Scope\" } },\n           found_yield_single_argument: { foo: \"Foo\" },\n           found_yield_block: { foo: \"Foo\" },"
+  },
+  {
+   "path": "actionview/test/template/translation_helper_test.rb",
+   "text": "@@ -38,5 +39,7 @@ class TranslationHelperTest < ActiveSupport::TestCase\n           other: \"<a>Other %{count}</a>\"\n         }\n-      }\n+      },\n+      scoped: { foo: \"Scoped Foo\" },\n+      foo: { translations: { templates: { double_relative: { bar: \"Double Relative!\" } } } }\n     )\n     view_paths = ActionController::Base.view_paths"
+  },
+  {
+   "path": "actionview/test/template/translation_helper_test.rb",
+   "text": "@@ -149,4 +152,39 @@ def test_finds_translation_scoped_by_partial\n   end\n \n+  def test_finds_translation_scoped_by_partial_via_scope_option\n+    assert_equal \"Foo Bar From Scope\", view.render(template: \"translations/templates/found_with_scope\").strip\n+  end\n+\n+  def test_relative_key_takes_precedence_over_relative_scope\n+    assert_equal \"Double Relative!\", view.render(template: \"translations/templates/double_relative\").strip\n+  end\n+\n+  def test_relative_scope_option_raises_without_virtual_path\n+    error = assert_raises(RuntimeError) do\n+      translate(\"foo\", scope: \".bar\")\n+    end\n+    assert_match(/Cannot use scope: \"\\.bar\" shortcut because path is not available/, error.message)\n+  end\n+\n+  def test_relative_symbol_scope_option_raises_without_virtual_path\n+    error = assert_raises(RuntimeError) do\n+      translate(\"foo\", scope: :\".bar\")\n+    end\n+    assert_match(/Cannot use scope: :\"\\.bar\" shortcut because path is not available/, error.message)\n+  end\n+\n+  def test_absolute_string_scope_option_is_unaffected\n+    assert_equal \"Scoped Foo\", translate(:foo, scope: \"scoped\")\n+  end\n+\n+  def test_absolute_symbol_scope_option_is_unaffected\n+    assert_equal \"Scoped Foo\", translate(:foo, scope: :scoped)\n+  end\n+\n+  def test_array_scope_option_is_unaffected\n+    expected = '<span class=\"translation_missing\" title=\"translation missing: en.scoped.translations.missing, year: 2015\">Missing</span>'\n+    assert_equal expected, translate(:\"translations.missing\", year: \"2015\", scope: %i(scoped))\n+  end\n+\n   def test_finds_translation_scoped_by_partial_yielding_single_argument_block\n     assert_equal \"Foo\", view.render(template: \"translations/templates/found_yield_single_argument\").strip"
+  }
+ ],
+ "id": "real_093",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Allow `translate`'s `scope:` kwarg to resolve relative i18n keys",
+ "more": "",
+ "omitted": "",
+ "repo": "rails/rails",
+ "sha": "29468c0ef38002676077de1c173c01b2462d5992"
+}

@@ -1,0 +1,41 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "changelog/12658.doc.rst",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 4,
+   "path": "doc/en/reference/reference.rst",
+   "removed": 4,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "changelog/12658.doc.rst",
+   "text": "@@ -0,0 +1,1 @@\n+Moved the fixture setup and finalizer hooks to the test running hooks section in the reference documentation."
+  },
+  {
+   "path": "doc/en/reference/reference.rst",
+   "text": "@@ -787,4 +787,8 @@ All runtest related hooks receive a :py:class:`pytest.Item <pytest.Item>` object\n .. hook:: pytest_runtest_makereport\n .. autofunction:: pytest_runtest_makereport\n+.. hook:: pytest_fixture_setup\n+.. autofunction:: pytest_fixture_setup\n+.. hook:: pytest_fixture_post_finalizer\n+.. autofunction:: pytest_fixture_post_finalizer\n \n For deeper understanding you may look at the default implementation of"
+  },
+  {
+   "path": "doc/en/reference/reference.rst",
+   "text": "@@ -824,8 +828,4 @@ Session related reporting hooks:\n .. hook:: pytest_terminal_summary\n .. autofunction:: pytest_terminal_summary\n-.. hook:: pytest_fixture_setup\n-.. autofunction:: pytest_fixture_setup\n-.. hook:: pytest_fixture_post_finalizer\n-.. autofunction:: pytest_fixture_post_finalizer\n .. hook:: pytest_warning_recorded\n .. autofunction:: pytest_warning_recorded"
+  }
+ ],
+ "id": "real_018",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Move fixture hooks to runtest docs section",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "b28cf7fcf6cb99ede6db88380211ad9c7b5c2da1"
+}

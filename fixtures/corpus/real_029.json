@@ -1,0 +1,67 @@
+{
+ "files": [
+  {
+   "added": 53,
+   "path": "crates/ty_python_semantic/resources/mdtest/call/callables_as_descriptors.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 23,
+   "path": "crates/ty_python_semantic/resources/mdtest/generics/legacy/classes.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 19,
+   "path": "crates/ty_python_semantic/resources/mdtest/generics/pep695/classes.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 13,
+   "path": "crates/ty_python_semantic/src/types/generics.rs",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 27,
+   "path": "crates/ty_python_semantic/src/types/relation.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/call/callables_as_descriptors.md",
+   "text": "@@ -734,4 +734,57 @@ second_method = classmethod(second)\n ```\n \n+## Assigning wrappers to annotated descriptor types\n+\n+A `staticmethod` annotation constrains both the parameters and the return type of the wrapped\n+callable. A wrapper returning `str` cannot satisfy a descriptor that promises to return `int`.\n+\n+```py\n+def stringify(value: int) -> str:\n+    return str(value)\n+\n+def consume(method: staticmethod[[int], int]) -> int:\n+    return method(1) + 1\n+\n+wrapped = staticmethod(stringify)\n+consume(wrapped)  # error: [invalid-argument-type]\n+valid: staticmethod[[int], str] = wrapped\n+wrong_parameter: staticmethod[[str], str] = wrapped  # error: [invalid-assignment]\n+wider_return: staticmethod[[int], object] = wrapped\n+```\n+\n+The class argument is part of a `classmethod` annotation's wrapped-callable contract.\n+\n+```py\n+class Owner: ...\n+class Other: ...\n+\n+def make(cls: type[Owner], value: int) -> str:\n+    return str(value)\n+\n+class_wrapped = classmethod(make)\n+valid_class: classmethod[Owner, [int], str] = class_wrapped\n+wrong_return: classmethod[Owner, [int], int] = class_wrapped  # error: [invalid-assignment]\n+wrong_owner: classmethod[Other, [int], str] = class_wrapped  # error: [invalid-assignment]\n+wrong_kind: staticmethod[[type[Owner], int], str] = class_wrapped  # error: [invalid-assignment]\n+```\n+\n+An overloaded wrapper can satisfy the signature selected by the descriptor annotation without\n+combining unrelated overload return types.\n+\n+```py\n+from typing import overload\n+\n+@overload\n+def convert(value: int) -> str: ...\n+@overload\n+def convert(value: str) -> int: ...\n+def convert(value: int | str) -> int | str:\n+    return str(value) if isinstance(value, int) else len(value)\n+\n+int_to_str: staticmethod[[int], str] = staticmethod(convert)\n+str_to_int: staticmethod[[str], int] = staticmethod(convert)\n+invalid_overload: staticmethod[[int], int] = staticmethod(convert)  # error: [invalid-assignment]\n+```\n+\n ## Decorators returning a different function\n "
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/generics/legacy/classes.md",
+   "text": "@@ -1592,4 +1592,27 @@ Box.make.cache_clear()\n ```\n \n+## Inferring a descriptor's wrapped signature\n+\n+A nominal `staticmethod` annotation can infer its parameter specification and return type from the\n+precise callable retained by a method wrapper.\n+\n+```py\n+from collections.abc import Callable\n+from typing import ParamSpec, TypeVar\n+\n+P = ParamSpec(\"P\")\n+R = TypeVar(\"R\")\n+\n+def unwrap(method: staticmethod[P, R]) -> Callable[P, R]:\n+    return method.__func__\n+\n+def stringify(value: int) -> str:\n+    return str(value)\n+\n+function = unwrap(staticmethod(stringify))\n+reveal_type(function(1))  # revealed: str\n+function(\"wrong\")  # error: [invalid-argument-type]\n+```\n+\n ## Metaclass descriptors shadow generic instance attributes\n "
+  },
+  {
+   "path": "crates/ty_python_semantic/resources/mdtest/generics/pep695/classes.md",
+   "text": "@@ -1455,4 +1455,23 @@ reveal_type(C.identity(1))  # revealed: Unknown\n ```\n \n+## Inferring a descriptor's wrapped signature\n+\n+A nominal `staticmethod` annotation can infer its parameter specification and return type from the\n+precise callable retained by a method wrapper.\n+\n+```py\n+from collections.abc import Callable\n+\n+def unwrap[**P, R](method: staticmethod[P, R]) -> Callable[P, R]:\n+    return method.__func__\n+\n+def stringify(value: int) -> str:\n+    return str(value)\n+\n+function = unwrap(staticmethod(stringify))\n+reveal_type(function(1))  # revealed: str\n+function(\"wrong\")  # error: [invalid-argument-type]\n+```\n+\n [crtp]: https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern\n [f-bound]: https://en.wikipedia.org/wiki/Bounded_quantification#F-bounded_quantification"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/generics.rs",
+   "text": "@@ -4356,4 +4356,17 @@ impl<'db, 'c> SpecializationBuilder<'db, 'c> {\n             }\n \n+            (\n+                Type::NominalInstance(formal_instance),\n+                Type::KnownInstance(KnownInstanceType::MethodWrapper(wrapper)),\n+            ) if formal_instance\n+                .class(db, self.env)\n+                .is_known(db, wrapper.class(db)) =>\n+            {\n+                // The descriptor relation compares its wrapped callable with the nominal\n+                // annotation's `__func__`, retaining parameter and return type constraints.\n+                let when = self.constraint_for_relation(formal, actual, relation_polarity);\n+                return self.infer_from_constraint_set(when);\n+            }\n+\n             (formal, Type::ProtocolInstance(actual_protocol)) => {\n                 if let Type::ProtocolInstance(formal_protocol) = formal"
+  },
+  {
+   "path": "crates/ty_python_semantic/src/types/relation.rs",
+   "text": "@@ -1949,4 +1949,31 @@ impl<'a, 'c, 'db> TypeRelationChecker<'a, 'c, 'db> {\n             ),\n \n+            // A nominal descriptor annotation specifies the wrapped callable through `__func__`.\n+            // Comparing that contract directly preserves overloads and avoids replacing the\n+            // wrapped callable's parameter and return types with the default specialization.\n+            (\n+                Type::KnownInstance(KnownInstanceType::MethodWrapper(wrapper)),\n+                Type::NominalInstance(target_instance),\n+            ) if target_instance\n+                .class(db, env)\n+                .is_known(db, wrapper.class(db)) =>\n+            {\n+                self.with_recursion_guard(db, source, target, || {\n+                    let Some(target_function) = target\n+                        .member_lookup_with_policy(\n+                            db,\n+                            env,\n+                            \"__func__\",\n+                            MemberLookupPolicy::NO_INSTANCE_FALLBACK,\n+                        )\n+                        .place\n+                        .ignore_possibly_undefined()\n+                    else {\n+                        return self.never();\n+                    };\n+                    self.check_type_pair(db, wrapper.wrapped(db), target_function)\n+                })\n+            }\n+\n             // When checking `FunctoolsPartial <: functools.partial[T]`, we need to specialize\n             // the nominal instance with the partial's return type so the check is precise."
+  }
+ ],
+ "id": "real_029",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Preserve wrapped signatures in nominal descriptor checks (#28466)\n\n## Summary\n\nWe now check the wrapped callable when assigning a precise method\nwrapper to an annotated `staticmethod` or `classmethod`. Previously, the\nnominal fallback discarded the wrapped signature, allowing a function\nreturning `str` where the descriptor promised `int`:\n\n```python\ndef stringify(value: int) -> str:\n    return str(value)\n\ndef consume(method: staticmethod[[int], int]) -> int:\n    return method(1) + 1\n\nconsume(staticmethod(stringify))  # Now rejected.\n```\n\nCompare the wrapped callable with the nominal descriptor's specialized\n`__func__` contract, preserving overload-specific return types. Use the\nsame relation when inferring generic descriptor parameters.\n\nFollow-up to #28207. Addresses [this review\ncomment](https://github.com/astral-sh/ruff/pull/28207#discussion_r3965484630).",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "d0cf01cf4a307f966276481b1ec79b8db0262a41"
+}

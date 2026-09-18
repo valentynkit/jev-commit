@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 23,
+   "path": "docs/mkdocs/docs/features/conversions.md",
+   "removed": 6,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "docs/mkdocs/docs/features/conversions.md",
+   "text": "@@ -123,15 +123,32 @@ which forces the explicit `get` form and can catch unintended conversions at com\n     over `static_cast` for optional types.\n \n-!!! warning \"Converting to a fixed-size `std::array` does not check length\"\n-\n-    Converting a JSON array to `#!cpp std::array<T, N>` does not check that the JSON array's size matches `N`:\n-    if the JSON array is longer, the extra elements are silently dropped; if it is shorter, the remaining\n-    `std::array` elements are left default-constructed. No exception is thrown in either case.\n+!!! warning \"Converting to a fixed-size destination does not check the array size\"\n+\n+    Some destination types have a size that is fixed by their C++ type rather than by the JSON value:\n+    `#!cpp std::pair<A, B>`, `#!cpp std::tuple<Ts...>`, `#!cpp std::array<T, N>`, C arrays `#!cpp T[N]`, and\n+    `#!cpp std::map`/`#!cpp std::unordered_map` with a non-string key type (which is read from an array of\n+    two-element arrays). All of them read exactly as many elements as they need via\n+    [`at`](../api/basic_json/at.md) and **never compare the JSON array's size to that number**. The two\n+    mismatch directions therefore behave differently:\n+\n+    - The JSON array has **too many** elements: the surplus is **silently discarded**, and no exception is\n+      thrown.\n+    - The JSON array has **too few** elements: `at` throws\n+      [`out_of_range.401`](../home/exceptions.md#jsonexceptionout_of_range401) for the first missing index --\n+      an out-of-range error, not a [`type_error`](../home/exceptions.md#type-errors), even though the cause\n+      is a shape mismatch.\n \n     ```cpp\n     json j = {1, 2, 3, 4, 5};\n-    auto a = j.get<std::array<int, 3>>();  // {1, 2, 3} -- elements 4 and 5 silently dropped\n+\n+    auto a = j.get<std::array<int, 3>>();       // {1, 2, 3} -- elements 4 and 5 silently dropped\n+    auto p = j.get<std::pair<int, int>>();      // (1, 2)    -- elements 3, 4, and 5 silently dropped\n+\n+    json k = {1};\n+    auto q = k.get<std::pair<int, int>>();      // \u274c throws out_of_range.401\n     ```\n \n+    If a size mismatch is an error in your application, check the size yourself before converting.\n+\n ## Omitting a field when serializing `std::optional`\n "
+  }
+ ],
+ "id": "real_087",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "docs: document size-mismatch behavior of fixed-size conversions (#5352)\n\nConversions whose element count is fixed by the destination C++ type --\n`std::pair`, `std::tuple`, `std::array<T, N>`, C arrays, and\n`std::map`/`std::unordered_map` with a non-string key -- read exactly the\nelements they need via `at` and never compare the JSON array's size to\nthat number. Excess elements are silently discarded, while a shortfall\nthrows `out_of_range.401` rather than a `type_error`. Neither direction\nwas documented in `conversions.md`, `get.md`, or `from_json.md`.\n\nThe existing warning covered only `std::array` and stated that a too-short\nJSON array leaves the remaining elements default-constructed with no\nexception thrown; that is not what happens. Generalize it to all\nfixed-size destinations and correct the shortfall direction.\n\nSigned-off-by: Niels Lohmann <mail@nlohmann.me>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "ad94fb01ccd258bf3d647c74ee7a905a55a017ce"
+}

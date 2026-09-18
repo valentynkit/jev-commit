@@ -1,0 +1,89 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": ".github/workflows/main.yml",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 12,
+   "path": "lib/arguments/shell.js",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 2,
+   "path": "lib/methods/main-async.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "lib/methods/main-sync.js",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "package.json",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 10,
+   "path": "test/helpers/fixtures-directory.js",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/main.yml",
+   "text": "@@ -11,5 +11,5 @@ jobs:\n       matrix:\n         node-version:\n-          - 23\n+          - 24\n           - 18\n         os:"
+  },
+  {
+   "path": ".github/workflows/main.yml",
+   "text": "@@ -32,5 +32,5 @@ jobs:\n           args: --cache --verbose --no-progress --include-fragments --exclude packagephobia --exclude /pull/ --exclude linkedin --exclude stackoverflow --exclude stackexchange --exclude github.com/nodejs/node --exclude file:///test --exclude invalid.com '*.md' 'docs/*.md' '.github/**/*.md' '*.json' '*.js' 'lib/**/*.js' 'test/**/*.js' '*.ts' 'test-d/**/*.ts'\n           fail: true\n-        if: ${{ matrix.os == 'ubuntu' && matrix.node-version == 23 }}\n+        if: ${{ matrix.os == 'ubuntu' && matrix.node-version == 24 }}\n       - run: npm run lint\n       - run: npm run type"
+  },
+  {
+   "path": "lib/arguments/shell.js",
+   "text": "@@ -0,0 +1,12 @@\n+// When the `shell` option is set, any command argument is concatenated as a single string by Node.js:\n+// https://github.com/nodejs/node/blob/e38ce27f3ca0a65f68a31cedd984cddb927d4002/lib/child_process.js#L614-L624\n+// However, since Node 24, it also prints a deprecation warning.\n+// To avoid this warning, we perform that same operation before calling `node:child_process`.\n+// Shells only understand strings, which is why Node.js performs that concatenation.\n+// However, we rely on users splitting command arguments as an array.\n+// For example, this allows us to easily detect which arguments are passed.\n+// So we do want users to pass array of arguments even with `shell: true`, but we also want to avoid any warning.\n+export const concatenateShell = (file, commandArguments, options) => options.shell && commandArguments.length > 0\n+\t? [[file, ...commandArguments].join(' '), [], options]\n+\t: [file, commandArguments, options];\n+"
+  },
+  {
+   "path": "lib/methods/main-async.js",
+   "text": "@@ -5,4 +5,5 @@ import {MaxBufferError} from 'get-stream';\n import {normalizeOptions} from '../arguments/options.js';\n import {SUBPROCESS_OPTIONS} from '../arguments/fd-options.js';\n+import {concatenateShell} from '../arguments/shell.js';\n import {addIpcMethods} from '../ipc/methods.js';\n import {makeError, makeSuccessResult} from '../return/result.js';"
+  },
+  {
+   "path": "lib/methods/main-async.js",
+   "text": "@@ -76,5 +77,5 @@ const handleAsyncOptions = ({timeout, signal, ...options}) => {\n \tlet subprocess;\n \ttry {\n-\t\tsubprocess = spawn(file, commandArguments, options);\n+\t\tsubprocess = spawn(...concatenateShell(file, commandArguments, options));\n \t} catch (error) {\n \t\treturn handleEarlyError({"
+  },
+  {
+   "path": "lib/methods/main-sync.js",
+   "text": "@@ -2,4 +2,5 @@\n import {handleCommand} from '../arguments/command.js';\n import {normalizeOptions} from '../arguments/options.js';\n+import {concatenateShell} from '../arguments/shell.js';\n import {makeError, makeEarlyError, makeSuccessResult} from '../return/result.js';\n import {handleResult} from '../return/reject.js';"
+  },
+  {
+   "path": "lib/methods/main-sync.js",
+   "text": "@@ -116,5 +117,5 @@ const runSubprocessSync = ({file, commandArguments, options, command, escapedCom\n \t\taddInputOptionsSync(fileDescriptors, options);\n \t\tconst normalizedOptions = normalizeSpawnSyncOptions(options);\n-\t\treturn spawnSync(file, commandArguments, normalizedOptions);\n+\t\treturn spawnSync(...concatenateShell(file, commandArguments, normalizedOptions));\n \t} catch (error) {\n \t\treturn makeEarlyError({"
+  },
+  {
+   "path": "package.json",
+   "text": "@@ -72,4 +72,5 @@\n \t\t\"is-in-ci\": \"^1.0.0\",\n \t\t\"is-running\": \"^2.1.0\",\n+\t\t\"log-process-errors\": \"^12.0.1\",\n \t\t\"path-exists\": \"^5.0.0\",\n \t\t\"path-key\": \"^4.0.0\","
+  },
+  {
+   "path": "test/helpers/fixtures-directory.js",
+   "text": "@@ -2,6 +2,16 @@\n import process from 'node:process';\n import {fileURLToPath} from 'node:url';\n+import logProcessErrors from 'log-process-errors';\n import pathKey from 'path-key';\n \n+// Make tests fail if any warning (such as a deprecation warning) is emitted\n+logProcessErrors({\n+\tonError(error, event) {\n+\t\tif (event === 'warning') {\n+\t\t\tthrow error;\n+\t\t}\n+\t},\n+});\n+\n export const PATH_KEY = pathKey();\n export const FIXTURES_DIRECTORY_URL = new URL('../fixtures/', import.meta.url);"
+  }
+ ],
+ "id": "real_062",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Fix Node 24-specific deprecation warning (#1199)",
+ "more": "",
+ "omitted": "",
+ "repo": "sindresorhus/execa",
+ "sha": "1ac5b91eaaed89cc8b6a3d123e1af42ed65f9c33"
+}

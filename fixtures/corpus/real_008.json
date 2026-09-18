@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "tests/languages/docker_image_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "tests/languages/docker_image_test.py",
+   "text": "@@ -1,9 +1,17 @@\n from __future__ import annotations\n \n+import pytest\n+\n from pre_commit.languages import docker_image\n+from pre_commit.util import cmd_output_b\n from testing.language_helpers import run_language\n from testing.util import xfailif_windows\n \n \n+@pytest.fixture(autouse=True, scope='module')\n+def _ensure_image_available():\n+    cmd_output_b('docker', 'run', '--rm', 'ubuntu:22.04', 'echo')\n+\n+\n @xfailif_windows  # pragma: win32 no cover\n def test_docker_image_hook_via_entrypoint(tmp_path):"
+  }
+ ],
+ "id": "real_008",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix docker_image test when ubuntu:22.04 image is not pre-pulled",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "aa85be934071e7c73fb49e9339e307285a784d16"
+}

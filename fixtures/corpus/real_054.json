@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 10,
+   "path": "src/tmux.go",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/tmux.go",
+   "text": "@@ -14,4 +14,14 @@ import (\n // floating panes (tmux 3.7 or above)\n func tmuxFloatingPaneInfo() (int, int, bool) {\n+\t// TMUX_PANE is not set when fzf is not started from within a pane\n+\t// (e.g. 'bind-key 0 run-shell \"fzf --popup\"'). Do not use a floating\n+\t// pane there; a blocking run-shell suspends key processing for the\n+\t// client until the command exits, so fzf in a floating pane would\n+\t// never receive a key and the client would appear frozen until the\n+\t// process is killed externally. A popup is unaffected; its input is\n+\t// handled at the client overlay level, bypassing the suspended path.\n+\t// The right approach for such bindings is 'run-shell -b', which does\n+\t// not suspend key processing, as discussed in:\n+\t//   https://github.com/tmux/tmux/issues/5384\n \ttarget := os.Getenv(\"TMUX_PANE\")\n \tif target == \"\" {"
+  }
+ ],
+ "id": "real_054",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Comment why floating pane requires TMUX_PANE\n\nBlocking run-shell suspends client key processing until the command\nexits, so a floating pane deadlocks; popup input bypasses the suspended\npath. Fall back to display-popup when TMUX_PANE is not set.",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "4dcedc01dfe7edbd41395545448ce2df17123a9a"
+}

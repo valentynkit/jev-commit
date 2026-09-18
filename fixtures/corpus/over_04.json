@@ -1,0 +1,1621 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": ".reuse/dep5",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "LICENSE.MIT",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "Makefile",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "README.md",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/examples/meta.output",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/docs/home/license.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "docs/mkdocs/mkdocs.yml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/adl_serializer.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/byte_container_with_subtype.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/abi_macros.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/conversions/from_json.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/conversions/to_chars.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/conversions/to_json.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/exceptions.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/hash.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/binary_reader.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/input_adapters.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/json_sax.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/lexer.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/parser.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/input/position_t.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/internal_iterator.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/iter_impl.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/iteration_proxy.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/iterator_traits.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/json_reverse_iterator.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/iterators/primitive_iterator.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/json_custom_base_class.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/json_pointer.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/json_ref.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/macro_scope.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/macro_unscope.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/call_std/begin.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/call_std/end.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/cpp_future.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/detected.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/identity_tag.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/is_sax.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/std_fs.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/type_traits.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/meta/void_t.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/output/binary_writer.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/output/output_adapters.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/output/serializer.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/string_concat.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/string_escape.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/string_utils.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/detail/value_t.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "include/nlohmann/json.hpp",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/json_fwd.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/ordered_map.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/thirdparty/hedley/hedley.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "include/nlohmann/thirdparty/hedley/hedley_undef.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 47,
+   "path": "single_include/nlohmann/json.hpp",
+   "removed": 47,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "single_include/nlohmann/json_fwd.hpp",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/config/config.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/config/custom.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/config/default.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/config/noversion.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/diag/diag.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/diag/diag.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/diag/diag_off.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/diag/diag_on.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/inline_ns/use_current.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/inline_ns/use_v3_10_5.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/abi/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/benchmarks/src/benchmarks.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_add_subdirectory/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_fetch_content/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_fetch_content2/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_import/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_import_minver/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_target_include_directories/project/Bar.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_target_include_directories/project/Bar.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_target_include_directories/project/Foo.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_target_include_directories/project/Foo.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cmake_target_include_directories/project/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/cuda_example/json_cuda.cu",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/module_cpp20/main.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-driver_afl.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_bjdata.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_bson.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_cbor.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_json.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_msgpack.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/fuzzer-parse_ubjson.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/make_test_data_available.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/test_utils.hpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-32bit.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-algorithms.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-allocator.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-alt-string.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-assert_macro.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-binary_formats.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-bjdata.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-bson.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-byte_container_with_subtype.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-capacity.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-cbor.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-class_const_iterator.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-class_iterator.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-class_lexer.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-class_parser.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-class_parser_diagnostic_positions.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-comparison.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-concepts.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-constructor1.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-constructor2.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-convenience.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-conversions.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-custom-base-class.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-deserialization.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-diagnostic-positions-only.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-diagnostic-positions.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-diagnostics.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-disabled_exceptions.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-element_access1.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-element_access2.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-hash.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-inspection.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-items.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-iterators1.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-iterators2.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-iterators3.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-json_patch.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-json_pointer.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-large_json.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-locale-cpp.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-merge_patch.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "tests/src/unit-meta.cpp",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-modifiers.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-msgpack.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-no-mem-leak-on-adl-serialize.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-noexcept.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-ordered_json.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-ordered_map.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-pointer_access.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-readme.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-reference_access.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-regression1.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-regression2.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-serialization.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-testsuites.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-to_chars.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-type_traits.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-ubjson.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-udl.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-udt.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-udt_macro.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-unicode1.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-unicode2.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-unicode3.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-unicode4.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-unicode5.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-user_defined_input.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-windows_h.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit-wstring.cpp",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "tests/src/unit.cpp",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "over_budget",
+ "hunks": [
+  {
+   "path": ".reuse/dep5",
+   "text": "@@ -5,5 +5,5 @@ Upstream-Contact: Niels Lohmann <mail@nlohmann.me>\n \n Files: *\n-Copyright: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+Copyright: 2013-2026 Niels Lohmann <https://nlohmann.me>\n License: MIT\n "
+  },
+  {
+   "path": "LICENSE.MIT",
+   "text": "@@ -1,5 +1,5 @@\n MIT License \n \n-Copyright (c) 2013-2025 Niels Lohmann\n+Copyright (c) 2013-2026 Niels Lohmann\n \n Permission is hereby granted, free of charge, to any person obtaining a copy"
+  },
+  {
+   "path": "Makefile",
+   "text": "@@ -259,6 +259,6 @@ serve_header:\n \n reuse:\n-\tpipx run reuse annotate --recursive single_include include -tjson --license MIT --copyright \"Niels Lohmann <https://nlohmann.me>\" --year \"2013-2025\" --merge-copyrights\n-\tpipx run reuse annotate $(TESTS_SRCS) -tjson_support --license MIT --copyright \"Niels Lohmann <https://nlohmann.me>\" --year \"2013-2025\" --merge-copyrights\n+\tpipx run reuse annotate --recursive single_include include -tjson --license MIT --copyright \"Niels Lohmann <https://nlohmann.me>\" --year \"2013-2026\" --merge-copyrights\n+\tpipx run reuse annotate $(TESTS_SRCS) -tjson_support --license MIT --copyright \"Niels Lohmann <https://nlohmann.me>\" --year \"2013-2026\" --merge-copyrights\n \tpipx run reuse lint\n "
+  },
+  {
+   "path": "README.md",
+   "text": "@@ -1156,5 +1156,5 @@ The library is used in multiple projects, applications, operating systems, etc.\n ## Supported compilers\n \n-Though it's 2025 already, the support for C++11 is still a bit sparse. Currently, the following compilers are known to work:\n+Though it's 2026 already, the support for C++11 is still a bit sparse. Currently, the following compilers are known to work:\n \n - GCC 4.8 - 14.2 (and possibly later)"
+  },
+  {
+   "path": "README.md",
+   "text": "@@ -1335,5 +1335,5 @@ pkg-config nlohmann_json --cflags\n The class is licensed under the [MIT License](https://opensource.org/licenses/MIT):\n \n-Copyright &copy; 2013-2025 [Niels Lohmann](https://nlohmann.me)\n+Copyright &copy; 2013-2026 [Niels Lohmann](https://nlohmann.me)\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \u201cSoftware\u201d), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:"
+  },
+  {
+   "path": "docs/mkdocs/docs/examples/meta.output",
+   "text": "@@ -5,5 +5,5 @@\n         \"version\": \"12.4.0\"\n     },\n-    \"copyright\": \"(C) 2013-2025 Niels Lohmann\",\n+    \"copyright\": \"(C) 2013-2026 Niels Lohmann\",\n     \"name\": \"JSON for Modern C++\",\n     \"platform\": \"apple\","
+  },
+  {
+   "path": "docs/mkdocs/docs/home/license.md",
+   "text": "@@ -5,5 +5,5 @@\n The class is licensed under the [MIT License](https://opensource.org/licenses/MIT):\n \n-Copyright &copy; 2013-2025 [Niels Lohmann](https://nlohmann.me)\n+Copyright &copy; 2013-2026 [Niels Lohmann](https://nlohmann.me)\n \n Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \u201cSoftware\u201d), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:"
+  },
+  {
+   "path": "docs/mkdocs/mkdocs.yml",
+   "text": "@@ -10,5 +10,5 @@ repo_url: https://github.com/nlohmann/json\n \n # Copyright\n-copyright: Copyright &copy; 2013-2025 Niels Lohmann\n+copyright: Copyright &copy; 2013-2026 Niels Lohmann\n \n # Configuration"
+  },
+  {
+   "path": "include/nlohmann/adl_serializer.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/byte_container_with_subtype.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/abi_macros.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/conversions/from_json.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/conversions/to_chars.hpp",
+   "text": "@@ -5,5 +5,5 @@\n //\n // SPDX-FileCopyrightText: 2009 Florian Loitsch <https://florian.loitsch.com/>\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/conversions/to_json.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/exceptions.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/hash.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/binary_reader.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/input_adapters.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/json_sax.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/lexer.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/parser.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/input/position_t.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/internal_iterator.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/iter_impl.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/iteration_proxy.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/iterator_traits.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/json_reverse_iterator.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/iterators/primitive_iterator.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/json_custom_base_class.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/json_pointer.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/json_ref.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/macro_scope.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/macro_unscope.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/call_std/begin.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/call_std/end.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/cpp_future.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-FileCopyrightText: 2018 The Abseil Authors\n // SPDX-License-Identifier: MIT"
+  },
+  {
+   "path": "include/nlohmann/detail/meta/detected.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/identity_tag.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/is_sax.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/std_fs.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/type_traits.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/meta/void_t.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/output/binary_writer.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/output/output_adapters.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/output/serializer.hpp",
+   "text": "@@ -5,5 +5,5 @@\n //\n // SPDX-FileCopyrightText: 2008, 2009 Bj\u00f6rn Hoehrmann <bjoern@hoehrmann.de>\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/string_concat.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/string_escape.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/string_utils.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/detail/value_t.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/json.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/json.hpp",
+   "text": "@@ -254,5 +254,5 @@ class basic_json // NOLINT(cppcoreguidelines-special-member-functions,hicpp-spec\n         basic_json result;\n \n-        result[\"copyright\"] = \"(C) 2013-2025 Niels Lohmann\";\n+        result[\"copyright\"] = \"(C) 2013-2026 Niels Lohmann\";\n         result[\"name\"] = \"JSON for Modern C++\";\n         result[\"url\"] = \"https://github.com/nlohmann/json\";"
+  },
+  {
+   "path": "include/nlohmann/json_fwd.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/ordered_map.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "include/nlohmann/thirdparty/hedley/hedley.hpp",
+   "text": "@@ -6,5 +6,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-FileCopyrightText: 2016-2021 Evan Nemerson <evan@nemerson.com>\n // SPDX-License-Identifier: MIT"
+  },
+  {
+   "path": "include/nlohmann/thirdparty/hedley/hedley_undef.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "45 hunks omitted (45 added, 45 removed)"
+  },
+  {
+   "path": "single_include/nlohmann/json.hpp",
+   "text": "@@ -25554,5 +25554,5 @@ inline void swap(nlohmann::NLOHMANN_BASIC_JSON_TPL& j1, nlohmann::NLOHMANN_BASIC\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "single_include/nlohmann/json_fwd.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "single_include/nlohmann/json_fwd.hpp",
+   "text": "@@ -22,5 +22,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/config/config.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/config/custom.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/config/default.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/config/noversion.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/diag/diag.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/diag/diag.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/diag/diag_off.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/diag/diag_on.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/inline_ns/use_current.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/inline_ns/use_v3_10_5.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/abi/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/benchmarks/src/benchmarks.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_add_subdirectory/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_fetch_content/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_fetch_content2/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_import/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_import_minver/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_target_include_directories/project/Bar.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_target_include_directories/project/Bar.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_target_include_directories/project/Foo.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_target_include_directories/project/Foo.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cmake_target_include_directories/project/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/cuda_example/json_cuda.cu",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/module_cpp20/main.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-driver_afl.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_bjdata.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_bson.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_cbor.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_json.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_msgpack.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/fuzzer-parse_ubjson.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/make_test_data_available.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/test_utils.hpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-32bit.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-algorithms.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-allocator.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-alt-string.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-FileCopyrightText: 2018 Vitaliy Manushkin <agri@akamo.info>\n // SPDX-License-Identifier: MIT"
+  },
+  {
+   "path": "tests/src/unit-assert_macro.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-binary_formats.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-bjdata.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-bson.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-byte_container_with_subtype.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-capacity.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-cbor.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-class_const_iterator.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-class_iterator.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-class_lexer.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-class_parser.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-class_parser_diagnostic_positions.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-comparison.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-concepts.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-constructor1.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-constructor2.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-convenience.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-conversions.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-custom-base-class.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-deserialization.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-diagnostic-positions-only.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-diagnostic-positions.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-diagnostics.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-disabled_exceptions.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-element_access1.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-element_access2.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-hash.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-inspection.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-items.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-iterators1.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-iterators2.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-iterators3.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-json_patch.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-json_pointer.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-large_json.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-locale-cpp.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-merge_patch.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-meta.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-meta.cpp",
+   "text": "@@ -19,5 +19,5 @@ TEST_CASE(\"version information\")\n \n         CHECK(j[\"name\"] == \"JSON for Modern C++\");\n-        CHECK(j[\"copyright\"] == \"(C) 2013-2025 Niels Lohmann\");\n+        CHECK(j[\"copyright\"] == \"(C) 2013-2026 Niels Lohmann\");\n         CHECK(j[\"url\"] == \"https://github.com/nlohmann/json\");\n         CHECK(j[\"version\"] == json("
+  },
+  {
+   "path": "tests/src/unit-modifiers.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-msgpack.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-no-mem-leak-on-adl-serialize.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-noexcept.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-ordered_json.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-ordered_map.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-pointer_access.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-readme.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-reference_access.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-regression1.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-regression2.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-serialization.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-testsuites.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-to_chars.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-type_traits.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-ubjson.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-udl.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-udt.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-udt_macro.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-unicode1.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-unicode2.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-unicode3.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-unicode4.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-unicode5.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-user_defined_input.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-windows_h.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit-wstring.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  },
+  {
+   "path": "tests/src/unit.cpp",
+   "text": "@@ -4,5 +4,5 @@\n // |_____|_____|_____|_|___|  https://github.com/nlohmann/json\n //\n-// SPDX-FileCopyrightText: 2013-2025 Niels Lohmann <https://nlohmann.me>\n+// SPDX-FileCopyrightText: 2013-2026 Niels Lohmann <https://nlohmann.me>\n // SPDX-License-Identifier: MIT\n "
+  }
+ ],
+ "id": "over_04",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": ":page_facing_up: adjust year (#5044)\n\nSigned-off-by: Niels Lohmann <mail@nlohmann.me>",
+ "more": "",
+ "omitted": "",
+ "repo": "nlohmann/json",
+ "sha": "515d994acbac04e0efa41db21e0d16591f6f97c9"
+}

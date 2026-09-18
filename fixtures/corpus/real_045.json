@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 22,
+   "path": ".golangci.yml",
+   "removed": 14,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".golangci.yml",
+   "text": "@@ -1,25 +1,12 @@\n+version: \"2\"\n run:\n   tests: false\n-\n-issues:\n-  include:\n-    - EXC0001\n-    - EXC0005\n-    - EXC0011\n-    - EXC0012\n-    - EXC0013\n-\n-  max-issues-per-linter: 0\n-  max-same-issues: 0\n-\n linters:\n   enable:\n     - bodyclose\n     - exhaustive\n     - goconst\n     - godot\n     - godox\n-    - gofumpt\n-    - goimports\n     - gomoddirectives\n     - goprintffuncname"
+  },
+  {
+   "path": ".golangci.yml",
+   "text": "@@ -40,2 +27,23 @@ linters:\n     - whitespace\n     - wrapcheck\n+  exclusions:\n+    generated: lax\n+    presets:\n+      - common-false-positives\n+    paths:\n+      - third_party$\n+      - builtin$\n+      - examples$\n+issues:\n+  max-issues-per-linter: 0\n+  max-same-issues: 0\n+formatters:\n+  enable:\n+    - gofumpt\n+    - goimports\n+  exclusions:\n+    generated: lax\n+    paths:\n+      - third_party$\n+      - builtin$\n+      - examples$"
+  }
+ ],
+ "id": "real_045",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "ci: sync golangci-lint config (#607)\n\nCo-authored-by: andreynering <7011819+andreynering@users.noreply.github.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "charmbracelet/vhs",
+ "sha": "7929ef2b1f9c9592d377baefa71c6d9729e20fae"
+}

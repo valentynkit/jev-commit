@@ -1,0 +1,150 @@
+{
+ "files": [
+  {
+   "added": 8,
+   "path": "CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 7,
+   "path": "man/man1/fzf.1",
+   "removed": 3,
+   "status": "M"
+  },
+  {
+   "added": 107,
+   "path": "src/actiontype_string.go",
+   "removed": 106,
+   "status": "M"
+  },
+  {
+   "added": 26,
+   "path": "src/options.go",
+   "removed": 2,
+   "status": "M"
+  },
+  {
+   "added": 17,
+   "path": "src/terminal.go",
+   "removed": 6,
+   "status": "M"
+  },
+  {
+   "added": 14,
+   "path": "src/util/chars.go",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 49,
+   "path": "src/util/chars_test.go",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "pyproject.toml",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -4,4 +4,12 @@ CHANGELOG\n 0.68.0\n ------\n+- Implemented word wrapping in the list section\n+    - Added `--wrap=word` (or `--wrap-word`) option and `toggle-wrap-word` action\n+      for word-level line wrapping in the list section\n+    - Changed default binding of `ctrl-/` and `alt-/` from `toggle-wrap` to\n+      `toggle-wrap-word`\n+  ```sh\n+  fzf --wrap=word\n+  ```\n - Implemented word wrapping in the preview window\n     - Added `wrap-word` flag for `--preview-window` to enable word-level wrapping"
+  },
+  {
+   "path": "man/man1/fzf.1",
+   "text": "@@ -594,6 +594,9 @@ Highlight the whole current line\n Enable cyclic scroll\n .TP\n-.B \"\\-\\-wrap\"\n-Enable line wrap\n+.BI \"\\-\\-wrap\" \"[=MODE]\"\n+Enable line wrap. \\fIMODE\\fR can be \\fBchar\\fR (default) or \\fBword\\fR.\n+\\fBword\\fR mode wraps lines at word boundaries (spaces and tabs) instead of\n+at arbitrary character positions. \\fB\\-\\-wrap\\-word\\fR is a synonym for\n+\\fB\\-\\-wrap=word\\fR.\n .TP\n .BI \"\\-\\-wrap\\-sign\" \"=INDICATOR\""
+  },
+  {
+   "path": "man/man1/fzf.1",
+   "text": "@@ -1969,5 +1972,6 @@ A key or an event can be bound to one or more of the following actions.\n     \\fBtoggle\\-track\\fR                 (toggle global tracking option (\\fB\\-\\-track\\fR))\n     \\fBtoggle\\-track\\-current\\fR         (toggle tracking of the current item)\n-    \\fBtoggle\\-wrap\\fR                  \\fIctrl\\-/\\fR  \\fIalt\\-/\\fR\n+    \\fBtoggle\\-wrap\\fR\n+    \\fBtoggle\\-wrap\\-word\\fR             \\fIctrl\\-/\\fR  \\fIalt\\-/\\fR\n     \\fBtoggle+down\\fR                  \\fIctrl\\-i  (tab)\\fR\n     \\fBtoggle+up\\fR                    \\fIbtab    (shift\\-tab)\\fR"
+  },
+  {
+   "path": "src/options.go",
+   "text": "@@ -96,5 +96,5 @@ Usage: fzf [options]\n     --highlight-line         Highlight the whole current line\n     --cycle                  Enable cyclic scroll\n-    --wrap                   Enable line wrap\n+    --wrap[=MODE]            Enable line wrap (char|word, default: char)\n     --wrap-sign=STR          Indicator for wrapped lines\n     --no-multi-line          Disable multi-line display of items when using --read0"
+  },
+  {
+   "path": "src/options.go",
+   "text": "@@ -607,4 +607,5 @@ type Options struct {\n \tCycle             bool\n \tWrap              bool\n+\tWrapWord          bool\n \tWrapSign          *string\n \tMultiLine         bool"
+  },
+  {
+   "path": "src/options.go",
+   "text": "@@ -741,4 +742,5 @@ func defaultOptions() *Options {\n \t\tCycle:        false,\n \t\tWrap:         false,\n+\t\tWrapWord:     false,\n \t\tMultiLine:    true,\n \t\tKeepRight:    false,"
+  },
+  {
+   "path": "src/options.go",
+   "text": "@@ -1805,4 +1807,6 @@ func parseActionList(masked string, original string, prevActions []*action, putA\n \t\tcase \"toggle-wrap\":\n \t\t\tappendAction(actToggleWrap)\n+\t\tcase \"toggle-wrap-word\":\n+\t\t\tappendAction(actToggleWrapWord)\n \t\tcase \"toggle-multi-line\":\n \t\t\tappendAction(actToggleMultiLine)"
+  },
+  {
+   "path": "src/options.go",
+   "text": "@@ -2854,7 +2858,27 @@ func parseOptions(index *int, opts *Options, allArgs []string) error {\n \t\t\topts.Cycle = false\n \t\tcase \"--wrap\":\n-\t\t\topts.Wrap = true\n+\t\t\tgiven, str := optionalNextString()\n+\t\t\tif given {\n+\t\t\t\tswitch str {\n+\t\t\t\tcase \"char\":\n+\t\t\t\t\topts.Wrap = true\n+\t\t\t\t\topts.WrapWord = false\n+\t\t\t\tcase \"word\":\n+\t\t\t\t\topts.Wrap = true\n+\t\t\t\t\topts.WrapWord = true\n+\t\t\t\tdefault:\n+\t\t\t\t\treturn errors.New(\"invalid wrap mode: \" + str + \" (expected: char or word)\")\n+\t\t\t\t}\n+\t\t\t} else {\n+\t\t\t\topts.Wrap = true\n+\t\t\t}\n \t\tcase \"--no-wrap\":\n \t\t\topts.Wrap = false\n+\t\t\topts.WrapWord = false\n+\t\tcase \"--wrap-word\":\n+\t\t\topts.Wrap = true\n+\t\t\topts.WrapWord = true\n+\t\tcase \"--no-wrap-word\":\n+\t\t\topts.WrapWord = false\n \t\tcase \"--wrap-sign\":\n \t\t\tstr, err := nextString(\"wrap sign required\")"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -251,4 +251,5 @@ type Terminal struct {\n \tinfoPrefix         string\n \twrap               bool\n+\twrapWord           bool\n \twrapSign           string\n \twrapSignWidth      int"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -586,4 +587,5 @@ const (\n \tactToggleHeader\n \tactToggleWrap\n+\tactToggleWrapWord\n \tactToggleMultiLine\n \tactToggleHscroll"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -831,6 +833,6 @@ func defaultKeymap() map[tui.Event][]*action {\n \t\tadd(tui.CtrlZ, actSigStop)\n \t}\n-\tadd(tui.CtrlSlash, actToggleWrap)\n-\taddEvent(tui.AltKey('/'), actToggleWrap)\n+\tadd(tui.CtrlSlash, actToggleWrapWord)\n+\taddEvent(tui.AltKey('/'), actToggleWrapWord)\n \n \taddEvent(tui.AltKey('b'), actBackwardWord)"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -1015,4 +1017,5 @@ func NewTerminal(opts *Options, eventBox *util.EventBox, executor *util.Executor\n \t\tmultiLine:          opts.ReadZero && opts.MultiLine,\n \t\twrap:               opts.Wrap,\n+\t\twrapWord:           opts.WrapWord,\n \t\tsort:               opts.Sort > 0,\n \t\ttoggleSort:         opts.ToggleSort,"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -1636,5 +1639,5 @@ func (t *Terminal) numItemLines(item *Item, atMost int) (int, bool) {\n \t} else {\n \t\tvar lines [][]rune\n-\t\tlines, overflow = item.text.Lines(t.multiLine, atMost, t.wrapCols(), t.wrapSignWidth, t.tabstop)\n+\t\tlines, overflow = item.text.Lines(t.multiLine, atMost, t.wrapCols(), t.wrapSignWidth, t.tabstop, t.wrapWord)\n \t\tnumLines = len(lines)\n \t}"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -1652,5 +1655,5 @@ func (t *Terminal) itemLines(item *Item, atMost int) ([][]rune, bool) {\n \t\treturn [][]rune{text}, false\n \t}\n-\treturn item.text.Lines(t.multiLine, atMost, t.wrapCols(), t.wrapSignWidth, t.tabstop)\n+\treturn item.text.Lines(t.multiLine, atMost, t.wrapCols(), t.wrapSignWidth, t.tabstop, t.wrapWord)\n }\n "
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -6722,6 +6725,14 @@ func (t *Terminal) Loop() error {\n \t\t\t\tt.headerVisible = !t.headerVisible\n \t\t\t\treq(reqList, reqInfo, reqPrompt, reqHeader)\n-\t\t\tcase actToggleWrap:\n-\t\t\t\tt.wrap = !t.wrap\n+\t\t\tcase actToggleWrap, actToggleWrapWord:\n+\t\t\t\tif a.t == actToggleWrapWord {\n+\t\t\t\t\tt.wrapWord = !t.wrapWord\n+\t\t\t\t\tt.wrap = t.wrapWord\n+\t\t\t\t} else {\n+\t\t\t\t\tt.wrap = !t.wrap\n+\t\t\t\t\tif !t.wrap {\n+\t\t\t\t\t\tt.wrapWord = false\n+\t\t\t\t\t}\n+\t\t\t\t}\n \t\t\t\tt.clearNumLinesCache()\n \t\t\t\treq(reqList, reqHeader)"
+  },
+  {
+   "path": "src/util/chars.go",
+   "text": "@@ -250,5 +250,5 @@ func (chars *Chars) Prepend(prefix string) {\n }\n \n-func (chars *Chars) Lines(multiLine bool, maxLines int, wrapCols int, wrapSignWidth int, tabstop int) ([][]rune, bool) {\n+func (chars *Chars) Lines(multiLine bool, maxLines int, wrapCols int, wrapSignWidth int, tabstop int, wrapWord bool) ([][]rune, bool) {\n \ttext := make([]rune, chars.Length())\n \tcopy(text, chars.ToRunes())"
+  },
+  {
+   "path": "src/util/chars.go",
+   "text": "@@ -308,4 +308,17 @@ func (chars *Chars) Lines(multiLine bool, maxLines int, wrapCols int, wrapSignWi\n \t\t\t\t\toverflowIdx = 1\n \t\t\t\t}\n+\t\t\t\tif wrapWord {\n+\t\t\t\t\t// Find last space/tab at or before overflowIdx\n+\t\t\t\t\tbreakIdx := -1\n+\t\t\t\t\tfor k := overflowIdx; k > 0; k-- {\n+\t\t\t\t\t\tif line[k-1] == ' ' || line[k-1] == '\\t' {\n+\t\t\t\t\t\t\tbreakIdx = k\n+\t\t\t\t\t\t\tbreak\n+\t\t\t\t\t\t}\n+\t\t\t\t\t}\n+\t\t\t\t\tif breakIdx > 0 {\n+\t\t\t\t\t\toverflowIdx = breakIdx\n+\t\t\t\t\t}\n+\t\t\t\t}\n \t\t\t\tif len(wrapped) >= maxLines {\n \t\t\t\t\treturn wrapped, true"
+  },
+  {
+   "path": "src/util/chars_test.go",
+   "text": "@@ -52,5 +52,5 @@ func TestTrimLength(t *testing.T) {\n \tchars := ToChars([]byte(\"abcdef\\n\uac00\ub098\ub2e4\\n\\tdef\"))\n \tcheck := func(multiLine bool, maxLines int, wrapCols int, wrapSignWidth int, tabstop int, expectedNumLines int, expectedOverflow bool) {\n-\t\tlines, overflow := chars.Lines(multiLine, maxLines, wrapCols, wrapSignWidth, tabstop)\n+\t\tlines, overflow := chars.Lines(multiLine, maxLines, wrapCols, wrapSignWidth, tabstop, false)\n \t\tfmt.Println(lines, overflow)\n \t\tif len(lines) != expectedNumLines || overflow != expectedOverflow {"
+  },
+  {
+   "path": "src/util/chars_test.go",
+   "text": "@@ -82,2 +82,50 @@ func TestCharsLines(t *testing.T) {\n \tcheck(false, 100, 3, 2, 1, 13, false)\n }\n+\n+func TestCharsLinesWrapWord(t *testing.T) {\n+\t// \"hello world foo bar\" with width 12 should break at word boundaries\n+\tchars := ToChars([]byte(\"hello world foo bar\"))\n+\tlines, overflow := chars.Lines(false, 100, 12, 0, 8, true)\n+\t// \"hello world \" (12) | \"foo bar\" (7)\n+\tif len(lines) != 2 || overflow {\n+\t\tt.Errorf(\"Expected 2 lines, got %d (overflow: %v): %v\", len(lines), overflow, lines)\n+\t}\n+\tif string(lines[0]) != \"hello world \" {\n+\t\tt.Errorf(\"Expected first line 'hello world ', got %q\", string(lines[0]))\n+\t}\n+\tif string(lines[1]) != \"foo bar\" {\n+\t\tt.Errorf(\"Expected second line 'foo bar', got %q\", string(lines[1]))\n+\t}\n+\n+\t// No word boundary: a single long word falls back to character wrap\n+\tchars2 := ToChars([]byte(\"abcdefghijklmnop\"))\n+\tlines2, _ := chars2.Lines(false, 100, 10, 0, 8, true)\n+\tif len(lines2) != 2 {\n+\t\tt.Errorf(\"Expected 2 lines for long word, got %d: %v\", len(lines2), lines2)\n+\t}\n+\tif string(lines2[0]) != \"abcdefghij\" {\n+\t\tt.Errorf(\"Expected first line 'abcdefghij', got %q\", string(lines2[0]))\n+\t}\n+\n+\t// Tab as word boundary\n+\tchars3 := ToChars([]byte(\"hello\\tworld\"))\n+\tlines3, _ := chars3.Lines(false, 100, 7, 0, 8, true)\n+\t// \"hello\\t\" should break at tab (width of tab at pos 5 with tabstop 8 = 3, total width = 8 > 7)\n+\t// Actually RunesWidth: 'h'=1,'e'=1,'l'=1,'l'=1,'o'=1,'\\t'=3 = 8 > 7, overflowIdx=5\n+\t// Then word-wrap scans back and finds no space/tab before idx 5 (tab IS at idx 5 but we check line[k-1])\n+\t// Wait - let me think: overflowIdx=5, we check k=5 -> line[4]='o', k=4 -> line[3]='l'... no space/tab found\n+\t// Falls back to character wrap: \"hello\" | \"\\tworld\"\n+\tif len(lines3) < 2 {\n+\t\tt.Errorf(\"Expected at least 2 lines for tab test, got %d: %v\", len(lines3), lines3)\n+\t}\n+\n+\t// wrapWord=false still character-wraps\n+\tchars4 := ToChars([]byte(\"hello world\"))\n+\tlines4, _ := chars4.Lines(false, 100, 8, 0, 8, false)\n+\tif len(lines4) != 2 {\n+\t\tt.Errorf(\"Expected 2 lines with wrapWord=false, got %d: %v\", len(lines4), lines4)\n+\t}\n+\tif string(lines4[0]) != \"hello wo\" {\n+\t\tt.Errorf(\"Expected first line 'hello wo', got %q\", string(lines4[0]))\n+\t}\n+}"
+  },
+  {
+   "path": "pyproject.toml",
+   "text": "@@ -2,3 +2,3 @@\n name = \"app\"\n-version = \"4.2.1\"\n+version = \"4.3.0\"\n description = \"x\""
+  }
+ ],
+ "id": "mm_16",
+ "label": {
+  "catch_on": [
+   "message_matches_diff",
+   "scope_creep"
+  ],
+  "kind": "version_bump",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Implement word wrapping in the list section",
+ "more": "",
+ "omitted": "counts only: src/actiontype_string.go",
+ "repo": "junegunn/fzf",
+ "sha": "69e9abdab4e7aea98437f40dbaeab56c7431be18"
+}

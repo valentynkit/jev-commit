@@ -1,0 +1,55 @@
+{
+ "files": [
+  {
+   "added": 37,
+   "path": "crates/ty_server/src/session.rs",
+   "removed": 36,
+   "status": "M"
+  },
+  {
+   "added": 124,
+   "path": "crates/ty_server/tests/e2e/configuration.rs",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "crates/ty_server/tests/e2e/snapshots/e2e__configuration__invalid_configuration_file-2.snap",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_server/src/session.rs",
+   "text": "@@ -778,45 +778,46 @@ impl Session {\n         };\n \n-        let project = metadata\n-            .context(\"Failed to discover project configuration\")\n-            .and_then(|mut metadata| {\n-                if let Some(fallback_options) = workspace.settings.fallback_options() {\n-                    metadata.set_fallback_options(fallback_options.clone());\n+        let (mut metadata, discovery_result) =\n+            match metadata.context(\"Failed to discover project configuration\") {\n+                Ok(metadata) => (metadata, Ok(())),\n+                Err(err) => {\n+                    let Ok(metadata) = ProjectMetadata::from_options(\n+                        Options::default(),\n+                        workspace_directory.to_path_buf(),\n+                        None,\n+                        &UseDefaultStrategy,\n+                    );\n+                    (metadata.with_use_uv(self.use_uv), Err(err))\n                 }\n+            };\n \n-                metadata\n-                    .apply_configuration_files(&system)\n-                    .context(\"Failed to apply configuration files\")?;\n-\n-                if let Some(override_options) = workspace.settings.override_options() {\n-                    metadata.set_override_options(override_options.clone());\n-                }\n+        if let Some(fallback_options) = workspace.settings.fallback_options() {\n+            metadata.set_fallback_options(fallback_options.clone());\n+        }\n \n-                ProjectDatabase::fallible(metadata, system.clone())\n-            });\n+        if let Some(override_options) = workspace.settings.override_options() {\n+            metadata.set_override_options(override_options.clone());\n+        }\n \n-        let mut db = match project {\n-            Ok(db) => db,\n-            Err(err) => {\n-                tracing::error!(\n-                    \"Failed to create project for workspace `{uri}`: {err:#}. \\\n-                        Falling back to default settings\"\n-                );\n+        // Load user configuration even if project discovery failed.\n+        let project = discovery_result\n+            .and(\n+                metadata\n+                    .apply_configuration_files(&system)\n+                    .context(\"Failed to apply configuration files\"),\n+            )\n+            .and_then(|()| ProjectDatabase::fallible(metadata.clone(), system.clone()));\n \n-                client.show_error_message(format!(\n-                    \"Failed to load project for workspace {uri}. {}\",\n-                    self.client_name.log_guidance(),\n-                ));\n-\n-                let Ok(metadata) = ProjectMetadata::from_options(\n-                    Options::default(),\n-                    workspace_directory.to_path_buf(),\n-                    None,\n-                    &UseDefaultStrategy,\n-                )\n-                .map(|metadata| metadata.with_use_uv(self.use_uv));\n-                ProjectDatabase::use_defaults(metadata, system)\n-            }\n-        };\n+        let mut db = project.unwrap_or_else(|err| {\n+            tracing::error!(\n+                \"Failed to load project for workspace `{uri}`: {err:#}. \\\n+                 Continuing with valid settings\"\n+            );\n+            client.show_error_message(format!(\n+                \"Failed to load project for workspace {uri}. {}\",\n+                self.client_name.log_guidance(),\n+            ));\n+            ProjectDatabase::use_defaults(metadata, system)\n+        });\n \n         // Carry forward diagnostic state if any exists"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/configuration.rs",
+   "text": "@@ -2,9 +2,11 @@\n use insta::assert_json_snapshot;\n use ruff_db::system::SystemPath;\n+use ruff_python_trivia::textwrap::dedent;\n use serde_json::{Map, json};\n use ty_server::{ClientOptions, WorkspaceOptions};\n \n use crate::TestServerBuilder;\n use crate::pull_diagnostics::filter_result_id;\n+use crate::workspace_folders::condensed_document_diagnostic_snapshot;\n \n #[test]"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/configuration.rs",
+   "text": "@@ -74,4 +76,14 @@ def foo() -> str:\n                 workspace: WorkspaceOptions {\n                     configuration_file: Some(settings_path.to_string()),\n+                    configuration: Some(\n+                        Map::from_iter([\n+                            (\"rules\".to_string(), json!({\"unresolved-reference\": \"warn\"})),\n+                            (\n+                                \"environment\".to_string(),\n+                                json!({\"python\": \"./missing-environment\"}),\n+                            ),\n+                        ])\n+                        .into(),\n+                    ),\n                     ..WorkspaceOptions::default()\n                 },"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/configuration.rs",
+   "text": "@@ -105,4 +117,116 @@ unresolved-reference=\"warn\"\n }\n \n+#[test]\n+fn invalid_python_environment_preserves_valid_configuration() -> Result<()> {\n+    let main = SystemPath::new(\"src/main.py\");\n+    let content = dedent(\n+        \"\n+        import sys\n+        sys.platform\n+        \",\n+    );\n+\n+    let mut server = TestServerBuilder::new()?\n+        .with_workspace(SystemPath::new(\"src\"), None)?\n+        .with_file(\n+            \"src/ty.toml\",\n+            dedent(\n+                r#\"\n+                [environment]\n+                python = \"./missing-environment\"\n+                python-platform = \"win32\"\n+                \"#,\n+            ),\n+        )?\n+        .with_file(main, &content)?\n+        .build()\n+        .wait_until_workspaces_are_initialized();\n+\n+    let message = server.await_notification::<lsp_types::ShowMessageNotification>();\n+    assert_eq!(message.kind, lsp_types::MessageType::Error);\n+\n+    server.open_text_document(main, &content, 1);\n+    let platform = server.hover_request(main, lsp_types::Position::new(2, 5));\n+    assert_json_snapshot!(platform, @r#\"\n+    {\n+      \"contents\": {\n+        \"kind\": \"plaintext\",\n+        \"value\": \"Literal[\\\"win32\\\"]\"\n+      },\n+      \"range\": {\n+        \"start\": {\n+          \"line\": 2,\n+          \"character\": 4\n+        },\n+        \"end\": {\n+          \"line\": 2,\n+          \"character\": 12\n+        }\n+      }\n+    }\n+    \"#);\n+\n+    Ok(())\n+}\n+\n+#[test]\n+fn invalid_include_pattern_preserves_rules_and_diagnostics() -> Result<()> {\n+    let main = SystemPath::new(\"src/main.py\");\n+    let content = \"undefined\";\n+    let mut server = TestServerBuilder::new()?\n+        .with_workspace(SystemPath::new(\"src\"), None)?\n+        .with_file(\n+            \"src/ty.toml\",\n+            dedent(\n+                r#\"\n+                [src]\n+                include = [\"[\"]\n+\n+                [rules]\n+                unresolved-reference = \"warn\"\n+                unknown-rule = \"warn\"\n+                \"#,\n+            ),\n+        )?\n+        .with_file(main, content)?\n+        .build()\n+        .wait_until_workspaces_are_initialized();\n+\n+    let message = server.await_notification::<lsp_types::ShowMessageNotification>();\n+    assert_eq!(message.kind, lsp_types::MessageType::Error);\n+\n+    let settings_diagnostics =\n+        server.await_notification::<lsp_types::PublishDiagnosticsNotification>();\n+    assert_json_snapshot!(settings_diagnostics, @r#\"\n+    {\n+      \"uri\": \"file://<temp_dir>/src/ty.toml\",\n+      \"diagnostics\": [\n+        {\n+          \"range\": {\n+            \"start\": {\n+              \"line\": 6,\n+              \"character\": 0\n+            },\n+            \"end\": {\n+              \"line\": 6,\n+              \"character\": 12\n+            }\n+          },\n+          \"severity\": 2,\n+          \"code\": \"unknown-rule\",\n+          \"source\": \"ty\",\n+          \"message\": \"Unknown rule `unknown-rule`. Did you mean `unknown-argument`?\"\n+        }\n+      ]\n+    }\n+    \"#);\n+\n+    server.open_text_document(main, content, 1);\n+    let diagnostics = server.document_diagnostic_request(main, None);\n+    insta::assert_snapshot!(condensed_document_diagnostic_snapshot(diagnostics), @\"0:0..0:9[WARNING]: Name `undefined` used when not defined\");\n+\n+    Ok(())\n+}\n+\n #[test]\n fn configuration_overrides() -> Result<()> {"
+  },
+  {
+   "path": "crates/ty_server/tests/e2e/snapshots/e2e__configuration__invalid_configuration_file-2.snap",
+   "text": "@@ -17,5 +17,5 @@ expression: diagnostics\n         }\n       },\n-      \"severity\": 1,\n+      \"severity\": 2,\n       \"code\": \"unresolved-reference\",\n       \"codeDescription\": {"
+  }
+ ],
+ "id": "real_025",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Preserve valid LSP settings when configuration resolution fails (#28653)",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "72b1fd3cefed68152f4219886210da425afa63a0"
+}

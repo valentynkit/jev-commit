@@ -1,0 +1,79 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "changelog/14513.deprecation.rst",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 15,
+   "path": "doc/en/deprecations.rst",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": "src/_pytest/deprecated.py",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 9,
+   "path": "src/_pytest/fixtures.py",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 23,
+   "path": "testing/deprecated_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "changelog/14513.deprecation.rst",
+   "text": "@@ -0,0 +1,2 @@\n+The private ``FixtureDef.has_location`` attribute is now deprecated and will be removed in pytest 10.\n+See :ref:`fixturedef-has-location-deprecated` for details."
+  },
+  {
+   "path": "doc/en/deprecations.rst",
+   "text": "@@ -21,5 +21,5 @@ Below is a complete list of all pytest features which are considered deprecated.\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n \n-.. deprecated:: 9.2\n+.. deprecated:: 9.1\n \n Passing ``baseid`` to :class:`~pytest.FixtureDef` or ``nodeid`` strings to"
+  },
+  {
+   "path": "doc/en/deprecations.rst",
+   "text": "@@ -43,4 +43,18 @@ node-based matching instead of fragile string prefix matching.\n \n \n+.. _fixturedef-has-location-deprecated:\n+\n+``FixtureDef.has_location``\n+~~~~~~~~~~~~~~~~~~~~~~~~~~~\n+\n+.. deprecated:: 9.1\n+\n+The private ``FixtureDef.has_location`` attribute is deprecated and will be removed in pytest 10.\n+\n+It indicated whether a fixture was found from a node or a conftest in the collection tree (as opposed to a non-conftest plugin).\n+It was used to determine the override order of fixtures, pushing fixtures with \"no location\" to the front of the override chain (such that they are chosen last).\n+The override order is now determined by the visibility of the fixtures in the collection tree, making this distinction obsolete.\n+\n+\n .. _console-main:\n "
+  },
+  {
+   "path": "src/_pytest/deprecated.py",
+   "text": "@@ -124,4 +124,9 @@\n )\n \n+FIXTUREDEF_HAS_LOCATION_DEPRECATED = PytestRemovedIn10Warning(\n+    \"FixtureDef.has_location is deprecated and will be removed in pytest 10. \"\n+    \"See https://docs.pytest.org/en/stable/deprecations.html#fixturedef-has-location-deprecated\"\n+)\n+\n PARSEFACTORIES_NODEID_DEPRECATED = PytestRemovedIn10Warning(\n     \"Passing nodeid string to parsefactories is deprecated. \""
+  },
+  {
+   "path": "src/_pytest/fixtures.py",
+   "text": "@@ -61,4 +61,5 @@\n from _pytest.deprecated import FIXTURE_GETFIXTUREVALUE_DURING_TEARDOWN\n from _pytest.deprecated import FIXTURE_NODEID_DEPRECATED\n+from _pytest.deprecated import FIXTUREDEF_HAS_LOCATION_DEPRECATED\n from _pytest.deprecated import PARSEFACTORIES_NODEID_DEPRECATED\n from _pytest.deprecated import YIELD_FIXTURE"
+  },
+  {
+   "path": "src/_pytest/fixtures.py",
+   "text": "@@ -1095,5 +1096,7 @@ def __init__(\n         # collection tree. Will be false for fixtures defined in non-conftest\n         # plugins.\n-        self.has_location: Final = node is not None or baseid is not None\n+        #\n+        # Deprecated: kept only to back the deprecated ``has_location`` property.\n+        self._has_location: Final = node is not None or baseid is not None\n         # The fixture factory function.\n         self.func: Final = func"
+  },
+  {
+   "path": "src/_pytest/fixtures.py",
+   "text": "@@ -1130,4 +1133,9 @@ def scope(self) -> ScopeName:\n         return self._scope.value\n \n+    @property\n+    def has_location(self) -> bool:\n+        warnings.warn(FIXTUREDEF_HAS_LOCATION_DEPRECATED, stacklevel=2)\n+        return self._has_location\n+\n     def addfinalizer(self, finalizer: Callable[[], object]) -> None:\n         self._finalizers.append(finalizer)"
+  },
+  {
+   "path": "testing/deprecated_test.py",
+   "text": "@@ -288,2 +288,25 @@ def test_scoped_invisible(request):\n         result = pytester.runpytest(\"-W\", \"ignore::pytest.PytestRemovedIn10Warning\")\n         result.assert_outcomes(passed=2)\n+\n+    def test_fixturedef_has_location_deprecated(self, pytester: Pytester) -> None:\n+        \"\"\"Accessing FixtureDef.has_location warns.\"\"\"\n+        pytester.makepyfile(\n+            \"\"\"\n+            import pytest\n+\n+            @pytest.fixture\n+            def fix():\n+                return 1\n+\n+            def test_it(request):\n+                fixturedef = request._fixturemanager.getfixturedefs(\n+                    \"fix\", request._pyfuncitem\n+                )[0]\n+                with pytest.warns(\n+                    pytest.PytestRemovedIn10Warning, match=\"has_location\"\n+                ):\n+                    assert fixturedef.has_location is True\n+            \"\"\"\n+        )\n+        result = pytester.runpytest()\n+        result.assert_outcomes(passed=1)"
+  }
+ ],
+ "id": "real_012",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fixtures: deprecate FixtureDef.has_location\n\nhas_location was used to determine the fixture override order, pushing\nfixturedefs with no location to the front of the override chain. Now\nthat the override order is determined by the fixtures' visibility in the\ncollection tree, the attribute is no longer needed.\n\nTurn it into a property that emits a PytestRemovedIn10Warning, backed by\nthe private _has_location attribute, and document the deprecation.",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "197bc7148ac2fed5bad1ab78b0a288251f5a650d"
+}

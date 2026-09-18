@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 60,
+   "path": "crates/ruff_linter/resources/mdtest/flake8-tidy-imports/lazy-import-immediately-resolved.md",
+   "removed": 0,
+   "status": "A"
+  },
+  {
+   "added": 20,
+   "path": "crates/ruff_linter/src/rules/flake8_tidy_imports/rules/lazy_import_immediately_resolved.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ruff_linter/resources/mdtest/flake8-tidy-imports/lazy-import-immediately-resolved.md",
+   "text": "@@ -0,0 +1,60 @@\n+# `lazy-import-immediately-resolved` (`TID255`)\n+\n+```toml\n+target-version = \"py315\"\n+\n+[lint]\n+preview = true\n+select = [\"TID254\", \"TID255\"]\n+flake8-tidy-imports.require-lazy = \"all\"\n+```\n+\n+## Required lazy imports\n+\n+`TID255` ignores imports that are required to be lazy to avoid a conflict with `TID254`, even if the\n+import is resolved immediately.\n+\n+```py\n+import foo  # snapshot: lazy-import-mismatch\n+\n+class Bar(foo.Base): ...\n+```\n+\n+```snapshot\n+error[TID254]: Use a `lazy` import instead of an eager import\n+ --> src/mdtest_snippet.py:1:8\n+  |\n+1 | import foo  # snapshot: lazy-import-mismatch\n+  |        ^^^\n+help: Convert to a lazy import\n+  |\n+  - import foo  # snapshot: lazy-import-mismatch\n+1 + lazy import foo  # snapshot: lazy-import-mismatch\n+2 |\n+  |\n+note: This is an unsafe fix and may change runtime behavior\n+```\n+\n+## Partially required lazy imports\n+\n+`TID255` still reports immediately resolved names outside `require-lazy`, even when another name in\n+the same import is required to be lazy.\n+\n+```toml\n+target-version = \"py315\"\n+\n+[lint]\n+preview = true\n+select = [\"TID254\", \"TID255\"]\n+flake8-tidy-imports.require-lazy = [\"foo\", \"pkg.Base\"]\n+```\n+\n+```py\n+lazy import foo as required, bar\n+lazy from pkg import Base as RequiredBase, OtherBase\n+\n+required.value\n+RequiredBase()\n+bar.value  # error: [lazy-import-immediately-resolved]\n+OtherBase()  # error: [lazy-import-immediately-resolved]\n+```"
+  },
+  {
+   "path": "crates/ruff_linter/src/rules/flake8_tidy_imports/rules/lazy_import_immediately_resolved.rs",
+   "text": "@@ -9,4 +9,5 @@ use ruff_text_size::{Ranged, TextRange};\n use crate::checkers::ast::Checker;\n use crate::codes::Category;\n+use crate::rules::flake8_tidy_imports::rules::BannedModuleImportPolicies;\n use crate::{Edit, Fix, FixAvailability, Violation};\n "
+  },
+  {
+   "path": "crates/ruff_linter/src/rules/flake8_tidy_imports/rules/lazy_import_immediately_resolved.rs",
+   "text": "@@ -47,4 +48,10 @@ use crate::{Edit, Fix, FixAvailability, Violation};\n /// member, since removing `lazy` from a multi-member import would make every\n /// imported member eager, including names that may not be resolved immediately.\n+///\n+/// ## Options\n+///\n+/// The rule ignores imports required to be lazy by the following setting:\n+///\n+/// - [`lint.flake8-tidy-imports.require-lazy`]\n #[derive(ViolationMetadata)]\n #[violation_metadata(preview_since = \"0.15.13\", category = Category::Correctness)]"
+  },
+  {
+   "path": "crates/ruff_linter/src/rules/flake8_tidy_imports/rules/lazy_import_immediately_resolved.rs",
+   "text": "@@ -91,4 +98,17 @@ pub(crate) fn lazy_import_immediately_resolved(checker: &Checker, name: &ExprNam\n     };\n \n+    // Ignore imports that are required to be lazy.\n+    let require_lazy = &checker.settings().flake8_tidy_imports.require_lazy;\n+    for (policy, node) in &BannedModuleImportPolicies::new(import, checker) {\n+        // An `all` selector matches a `from` import's module, not its individual members.\n+        if require_lazy.includes_all() && import.is_import_from_stmt() && node.is_alias() {\n+            break;\n+        }\n+\n+        if node.range().contains_range(binding.range()) && require_lazy.find(&policy).is_some() {\n+            return;\n+        }\n+    }\n+\n     let fix_range = if is_single_member_import(import) {\n         lazy_import_prefix_range(import, checker.source_tokens())"
+  }
+ ],
+ "id": "real_023",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[`flake8-tidy-imports`] Prevent fix loop between `TID254` and `TID255` (#28262)\n\nSummary\n--\n\nI initially wanted to avoid emitting `TID254` when an import that was\nrequired to be lazy was\nimmediately resolved. However, it became clear that that approach was\nmuch more complicated while\nreviewing #26027. This PR implements the easier fix of skipping `TID255`\nfor imports that are\nrequired to be lazy by the user's configuration, even if those imports\nare immediately resolved. I\nthink this is also a sensible route.\n\nA close alternative would be still emitting the `TID255` diagnostic and\nonly suppressing the fix. I\ndon't really feel strongly one way or the other. The diagnostic is\npossibly still helpful to let you\nknow that you're defeating your desired lazy import, but especially in\nan example like the one from\nthe issue, it would be pretty hard to avoid. This would just require\nmoving the new check down a few\nlines to implement, though.\n\nFixes #25418\n\nTest Plan\n--\n\nNew mdtest based on the issue",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "3f7a54d1d7b9480a18d86a8211bf676354a2f8a0"
+}

@@ -1,0 +1,51 @@
+{
+ "files": [
+  {
+   "added": 70,
+   "path": "crates/ty_ide/src/find_references.rs",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 28,
+   "path": "crates/ty_ide/src/references.rs",
+   "removed": 18,
+   "status": "M"
+  },
+  {
+   "added": 41,
+   "path": "crates/ty_ide/src/rename.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "crates/ty_ide/src/find_references.rs",
+   "text": "@@ -1360,4 +1360,74 @@ def process_model():\n     }\n \n+    #[test]\n+    fn multi_file_instance_attribute_references() {\n+        let test = CursorTest::builder()\n+            .source(\n+                \"lib.py\",\n+                r#\"\n+class C:\n+    def __init__(self) -> None:\n+        self.<CURSOR>value: int = 42\n+\"#,\n+            )\n+            .source(\n+                \"main.py\",\n+                r#\"\n+from lib import C\n+\n+print(C().value)\n+\"#,\n+            )\n+            .build();\n+\n+        assert_snapshot!(test.references(), @\"\n+        info[references]: Found 2 references\n+         --> lib.py:4:14\n+          |\n+        4 |         self.value: int = 42\n+          |              -----\n+          |\n+         ::: main.py:4:11\n+          |\n+        4 | print(C().value)\n+          |           -----\n+        \");\n+    }\n+\n+    #[test]\n+    fn multi_file_comprehension_attribute_references() {\n+        let test = CursorTest::builder()\n+            .source(\n+                \"lib.py\",\n+                r#\"\n+class C:\n+    def __init__(self) -> None:\n+        [None for self.<CURSOR>value in [42]]\n+\"#,\n+            )\n+            .source(\n+                \"main.py\",\n+                r#\"\n+from lib import C\n+\n+print(C().value)\n+\"#,\n+            )\n+            .build();\n+\n+        assert_snapshot!(test.references(), @\"\n+        info[references]: Found 2 references\n+         --> lib.py:4:24\n+          |\n+        4 |         [None for self.value in [42]]\n+          |                        -----\n+          |\n+         ::: main.py:4:11\n+          |\n+        4 | print(C().value)\n+          |           -----\n+        \");\n+    }\n+\n     #[test]\n     fn multi_file_parameter_references_include_keyword_argument_labels() {"
+  },
+  {
+   "path": "crates/ty_ide/src/references.rs",
+   "text": "@@ -5,9 +5,9 @@\n //! meaning must match.\n //!\n-//! Some symbols (such as parameters and local variables) are visible only\n-//! within their scope. All other symbols, such as those defined at the global\n-//! scope or within classes, are visible outside the module. Finding\n-//! all references to these externally-visible symbols therefore requires\n-//! an expensive search of all source files in the workspace.\n+//! Some symbols (local variables) are visible only within their scope/file.\n+//! Other symbols can have references in other modules, requiring an expensive cross-module\n+//! search.\n+//! * Members can be visible outside the module, even when assigned inside a function.\n+//! * Parameters can also have cross-file references through keyword argument labels.\n \n use crate::goto::{Definitions, GotoTarget};"
+  },
+  {
+   "path": "crates/ty_ide/src/references.rs",
+   "text": "@@ -331,18 +331,28 @@ pub(crate) fn has_any_external_visible_definitions(\n ) -> bool {\n     definitions.iter().any(|definition| match definition {\n-        ResolvedDefinition::Definition(definition) => match definition.scope(db).scope(db).kind() {\n-            ScopeKind::Module | ScopeKind::Class => true,\n-            ScopeKind::Comprehension => {\n-                matches!(definition.kind(db), DefinitionKind::NamedExpression(_))\n-                    && definition.place(db).as_symbol().is_some_and(|symbol_id| {\n-                        ty_python_core::semantic_index(db, definition.program_file(db))\n-                            .symbol_resolves_to_global_scope(symbol_id, definition.file_scope(db))\n-                    })\n+        ResolvedDefinition::Definition(definition) => {\n+            // A member's accessibility does not depend on the scope of its assignment.\n+            if definition.place(db).is_member() {\n+                return true;\n+            }\n+\n+            match definition.scope(db).scope(db).kind() {\n+                ScopeKind::Module | ScopeKind::Class => true,\n+                ScopeKind::Comprehension => {\n+                    matches!(definition.kind(db), DefinitionKind::NamedExpression(_))\n+                        && definition.place(db).as_symbol().is_some_and(|symbol_id| {\n+                            ty_python_core::semantic_index(db, definition.program_file(db))\n+                                .symbol_resolves_to_global_scope(\n+                                    symbol_id,\n+                                    definition.file_scope(db),\n+                                )\n+                        })\n+                }\n+                ScopeKind::TypeParams\n+                | ScopeKind::Function\n+                | ScopeKind::Lambda\n+                | ScopeKind::TypeAlias => false,\n             }\n-            ScopeKind::TypeParams\n-            | ScopeKind::Function\n-            | ScopeKind::Lambda\n-            | ScopeKind::TypeAlias => false,\n-        },\n+        }\n         ResolvedDefinition::Module(_) | ResolvedDefinition::FileWithRange(_) => true,\n     })"
+  },
+  {
+   "path": "crates/ty_ide/src/rename.rs",
+   "text": "@@ -2761,4 +2761,45 @@ DC(f=1)\n     }\n \n+    #[test]\n+    fn multi_file_attribute_rename_updates_slots() {\n+        let test = CursorTest::builder()\n+            .source(\n+                \"lib.py\",\n+                r#\"\n+class Box:\n+    __slots__ = (\"value\",)\n+\n+    def __init__(self) -> None:\n+        self.value = 42\n+\"#,\n+            )\n+            .source(\n+                \"main.py\",\n+                r#\"\n+from lib import Box\n+\n+print(Box().<CURSOR>value)\n+\"#,\n+            )\n+            .build();\n+\n+        assert_snapshot!(test.rename(\"count\"), @r#\"\n+        info[rename]: Rename symbol (found 3 locations)\n+         --> main.py:4:13\n+          |\n+        4 | print(Box().value)\n+          |             ^^^^^\n+          |\n+         ::: lib.py:3:19\n+          |\n+        3 |     __slots__ = (\"value\",)\n+          |                   -----\n+        4 |\n+        5 |     def __init__(self) -> None:\n+        6 |         self.value = 42\n+          |              -----\n+        \"#);\n+    }\n+\n     #[test]\n     fn rename_attribute_updates_slots_tuple() {"
+  }
+ ],
+ "id": "real_028",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "[ty] Find member references across files (#28669)",
+ "more": "",
+ "omitted": "",
+ "repo": "astral-sh/ruff",
+ "sha": "b61c8b0357965cda6deef3241cbceeb9193ebe1a"
+}

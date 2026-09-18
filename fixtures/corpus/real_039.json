@@ -1,0 +1,27 @@
+{
+ "files": [
+  {
+   "added": 0,
+   "path": "axum-core/CHANGELOG.md",
+   "removed": 6,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum-core/CHANGELOG.md",
+   "text": "@@ -6,10 +6,4 @@ All notable changes to this project will be documented in this file.\n and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).\n \n-# 0.5.6\n-\n-- **fixed:** Fix IntoResponse for tuples overriding error response codes ([#3603])\n-\n-[#3603]: https://github.com/tokio-rs/axum/pull/3603\n-\n # 0.5.5\n "
+  }
+ ],
+ "id": "real_039",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "revert axum-core changelog changes",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "c59208c86fded335cd85e388030ad59347b0e5ae"
+}

@@ -1,0 +1,45 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "pre_commit/languages/golang.py",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 31,
+   "path": "tests/languages/golang_test.py",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "pre_commit/languages/golang.py",
+   "text": "@@ -24,4 +24,5 @@\n from pre_commit.envcontext import PatchesT\n from pre_commit.envcontext import Var\n+from pre_commit.git import no_git_env\n from pre_commit.prefix import Prefix\n from pre_commit.util import cmd_output"
+  },
+  {
+   "path": "pre_commit/languages/golang.py",
+   "text": "@@ -142,5 +143,5 @@ def install_environment(\n         gopath = env_dir\n \n-    env = dict(os.environ, GOPATH=gopath)\n+    env = no_git_env(dict(os.environ, GOPATH=gopath))\n     env.pop('GOBIN', None)\n     if version != 'system':"
+  },
+  {
+   "path": "tests/languages/golang_test.py",
+   "text": "@@ -8,8 +8,14 @@\n import pre_commit.constants as C\n from pre_commit import lang_base\n+from pre_commit.commands.install_uninstall import install\n from pre_commit.envcontext import envcontext\n from pre_commit.languages import golang\n from pre_commit.store import _make_local_repo\n+from pre_commit.util import cmd_output\n+from testing.fixtures import add_config_to_repo\n+from testing.fixtures import make_config_from_repo\n from testing.language_helpers import run_language\n+from testing.util import cmd_output_mocked_pre_commit_home\n+from testing.util import git_commit\n \n "
+  },
+  {
+   "path": "tests/languages/golang_test.py",
+   "text": "@@ -135,2 +141,27 @@ def test_local_golang_additional_deps(tmp_path):\n     with envcontext((('GOBIN', str(tmp_path.joinpath('gobin'))),)):\n         test_golang_system(tmp_path)\n+\n+\n+def test_during_commit_all(tmp_path, tempdir_factory, store, in_git_dir):\n+    hook_dir = tmp_path.joinpath('hook')\n+    hook_dir.mkdir()\n+    _make_hello_world(hook_dir)\n+    hook_dir.joinpath('.pre-commit-hooks.yaml').write_text(\n+        '-   id: hello-world\\n'\n+        '    name: hello world\\n'\n+        '    entry: golang-hello-world\\n'\n+        '    language: golang\\n'\n+        '    always_run: true\\n',\n+    )\n+    cmd_output('git', 'init', hook_dir)\n+    cmd_output('git', 'add', '.', cwd=hook_dir)\n+    git_commit(cwd=hook_dir)\n+\n+    add_config_to_repo(in_git_dir, make_config_from_repo(hook_dir))\n+\n+    assert not install(C.CONFIG_FILE, store, hook_types=['pre-commit'])\n+\n+    git_commit(\n+        fn=cmd_output_mocked_pre_commit_home,\n+        tempdir_factory=tempdir_factory,\n+    )"
+  }
+ ],
+ "id": "real_005",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "fix building golang hooks during `commit --all`",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "61d9c95cc17cb391855d17cf382feb079372644e"
+}

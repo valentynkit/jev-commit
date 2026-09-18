@@ -1,0 +1,31 @@
+{
+ "files": [
+  {
+   "added": 6,
+   "path": "src/_pytest/logging.py",
+   "removed": 5,
+   "status": "M"
+  }
+ ],
+ "group": "mismatch",
+ "hunks": [
+  {
+   "path": "src/_pytest/logging.py",
+   "text": "@@ -587,10 +587,11 @@ def filtering(self, filter_: logging.Filter) -> Generator[None]:\n         \"\"\"\n         already_present = filter_ in self.handler.filters\n-        if not already_present:\n-            self.handler.addFilter(filter_)\n-        try:\n+        if already_present:\n             yield\n-        finally:\n-            if not already_present:\n+        else:\n+            try:\n+                self.handler.addFilter(filter_)\n+                yield\n+            finally:\n                 self.handler.removeFilter(filter_)\n "
+  }
+ ],
+ "id": "mm_12",
+ "label": {
+  "catch_on": [
+   "message_matches_diff"
+  ],
+  "kind": "paired",
+  "mismatch": true
+ },
+ "license": "MIT",
+ "message": "Accept MarkDecorator as get_closest_marker default\n\n`Mark` is private and warns when instantiated directly, which left no\nsupported way to build the `default` argument. Accept a `MarkDecorator`\nsuch as `pytest.mark.foo(1)` and unwrap it to its `Mark`.\n\nCloses #13354\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>",
+ "more": "",
+ "omitted": "",
+ "repo": "pytest-dev/pytest",
+ "sha": "3174c1c2907a7033bc46e93b9d90831795551ecb"
+}

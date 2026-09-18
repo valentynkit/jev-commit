@@ -1,0 +1,57 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": ".pre-commit-config.yaml",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 0,
+   "path": "testing/resources/python3_hooks_repo/.pre-commit-hooks.yaml",
+   "removed": 6,
+   "status": "D"
+  },
+  {
+   "added": 0,
+   "path": "testing/resources/python3_hooks_repo/py3_hook.py",
+   "removed": 8,
+   "status": "D"
+  },
+  {
+   "added": 0,
+   "path": "testing/resources/python3_hooks_repo/setup.py",
+   "removed": 8,
+   "status": "D"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".pre-commit-config.yaml",
+   "text": "@@ -18,5 +18,5 @@ repos:\n     hooks:\n     -   id: reorder-python-imports\n-        exclude: ^(pre_commit/resources/|testing/resources/python3_hooks_repo/)\n+        exclude: ^pre_commit/resources/\n         args: [--py310-plus, --add-import, 'from __future__ import annotations']\n -   repo: https://github.com/asottile/add-trailing-comma"
+  },
+  {
+   "path": "testing/resources/python3_hooks_repo/.pre-commit-hooks.yaml",
+   "text": "@@ -1,6 +0,0 @@\n--   id: python3-hook\n-    name: Python 3 Hook\n-    entry: python3-hook\n-    language: python\n-    language_version: python3\n-    files: \\.py$"
+  },
+  {
+   "path": "testing/resources/python3_hooks_repo/py3_hook.py",
+   "text": "@@ -1,8 +0,0 @@\n-import sys\n-\n-\n-def main():\n-    print(sys.version_info[0])\n-    print(repr(sys.argv[1:]))\n-    print('Hello World')\n-    return 0"
+  },
+  {
+   "path": "testing/resources/python3_hooks_repo/setup.py",
+   "text": "@@ -1,8 +0,0 @@\n-from setuptools import setup\n-\n-setup(\n-    name='python3_hook',\n-    version='0.0.0',\n-    py_modules=['py3_hook'],\n-    entry_points={'console_scripts': ['python3-hook = py3_hook:main']},\n-)"
+  }
+ ],
+ "id": "real_007",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "rm python3_hooks_repo",
+ "more": "",
+ "omitted": "",
+ "repo": "pre-commit/pre-commit",
+ "sha": "95eec7500464500d2ca0cc13d0986000508830e5"
+}

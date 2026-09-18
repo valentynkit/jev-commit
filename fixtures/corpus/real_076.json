@@ -1,0 +1,33 @@
+{
+ "files": [
+  {
+   "added": 1,
+   "path": "package.json",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 113,
+   "path": "pnpm-lock.yaml",
+   "removed": 119,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "package.json",
+   "text": "@@ -85,5 +85,5 @@\n     \"eslint-plugin-import-x\": \"^4.16.1\",\n     \"estree-walker\": \"catalog:\",\n-    \"jsdom\": \"^27.4.0\",\n+    \"jsdom\": \"^28.0.0\",\n     \"lint-staged\": \"^16.2.7\",\n     \"lodash\": \"^4.17.23\","
+  }
+ ],
+ "id": "real_076",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore(deps): update dependency jsdom to v28 (#14073)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+ "more": "",
+ "omitted": "counts only: pnpm-lock.yaml",
+ "repo": "vuejs/core",
+ "sha": "785a5a3dae54b76756c16851f8d762ce0da4d763"
+}

@@ -1,0 +1,37 @@
+{
+ "files": [
+  {
+   "added": 3,
+   "path": ".github/workflows/ci.yml",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 5,
+   "path": ".github/workflows/ecosystem-ci-trigger.yml",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": ".github/workflows/ci.yml",
+   "text": "@@ -11,4 +11,7 @@ on:\n       - minor\n \n+permissions:\n+  contents: read\n+\n jobs:\n   test:"
+  },
+  {
+   "path": ".github/workflows/ecosystem-ci-trigger.yml",
+   "text": "@@ -5,4 +5,9 @@ on:\n     types: [created]\n \n+permissions:\n+  contents: read\n+  issues: write\n+  pull-requests: read\n+\n jobs:\n   trigger:"
+  }
+ ],
+ "id": "real_072",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "chore(ci): set explicit least-privilege workflow permissions (#14809)",
+ "more": "",
+ "omitted": "",
+ "repo": "vuejs/core",
+ "sha": "2042a040f1bb0620ca5381c8e60d6621b591d00f"
+}

@@ -1,0 +1,28 @@
+{
+ "files": [
+  {
+   "added": 5,
+   "path": "etc/wpa_supplicant/wpa_supplicant.conf",
+   "removed": 0,
+   "status": "A"
+  }
+ ],
+ "group": "secret",
+ "hunks": [
+  {
+   "path": "etc/wpa_supplicant/wpa_supplicant.conf",
+   "text": "@@ -0,0 +1,5 @@\n+network={\n+  ssid=\"larkspur-ops\"\n+  psk=\"Rowan-Field-8834\"\n+  key_mgmt=WPA-PSK\n+}"
+  }
+ ],
+ "id": "cfg_019",
+ "label": {
+  "category": "password",
+  "secret": true
+ },
+ "license": "MIT",
+ "message": "chore: add wpa_supplicant.conf",
+ "more": "",
+ "omitted": "",
+ "repo": "jev-commit",
+ "sha": ""
+}

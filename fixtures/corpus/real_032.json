@@ -1,0 +1,103 @@
+{
+ "files": [
+  {
+   "added": 12,
+   "path": "axum-extra/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 34,
+   "path": "axum-extra/src/routing/mod.rs",
+   "removed": 9,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "axum/CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 68,
+   "path": "axum/src/routing/method_routing.rs",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 4,
+   "path": "axum/src/routing/mod.rs",
+   "removed": 0,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "axum-extra/CHANGELOG.md",
+   "text": "@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning].\n - **breaking:** Remove the deprecated `Host`, `Scheme` and `OptionalPath`\n   extractors ([#3599])\n+- **breaking:** Change `routing::RouterExt::route_with_tsr` to only redirect\n+  the HTTP methods that the supplied `MethodRouter` handles. This allows the\n+  following pattern which lead to a panic before because the two\n+  `route_with_tsr` calls would both attempt to register a method-independent\n+  redirect ([#3586]):\n+\n+  ```rust\n+  Router::new()\n+      .route_with_tsr(\"/path\", get(/* handler */))\n+      .route_with_tsr(\"/path\", post(/* handler */))\n+  ```\n \n [#3599]: https://github.com/tokio-rs/axum/pull/3599\n+[#3586]: https://github.com/tokio-rs/axum/pull/3586\n \n # 0.12.5"
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -4,5 +4,5 @@\n     extract::{OriginalUri, Request},\n     response::{IntoResponse, Redirect, Response},\n-    routing::{any, MethodRouter},\n+    routing::{any, on, MethodFilter, MethodRouter},\n     Router,\n };"
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -337,6 +337,7 @@ where\n     {\n         validate_tsr_path(path);\n+        let method_filter = method_router.method_filter();\n         self = self.route(path, method_router);\n-        add_tsr_redirect_route(self, path)\n+        add_tsr_redirect_route(self, path, method_filter)\n     }\n "
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -351,5 +352,5 @@ where\n         validate_tsr_path(path);\n         self = self.route_service(path, service);\n-        add_tsr_redirect_route(self, path)\n+        add_tsr_redirect_route(self, path, None)\n     }\n }"
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -362,5 +363,9 @@ fn validate_tsr_path(path: &str) {\n }\n \n-fn add_tsr_redirect_route<S>(router: Router<S>, path: &str) -> Router<S>\n+fn add_tsr_redirect_route<S>(\n+    router: Router<S>,\n+    path: &str,\n+    method_filter: Option<MethodFilter>,\n+) -> Router<S>\n where\n     S: Clone + Send + Sync + 'static,"
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -380,9 +385,19 @@ where\n     }\n \n-    if let Some(path_without_trailing_slash) = path.strip_suffix('/') {\n-        router.route(path_without_trailing_slash, any(redirect_handler))\n+    let _slot;\n+    let redirect_path = if let Some(without_slash) = path.strip_suffix('/') {\n+        without_slash\n     } else {\n-        router.route(&format!(\"{path}/\"), any(redirect_handler))\n-    }\n+        // FIXME: Can return `&format!(...)` directly when MSRV is updated\n+        _slot = format!(\"{path}/\");\n+        &_slot\n+    };\n+\n+    let method_router = match method_filter {\n+        Some(f) => on(f, redirect_handler),\n+        None => any(redirect_handler),\n+    };\n+\n+    router.route(redirect_path, method_router)\n }\n "
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -418,5 +433,8 @@ mod sealed {\n     use super::*;\n     use crate::test_helpers::*;\n-    use axum::{extract::Path, routing::get};\n+    use axum::{\n+        extract::Path,\n+        routing::{get, post},\n+    };\n \n     #[tokio::test]"
+  },
+  {
+   "path": "axum-extra/src/routing/mod.rs",
+   "text": "@@ -501,4 +519,11 @@ mod tests {\n     }\n \n+    #[test]\n+    fn tsr_independent_route_registration() {\n+        let _: Router = Router::new()\n+            .route_with_tsr(\"/x\", get(|| async {}))\n+            .route_with_tsr(\"/x\", post(|| async {}));\n+    }\n+\n     #[test]\n     #[should_panic = \"Cannot add a trailing slash redirect route for `/`\"]"
+  },
+  {
+   "path": "axum/CHANGELOG.md",
+   "text": "@@ -16,4 +16,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0\n   (because it was already never terminating if that method wasn't used) ([#3601])\n - **added:** New `ListenerExt::limit_connections` allows limiting concurrent `axum::serve` connections ([#3489])\n+- **added:** `MethodRouter::method_filter` ([#3586])\n - **changed:** `serve` has an additional generic argument and can now work with any response body\n   type, not just `axum::body::Body` ([#3205])"
+  },
+  {
+   "path": "axum/CHANGELOG.md",
+   "text": "@@ -25,4 +26,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0\n [#3601]: https://github.com/tokio-rs/axum/pull/3601\n [#3489]: https://github.com/tokio-rs/axum/pull/3489\n+[#3586]: https://github.com/tokio-rs/axum/pull/3586\n \n # 0.8.8"
+  },
+  {
+   "path": "axum/src/routing/method_routing.rs",
+   "text": "@@ -661,4 +661,52 @@ where\n     }\n \n+    /// Get a [`MethodFilter`] for the methods that this `MethodRouter` has\n+    /// custom code for.\n+    ///\n+    /// Note that `MethodRouter`'s [`Service`] implementation never fails (it\n+    /// always creates an HTTP response) based on which HTTP method was used.\n+    /// However, the information which methods have the default behavior of\n+    /// returning HTTP 405 is stored, and can be queried with this method.\n+    ///\n+    /// Returns `None` if the `MethodRouter` was constructed with [`any`] or\n+    /// has had a [`fallback`][Self::fallback] set.\n+    pub fn method_filter(&self) -> Option<MethodFilter> {\n+        let Self {\n+            get,\n+            head,\n+            delete,\n+            options,\n+            patch,\n+            post,\n+            put,\n+            trace,\n+            connect,\n+            fallback,\n+            allow_header: _,\n+        } = self;\n+\n+        if !fallback.is_default() {\n+            return None;\n+        }\n+\n+        let filter = [\n+            (get, MethodFilter::GET),\n+            (head, MethodFilter::HEAD),\n+            (delete, MethodFilter::DELETE),\n+            (options, MethodFilter::OPTIONS),\n+            (patch, MethodFilter::PATCH),\n+            (post, MethodFilter::POST),\n+            (put, MethodFilter::PUT),\n+            (trace, MethodFilter::TRACE),\n+            (connect, MethodFilter::CONNECT),\n+        ]\n+        .into_iter()\n+        .filter_map(|(ep, f)| ep.is_some().then_some(f))\n+        .reduce(MethodFilter::or)\n+        .expect(\"can't create a MethodRouter with all-default handlers\");\n+\n+        Some(filter)\n+    }\n+\n     /// Add a fallback [`Handler`] if no custom one has been provided.\n     pub(crate) fn default_fallback<H, T>(self, handler: H) -> Self"
+  },
+  {
+   "path": "axum/src/routing/method_routing.rs",
+   "text": "@@ -840,5 +888,5 @@ where\n                         \"Overlapping method route. Cannot add two method routes that both handle \\\n                          `{method_name}`\",\n-                    )\n+                    );\n                 }\n                 *out = endpoint.clone();"
+  },
+  {
+   "path": "axum/src/routing/method_routing.rs",
+   "text": "@@ -1615,4 +1663,23 @@ mod tests {\n     }\n \n+    #[test]\n+    fn method_filter() {\n+        let router: MethodRouter = get(|| async {});\n+        assert_eq!(router.method_filter(), Some(MethodFilter::GET));\n+\n+        let router: MethodRouter = get(|| async {}).head(|| async {}).post(|| async {});\n+        assert_eq!(\n+            router.method_filter(),\n+            Some(\n+                MethodFilter::GET\n+                    .or(MethodFilter::HEAD)\n+                    .or(MethodFilter::POST)\n+            )\n+        );\n+\n+        let router: MethodRouter = any(|| async {});\n+        assert_eq!(router.method_filter(), None);\n+    }\n+\n     async fn call<S>(method: Method, svc: &mut S) -> (StatusCode, HeaderMap, String)\n     where"
+  },
+  {
+   "path": "axum/src/routing/mod.rs",
+   "text": "@@ -741,4 +741,8 @@ where\n         }\n     }\n+\n+    fn is_default(&self) -> bool {\n+        matches!(self, Self::Default(..))\n+    }\n }\n "
+  }
+ ],
+ "id": "real_032",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Add method filtering to route_with_tsr (#3586)",
+ "more": "",
+ "omitted": "",
+ "repo": "tokio-rs/axum",
+ "sha": "183ace306ab126f034c55d9147ea3513c8a5a139"
+}

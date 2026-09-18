@@ -1,0 +1,71 @@
+{
+ "files": [
+  {
+   "added": 17,
+   "path": "src/result.go",
+   "removed": 17,
+   "status": "M"
+  },
+  {
+   "added": 2,
+   "path": "src/result_test.go",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 3,
+   "path": "src/terminal.go",
+   "removed": 2,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "src/result.go",
+   "text": "@@ -3,4 +3,5 @@ package fzf\n import (\n \t\"math\"\n+\t\"slices\"\n \t\"sort\"\n \t\"unicode\""
+  },
+  {
+   "path": "src/result.go",
+   "text": "@@ -31,5 +32,5 @@ type Result struct {\n func buildResult(item *Item, offsets []Offset, score int) Result {\n \tif len(offsets) > 1 {\n-\t\tsort.Sort(ByOrder(offsets))\n+\t\tslices.SortFunc(offsets, compareOffsets)\n \t}\n "
+  },
+  {
+   "path": "src/result.go",
+   "text": "@@ -188,5 +189,5 @@ func (result *Result) colorOffsets(matchOffsets []Offset, nthOffsets []Offset, t\n \t}\n \n-\t// sort.Sort(ByOrder(offsets))\n+\t// slices.SortFunc(offsets, compareOffsets)\n \n \t// Merge offsets"
+  },
+  {
+   "path": "src/result.go",
+   "text": "@@ -298,19 +299,18 @@ func (result *Result) colorOffsets(matchOffsets []Offset, nthOffsets []Offset, t\n }\n \n-// ByOrder is for sorting substring offsets\n-type ByOrder []Offset\n-\n-func (a ByOrder) Len() int {\n-\treturn len(a)\n-}\n-\n-func (a ByOrder) Swap(i, j int) {\n-\ta[i], a[j] = a[j], a[i]\n-}\n-\n-func (a ByOrder) Less(i, j int) bool {\n-\tioff := a[i]\n-\tjoff := a[j]\n-\treturn (ioff[0] < joff[0]) || (ioff[0] == joff[0]) && (ioff[1] <= joff[1])\n+func compareOffsets(a, b Offset) int {\n+\tif a[0] < b[0] {\n+\t\treturn -1\n+\t}\n+\tif a[0] > b[0] {\n+\t\treturn 1\n+\t}\n+\tif a[1] < b[1] {\n+\t\treturn -1\n+\t}\n+\tif a[1] > b[1] {\n+\t\treturn 1\n+\t}\n+\treturn 0\n }\n "
+  },
+  {
+   "path": "src/result_test.go",
+   "text": "@@ -4,4 +4,5 @@ package fzf\n \t\"math\"\n \t\"math/rand\"\n+\t\"slices\"\n \t\"sort\"\n \t\"testing\""
+  },
+  {
+   "path": "src/result_test.go",
+   "text": "@@ -20,5 +21,5 @@ func TestOffsetSort(t *testing.T) {\n \t\t{3, 5}, {2, 7},\n \t\t{1, 3}, {2, 9}}\n-\tsort.Sort(ByOrder(offsets))\n+\tslices.SortFunc(offsets, compareOffsets)\n \n \tif offsets[0][0] != 1 || offsets[0][1] != 3 ||"
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -14,4 +14,5 @@ import (\n \t\"os/signal\"\n \t\"regexp\"\n+\t\"slices\"\n \t\"sort\"\n \t\"strconv\""
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -3752,5 +3753,5 @@ func (t *Terminal) printHighlighted(result Result, colBase tui.ColorPair, colMat\n \t\t\tcharOffsets[idx] = offset\n \t\t}\n-\t\tsort.Sort(ByOrder(charOffsets))\n+\t\tslices.SortFunc(charOffsets, compareOffsets)\n \t}\n "
+  },
+  {
+   "path": "src/terminal.go",
+   "text": "@@ -3789,5 +3790,5 @@ func (t *Terminal) printHighlighted(result Result, colBase tui.ColorPair, colMat\n \t\t\t\tnthOffsets[i] = Offset{int32(start), int32(end)}\n \t\t\t}\n-\t\t\tsort.Sort(ByOrder(nthOffsets))\n+\t\t\tslices.SortFunc(nthOffsets, compareOffsets)\n \t\t}\n \t}"
+  }
+ ],
+ "id": "real_059",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "Replace sort.Sort(ByOrder(...)) with slices.SortFunc",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "bd4a18d0a919791316609071612b3e2670676a8f"
+}

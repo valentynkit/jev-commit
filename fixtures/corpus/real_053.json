@@ -1,0 +1,77 @@
+{
+ "files": [
+  {
+   "added": 2,
+   "path": "CHANGELOG.md",
+   "removed": 0,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "RELEASE.md",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "install",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "install.ps1",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "man/man1/fzf-tmux.1",
+   "removed": 1,
+   "status": "M"
+  },
+  {
+   "added": 1,
+   "path": "man/man1/fzf.1",
+   "removed": 1,
+   "status": "M"
+  }
+ ],
+ "group": "real",
+ "hunks": [
+  {
+   "path": "CHANGELOG.md",
+   "text": "@@ -16,4 +16,6 @@ CHANGELOG\n - fzf now detects terminal resize on Windows in `--height` mode (#4790) (@Cyrus580529)\n - fish: fixed history command being affected by user initialization scripts, and improved timestamp colors in CTRL-R (#4862) (@bitraid)\n+- zsh: fixed CTRL-R not propagating the exit status of fzf when perl is available (#4871) (@LangLangBart, @Toliak)\n+- zsh: fixed `chpwd` hook functions being called twice by ALT-C (#4879) (@LangLangBart, @lucc)\n \n 0.74.1"
+  },
+  {
+   "path": "RELEASE.md",
+   "text": "@@ -19,5 +19,5 @@ triggered by a tag push.\n \n     ```sh\n-    make tag VERSION=0.74.1\n+    make tag VERSION=0.74.2\n     ```\n "
+  },
+  {
+   "path": "install",
+   "text": "@@ -3,5 +3,5 @@\n set -u\n \n-version=0.74.1\n+version=0.74.2\n auto_completion=\n key_bindings="
+  },
+  {
+   "path": "install.ps1",
+   "text": "@@ -1,3 +1,3 @@\n-$version=\"0.74.1\"\n+$version=\"0.74.2\"\n \n $fzf_base=Split-Path -Parent $MyInvocation.MyCommand.Definition"
+  },
+  {
+   "path": "man/man1/fzf-tmux.1",
+   "text": "@@ -22,5 +22,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n THE SOFTWARE.\n ..\n-.TH fzf\\-tmux 1 \"Jul 2026\" \"fzf 0.74.1\" \"fzf\\-tmux - open fzf in tmux split pane\"\n+.TH fzf\\-tmux 1 \"Aug 2026\" \"fzf 0.74.2\" \"fzf\\-tmux - open fzf in tmux split pane\"\n \n .SH NAME"
+  },
+  {
+   "path": "man/man1/fzf.1",
+   "text": "@@ -22,5 +22,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n THE SOFTWARE.\n ..\n-.TH fzf 1 \"Jul 2026\" \"fzf 0.74.1\" \"fzf - a command-line fuzzy finder\"\n+.TH fzf 1 \"Aug 2026\" \"fzf 0.74.2\" \"fzf - a command-line fuzzy finder\"\n \n .SH NAME"
+  }
+ ],
+ "id": "real_053",
+ "label": {
+  "mismatch": false
+ },
+ "license": "MIT",
+ "message": "0.74.2",
+ "more": "",
+ "omitted": "",
+ "repo": "junegunn/fzf",
+ "sha": "3337be9d450cd349e99273a2d3985ceaf5f3753f"
+}
