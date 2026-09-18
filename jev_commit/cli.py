@@ -22,16 +22,27 @@ OK, BLOCK, USAGE = 0, 20, 2
 
 # Starting points. The sweep in measure.py writes the measured values to
 # fixtures/thresholds.json, which wins when it exists.
-DEFAULTS = {"substantive": 0.50, "mismatch": 0.30, "finding": 0.70, "strict": 0.85}
+# `strict` is the finding cutoff under --strict; `strict_mismatch` is its counterpart for
+# the match question, which reads low-is-bad. One key for both meant 0.85 and 0.15 moved
+# together, and an editor of thresholds.json could not tell that it had moved two lines.
+DEFAULTS = {"substantive": 0.50, "mismatch": 0.30, "finding": 0.70,
+            "strict": 0.85, "strict_mismatch": 0.15}
 THRESHOLDS_FILE = pathlib.Path(__file__).resolve().parent.parent / "fixtures" / "thresholds.json"
 
 
 def thresholds():
     out = dict(DEFAULTS)
     try:
-        out.update({k: v for k, v in json.loads(THRESHOLDS_FILE.read_text()).items() if k in DEFAULTS})
-    except (OSError, ValueError):
-        pass
+        locked = json.loads(THRESHOLDS_FILE.read_text())
+    except OSError:
+        return out
+    except ValueError:
+        # Half-written by a killed --lock run. Say so: silently reverting to unswept
+        # defaults is the one failure a measured gate must not make quietly.
+        sys.stderr.write("jev-commit: ignoring a corrupt %s\n" % THRESHOLDS_FILE.name)
+        return out
+    if isinstance(locked, dict):
+        out.update({k: v for k, v in locked.items() if k in DEFAULTS})
     return out
 
 
@@ -149,8 +160,9 @@ def decide(answers, hits, limits, strict=False, blocking_allowed=True):
     if blockers and blocking_allowed:
         code = BLOCK
     elif strict and blocking_allowed:
-        strict_hit = (substantive and answers.get(MESSAGE_MATCHES_DIFF, 1.0) <= 1 - limits["strict"]) or any(
-            answers.get(name, 0.0) >= limits["strict"] for name in FINDINGS)
+        strict_hit = (
+            substantive and answers.get(MESSAGE_MATCHES_DIFF, 1.0) <= limits["strict_mismatch"]
+        ) or any(answers.get(name, 0.0) >= limits["strict"] for name in FINDINGS)
         if strict_hit:
             code = BLOCK
     return code, findings, rows

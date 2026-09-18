@@ -1,5 +1,7 @@
 import http.server
+import socket
 import threading
+import time
 
 import pytest
 
@@ -119,3 +121,47 @@ def test_a_true_is_not_a_probability(odd):
     body = b'{"answers": {"%s": true}}' % questions.MESSAGE_IS_SUBSTANTIVE.encode()
     with pytest.raises(jev.JevError):
         jev.ask({"message": "m"}, {questions.MESSAGE_IS_SUBSTANTIVE: {}}, env=odd(body))
+
+
+def test_a_slow_body_cannot_outrun_the_deadline():
+    """urlopen's timeout is per recv, so a dripping body used to sail past the budget."""
+    body = b'{"answers": {"%s": {"noul": 0.9}}}' % questions.MESSAGE_IS_SUBSTANTIVE.encode()
+
+    def serve(sock):
+        conn, _ = sock.accept()
+        conn.recv(65536)
+        conn.sendall(b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n"
+                     b"Content-Length: %d\r\nConnection: close\r\n\r\n" % len(body))
+        try:
+            for i in range(0, len(body), 4):
+                conn.sendall(body[i:i + 4])
+                time.sleep(0.4)
+        except OSError:
+            pass
+        conn.close()
+
+    sock = socket.socket()
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(("127.0.0.1", 0))
+    sock.listen(1)
+    threading.Thread(target=serve, args=(sock,), daemon=True).start()
+    env = {"JEV_BASE_URL": "http://127.0.0.1:%d" % sock.getsockname()[1]}
+
+    started = time.monotonic()
+    with pytest.raises(jev.JevError):
+        jev.ask({"message": "m"}, {questions.MESSAGE_IS_SUBSTANTIVE: {}}, env=env, deadline_s=1.0)
+    elapsed = time.monotonic() - started
+    assert elapsed < 3.0, "gave up after %.2fs against a 1s deadline" % elapsed
+    sock.close()
+
+
+def test_a_real_key_to_a_plain_http_host_warns_but_does_not_block(fake, capsys, monkeypatch):
+    monkeypatch.setattr(jev, "_warned", False)
+    env, _ = fake({name: {"type": "noul", "noul": 0.5} for name in questions.QUESTIONS})
+    env["TYPESAFE_API_KEY"] = "sk-real-secret"
+    jev.ask({"message": "m"}, questions.QUESTIONS, env=env)
+    assert "not https or loopback" not in capsys.readouterr().err, "loopback is fine"
+
+    monkeypatch.setattr(jev, "_warned", False)
+    jev.warn_if_insecure("http://gateway.example.com/v1/systemone", "sk-real-secret")
+    assert "not https or loopback" in capsys.readouterr().err

@@ -8,15 +8,20 @@ Every error is the caller's cue to exit 0: Jev only makes this stricter, never l
 import http.client
 import json
 import os
+import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 
 DEFAULT_BASE_URL = "https://api.typesafe.ai"
 PATH = "/v1/systemone"
 DEADLINE_S = 8.0
+LOCAL_SHIM = "local-shim"  # the bearer when JEV_BASE_URL points at a shim holding the key
+LOOPBACK = ("127.0.0.1", "localhost", "::1")
 RETRIES = 2
 TOO_BIG_HINTS = ("too big", "too large", "exceeds", "token limit", "context length")
+MAX_BODY_BYTES = 4 * 1024 * 1024  # five nouls answer in bytes, not megabytes
 
 
 class JevError(Exception):
@@ -38,7 +43,7 @@ def api_key(env=None):
     if key:
         return key
     # A local shim holds the real credential; it only needs a non-empty bearer.
-    return "local-shim" if base_url(env) != DEFAULT_BASE_URL else None
+    return LOCAL_SHIM if base_url(env) != DEFAULT_BASE_URL else None
 
 
 def _retry_after(headers, default):
@@ -47,6 +52,50 @@ def _retry_after(headers, default):
         return max(0.0, float(raw))
     except (TypeError, ValueError):
         return default
+
+
+def _read_by(response, stop, chunk=65536):
+    """Read the body, but give up at the wall-clock deadline.
+
+    urlopen's timeout is per socket operation, not a budget for the call. A server dripping
+    bytes under that timeout kept the whole thing alive past the deadline (measured 10.07 s
+    against 8.0), and git is holding the terminal the whole time.
+
+    read1, not read: read(n) blocks until it has n bytes or the Content-Length is satisfied,
+    so the deadline was only ever checked once the slow body had fully arrived.
+    """
+    read = getattr(response, "read1", response.read)
+    out = bytearray()
+    while True:
+        if time.monotonic() >= stop:
+            raise TimeoutError("deadline reached while reading the response body")
+        piece = read(chunk)
+        if not piece:
+            return bytes(out)
+        out += piece
+        if len(out) > MAX_BODY_BYTES:
+            raise JevError("response body over %d bytes" % MAX_BODY_BYTES)
+
+
+_warned = False
+
+
+def warn_if_insecure(url, key):
+    """One line when a real key leaves for somewhere that is neither https nor loopback.
+
+    JEV_BASE_URL is how the shim gets used, so it cannot be locked down, but a real
+    TYPESAFE_API_KEY plus a plain http:// host sends the key and the whole diff in the
+    clear. Warn, never block: this hook does not get to stop a commit over configuration.
+    """
+    global _warned
+    if _warned or key == LOCAL_SHIM:
+        return
+    split = urllib.parse.urlsplit(url)
+    if split.scheme == "https" or split.hostname in LOOPBACK:
+        return
+    _warned = True
+    sys.stderr.write("jev-commit: sending the key to %s, which is not https or loopback\n"
+                     % (split.hostname or url))
 
 
 def ask(state, questions, env=None, model=None, deadline_s=DEADLINE_S):
@@ -61,6 +110,7 @@ def ask(state, questions, env=None, model=None, deadline_s=DEADLINE_S):
         "questions": questions,
     }).encode()
     url = base_url(env) + PATH
+    warn_if_insecure(url, key)
     started = time.monotonic()
     stop = started + deadline_s
     delay = 0.4
@@ -76,7 +126,7 @@ def ask(state, questions, env=None, model=None, deadline_s=DEADLINE_S):
         })
         try:
             with urllib.request.urlopen(request, timeout=left) as response:
-                body = json.loads(response.read().decode("utf-8", "replace"))
+                body = json.loads(_read_by(response, stop).decode("utf-8", "replace"))
             break
         except urllib.error.HTTPError as err:
             text = err.read().decode("utf-8", "replace")[:300]

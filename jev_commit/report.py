@@ -31,11 +31,16 @@ def cost_of(usage):
 
 
 def status_of(probability, finding_at, healthy_high):
-    """ok, warn in the dead band, flag past the finding threshold."""
+    """ok, warn in the dead band, flag past the finding threshold.
+
+    The band is checked against `signal`, the same direction-adjusted number the flag uses.
+    Reading raw `probability` here only agreed by accident, because (0.30, 0.70) happens to
+    be symmetric about 0.5; any swept band would have dead-banded one question backwards.
+    """
     signal = 1 - probability if healthy_high else probability
     if signal >= finding_at:
         return "flag"
-    if DEAD_BAND[0] <= probability <= DEAD_BAND[1]:
+    if 1 - DEAD_BAND[1] <= signal <= 1 - DEAD_BAND[0]:
         return "warn"
     return "ok"
 
@@ -68,9 +73,10 @@ class Report:
             "~%s tokens" % _short(tokens),
             "%d request%s" % (requests, "" if requests == 1 else "s"),
         ]
-        self.line(DOT.join(parts) if self.color else " · ".join(_strip(p) for p in parts))
+        self.line(DOT.join(parts) if self.color else " · ".join(parts))
 
     def asking(self, model):
+        self.stop_spinner()  # two live spinners painted the same line at once
         label = "asking %s " % model
         if not self.animate:
             self.line(self._paint(label + "...", DIM))
@@ -98,7 +104,7 @@ class Report:
     def resolved(self, model, ms, dollars):
         self.stop_spinner()
         parts = [self._paint(model, BOLD), "%d ms" % ms, "$%.5f" % dollars]
-        self.line(DOT.join(parts) if self.color else " · ".join(_strip(p) for p in parts))
+        self.line(DOT.join(parts) if self.color else " · ".join(parts))
         self.line()
 
     def check(self, label, probability, status):
@@ -122,10 +128,6 @@ class Report:
 
     def skipped(self, reason):
         self.line(self._paint("jev-commit: skipped (%s)" % reason, DIM))
-
-
-def _strip(text):
-    return text.replace(BOLD, "").replace(RESET, "").replace(GREEN, "").replace(RED, "")
 
 
 def _short(count):

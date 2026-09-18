@@ -77,7 +77,12 @@ def git_argv(args):
 
 
 def run_git(args, cwd=None, env=None, check=True, timeout=TIMEOUT_S):
-    """Returns (text, returncode, truncated). Output past 10 MB is dropped, not buffered further."""
+    """Returns (text, returncode, truncated). Output past 10 MB is dropped after the fact.
+
+    ponytail: capture_output buffers the whole diff before the slice, so peak memory tracks
+    the staged diff (measured ~360 MB RSS on a 133 MB patch), and a big enough one hits the
+    10 s timeout and fails open. The ceiling is streaming stdout and cutting at MAX_BYTES.
+    """
     try:
         proc = subprocess.run(
             git_argv(args),
