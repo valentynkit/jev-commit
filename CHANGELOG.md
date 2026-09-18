@@ -4,6 +4,21 @@ Format from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), versions f
 
 ## [Unreleased]
 
+### Changed
+
+- The report prints risk instead of the raw noul, so a long bar means a problem on every row.
+  The two healthy-high checks are labeled and printed as their complement: "message is filler"
+  and "contradicts the diff". A flagged row ends in `✗`, a dead-band row in `?`.
+- Bars fill a cell at a time, 0.36 s for the five of them, `JEV_COMMIT_DEMO_PACE` to slow it
+  down for a screen capture.
+
+### Added
+
+- `demo.mp4` for X and `demo/README.md` with the recording recipe. `make demo` records once
+  and renders both sizes, Kanagawa palette, 72 columns so it stays legible on a phone.
+- `docs/launch.md`: the X thread, the Show HN title and first comment, the r/git version and
+  the awesome-list line, each with the measured numbers still unfilled.
+
 ### Fixed
 
 - `git commit -a`, `--only`, `-p` and `git commit <path>` were judged against the wrong diff.
