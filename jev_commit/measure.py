@@ -5,7 +5,7 @@ fixtures/answers/ holds one file per recorded request, keyed by sha256(state+que
 No git, no network, no key. Until answers exist every number prints as __, because a
 guessed number is worse than an empty slot.
 
-Calibration is research/01 section 5 vendored: Brier score, reliability bins and a
+Calibration is vendored from the API notes: Brier score, reliability bins and a
 threshold sweep. The published thresholds come from that sweep, never from a guess.
 """
 

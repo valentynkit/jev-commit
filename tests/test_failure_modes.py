@@ -1,4 +1,4 @@
-"""The jaggedness list from research/01 section 6, as far as it can be pinned offline.
+"""The jaggedness list from the API notes, as far as it can be pinned offline.
 
 Padding, injection and non-English are all code-owned mitigations, so they are testable
 against the fake. Negation is a model behavior and only becomes a test once answers are

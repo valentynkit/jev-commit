@@ -29,16 +29,13 @@ Re-record from scratch:
 
 ## Real numbers
 
-The fake backend answers in about 25 ms, which is not a Jev latency. For a take with real
-numbers on screen, start the gateway shim and point the hook at it:
+The fake backend answers in about 20 ms, which is not a Jev latency, so the latency and the
+cost in the committed takes are placeholders. For a recording with real numbers, point the
+hook at a real endpoint and record again:
 
-    cd ~/Projects/mine/jev-lab/tools/jev-proxy && AI_GATEWAY_API_KEY=... npm start
-    JEV_BASE_URL=http://127.0.0.1:4322 make demo
+    JEV_BASE_URL=https://api.typesafe.ai TYPESAFE_API_KEY=... make demo
 
-Anything recorded that way is measured through the shim, not the direct API, and the post
-has to say so. As of 2026-09-19 the gateway account is on the free tier and answers every
-request with HTTP 429, so the committed takes are fake-backed and the latency and cost on
-screen are placeholders.
+Anything recorded through a proxy rather than the API says so wherever the number is used.
 
 ## Without a key
 

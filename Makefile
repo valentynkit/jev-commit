@@ -26,7 +26,7 @@ fixtures:
 	$(PY) -m jev_commit.record
 
 # vhs 0.12.0 renders blank frames against ffmpeg 9 on macOS, so the demo takes
-# research/04's other path: a real session under asciinema, converted by agg.
+# the other path: a real session under asciinema, converted by agg.
 # 72 columns is the widest frame still legible on a phone timeline. asciinema ignores --rows
 # with no tty, so both renders crop the empty rows off the bottom. demo/README.md has the rest.
 CAST ?= /tmp/jev-commit-demo.cast

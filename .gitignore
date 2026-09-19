@@ -7,3 +7,9 @@ dist/
 *.egg-info/
 measure.json
 frames/
+
+# Internal: design notes, review rounds, session prompts, launch copy, lab research.
+# These live on disk and stay out of the package.
+_local/
+CLAUDE.md
+CONTEXT.md
