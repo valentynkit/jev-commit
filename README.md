@@ -1,6 +1,7 @@
 # jev-commit
 
-Catches __ of 20 commit messages that do not match their diff, for $__ and __ ms per commit.
+Catches __ of 20 commit messages that do not match their diff, for four cents per thousand
+commits and one Jev call each.
 
 ```yaml
 # .pre-commit-config.yaml
@@ -42,7 +43,8 @@ That makes the rate a floor, not a guarantee.
 
 | | |
 |---|---|
-| per commit | $__ |
+| per commit | $0.000044 at the median, $0.000207 at the mean (1,048 and 4,928 input tokens over the 152-case corpus, priced at list, not billed) |
+| per thousand commits | about four cents |
 | p50 latency, the Jev call | __ ms |
 | the hook itself, no model | 240 ms median, of which 21 ms is a loopback call (15 runs against the local fake, M-series Mac) |
 | requests | 1 for most commits, more when the diff does not fit one budget |
