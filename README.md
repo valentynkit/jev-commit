@@ -1,7 +1,9 @@
 # jev-commit
 
-Catches __ of 20 commit messages that do not match their diff, for four cents per thousand
-commits and one Jev call each.
+Your agent writes the code, then writes the commit message about the code. Nothing checks
+that the two agree. This does, in one call to Jev, before the commit lands.
+
+![jev-commit judging a commit whose message claims a null check while the diff also adds an endpoint and a print statement, then blocking a second commit that stages a private key](demo.gif)
 
 ```yaml
 # .pre-commit-config.yaml
@@ -16,48 +18,73 @@ repos:
 pre-commit install --hook-type commit-msg
 ```
 
-![demo](demo.gif)
+Four cents per thousand commits. It warns and gets out of the way. The one thing it stops is
+a credential on an added line.
 
-## Why
+## What it checks
 
-A commit message is the only part of a change nothing checks. Linters read the code, CI runs
-the tests, and the sentence claiming what you did goes straight into the history unread. Six
-months later that sentence is the only thing anyone reads.
+Five questions about the message and the staged diff together, in one request. A high number
+is always the bad direction.
 
-jev-commit reads the message and the staged diff together and asks five questions about the
-pair in one call to Jev, TypeSafe's decision model: is this message substantive, does it
-match the diff, are there debug leftovers, is there work the message never mentions, and is
-a credential written out on an added line. Answers come back as probabilities, priced at
-$0.042 per million input tokens with output free. What that works out to per commit, and how
-long it takes, is what `make measure` prints; the slots above stay `__` until it has run.
+| check | flags when |
+|---|---|
+| message is filler | the message makes no checkable claim: `wip`, `fix`, `update`, a bare label |
+| contradicts the diff | a claim in the message is not visible in the hunks it names |
+| debug leftovers | a `print` added to trace execution, a commented-out block, a hardcoded localhost, a skipped test |
+| unmentioned work | a path the message never names and does not imply |
+| secret shaped | a credential value written out on an added line |
 
-It warns, it does not stand in your way. The only thing that stops a commit by default is a
-regex belt hit on a credential shaped like a real one, because that is the mistake you
-cannot take back. Everything else prints a bar and lets the commit land.
+```
+jev-commit · 2 files · +5 −0 · ~221 tokens · 1 request
+jev-1.13.0 · 19 ms · $0.00001
 
-The honest limit, up front: the false-alarm number comes from 100 real commits labeled as
-matching their own messages, and the filter that picked them favors small focused commits.
-That makes the rate a floor, not a guarantee.
+  message is filler      █░░░░░░░░░░░  0.07
+  contradicts the diff   █████████░░░  0.79  ✗
+  debug leftovers        ███████████░  0.88  ✗
+  unmentioned work       █████████░░░  0.76  ✗
+  secret shaped          ░░░░░░░░░░░░  0.04
 
-## Cost
+  3 findings, commit allowed
+```
+
+The message promised a null check. The diff added one, plus a new endpoint and a
+`print("HERE")`. The commit still lands, because a warning you cannot ignore stops being a
+warning and starts being an outage.
+
+## Why Jev and not a chat model
+
+Jev is TypeSafe's decision model. It does not write text, it answers typed questions with
+calibrated probabilities, and every question in a call is judged in isolation against the
+same state. That buys three things a text reviewer cannot give you: a number you can
+threshold instead of a paragraph you have to parse, a cost that rounds to nothing because
+output tokens are free, and an answer fast enough to sit in front of every commit rather
+than a sample of them.
+
+Code owns the thresholds, the counting, the entropy, the budget and the decision. Jev owns
+five judgments and nothing else.
+
+## What it costs
 
 | | |
 |---|---|
-| per commit | $0.000044 at the median, $0.000207 at the mean (1,048 and 4,928 input tokens over the 152-case corpus, priced at list, not billed) |
+| per commit | $0.000044 at the median, $0.000207 at the mean |
 | per thousand commits | about four cents |
-| p50 latency, the Jev call | __ ms |
-| the hook itself, no model | 240 ms median, of which 21 ms is a loopback call (15 runs against the local fake, M-series Mac) |
+| tokens | 1,048 input at the median over the 152-case corpus, 4,928 at the mean |
 | requests | 1 for most commits, more when the diff does not fit one budget |
 | price | $0.042 per million input tokens, output free |
+| the hook itself, no model | 240 ms median, of which 21 ms is a loopback call (15 runs against the local fake, M-series Mac) |
 
-The second row is the honest half of the first: a commit-msg hook is a fresh Python process
-every time, so 42 ms of interpreter, 117 ms of stdlib imports and about 60 ms of git,
-chunking and the belt land before the request goes out. Expect roughly half a second per
-commit end to end, most of it not the model.
+Cost is arithmetic over the committed corpus at list price, not a billed figure. The last
+row is the part people forget: a `commit-msg` hook is a fresh Python process every time, so
+42 ms of interpreter, 117 ms of stdlib imports and about 60 ms of git, chunking and the belt
+land before the request goes out.
+
+The detection rate over the corpus is not published here yet. `make measure` prints it from
+recorded answers, and this README carries the number once that has run against a real key.
 
 ## Install
 
-With the pre-commit framework, using the snippet above, or as a plain git hook:
+The pre-commit snippet above, or a plain git hook:
 
 ```sh
 pipx install git+https://github.com/valentynkit/jev-commit
@@ -107,8 +134,8 @@ A line ending in `# jev-commit: allow` is skipped by the belt.
 6. One request per chunk, five nouls each, pinned to `jev-1.13.0`. A too-big response splits
    the chunk and retries. The gate question rides the first request only; the match answer
    combines by min and the three findings by max, so the worse answer always wins.
-7. Code owns the thresholds, the counting, the entropy, the budget and the decision. Jev owns
-   the five judgments and nothing else.
+7. Every error path fails open. An API error, a timeout past 8 seconds, a missing key or a
+   Ctrl-C exits 0 and lets the commit through.
 
 ## Known limits
 
@@ -121,11 +148,10 @@ A line ending in `# jev-commit: allow` is skipped by the belt.
   hook, so it judges the newly staged delta alone. `--amend-base` opts into `HEAD^`.
 - `--amend-base` on a root commit has no `HEAD^` to use and falls back to the index.
 - The 100-commit false-alarm set is labeled by assumption: every commit is taken to match its
-  own message. The filter also picks small focused commits, so the rate is a floor.
+  own message. The filter also picks small focused commits, so any rate measured on it is a
+  floor, not a guarantee.
 - A commit that does not fit one budget costs several requests, and several times the money.
 - English only. Other languages are measurably weaker for the model, and untested here.
-- The config-shaped secret set is written in this repo, not the incumbent's, because theirs
-  carries no license. The comparison against their 15/20 is indicative, not like for like.
 - Under the pre-commit framework the report is captured and replayed after the hook finishes,
   so there is no live spinner and no color. A plain git hook shows both.
 - The belt is regex and entropy, so it blocks on credential *shapes*. A repo that commits
@@ -142,8 +168,10 @@ make test      # pytest against tools/fake_jev.py, no network, no key
 make e2e       # install the hook in a scratch repo and commit twice
 make measure   # replay fixtures/answers over fixtures/corpus and print the numbers
 make fixtures  # rebuild the corpus from GitHub, then record answers (needs a key)
-make demo      # re-record demo.gif with asciinema and agg
+make demo      # re-record the clip, see demo/README.md
 ```
+
+Python 3.10 or newer, stdlib only, no dependencies. `CONTRIBUTING.md` has the rest.
 
 ## License
 
