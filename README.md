@@ -43,9 +43,15 @@ That makes the rate a floor, not a guarantee.
 | | |
 |---|---|
 | per commit | $__ |
-| p50 latency | __ ms |
+| p50 latency, the Jev call | __ ms |
+| the hook itself, no model | 240 ms median, of which 21 ms is a loopback call (15 runs against the local fake, M-series Mac) |
 | requests | 1 for most commits, more when the diff does not fit one budget |
 | price | $0.042 per million input tokens, output free |
+
+The second row is the honest half of the first: a commit-msg hook is a fresh Python process
+every time, so 42 ms of interpreter, 117 ms of stdlib imports and about 60 ms of git,
+chunking and the belt land before the request goes out. Expect roughly half a second per
+commit end to end, most of it not the model.
 
 ## Install
 
